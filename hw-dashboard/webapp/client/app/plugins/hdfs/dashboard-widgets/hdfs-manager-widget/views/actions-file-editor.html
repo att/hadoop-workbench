@@ -1,0 +1,10 @@
+<div class="b-hdfs__actions">
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-exit-file-editor" ng-click="exitFileEditor()">
+        <a class="b-hdfs__actions__action-link">Back</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-save-file"
+         ng-click="selectedFile.options.readOnly === false && saveFile()"
+         ng-class="{'disabled': selectedFile.options.readOnly !== false}">
+        <a class="b-hdfs__actions__action-link">Save</a>
+    </div>
+</div>

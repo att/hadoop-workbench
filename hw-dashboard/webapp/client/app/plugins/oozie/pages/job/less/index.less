@@ -1,0 +1,56 @@
+@import "../widgets/job-flowchart/less/index";
+
+.b-oozie-job {
+  height   : 100%;
+  position : relative;
+  background-color: #f7f9fa;
+
+  &__error-message-container {
+    height        : 32px;
+    border-bottom : 1px solid #c7d0d9;
+    background    : #FFE5E4;
+    color         : #4D4D4D;
+    font-size     : 13px;
+    padding       : 8px;
+    text-align    : center;
+    white-space   : nowrap;
+    text-overflow : ellipsis;
+    overflow      : hidden;
+  }
+}
+
+
+@keyframes blink_keyframes {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes blink_keyframes {
+  0% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+/* @TODO: refactor to use "/less/components/animations.less"*/
+.blink {
+  -moz-animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* Firefox */
+  -webkit-animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* Webkit */
+  -ms-animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* IE */
+  animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* Opera */
+}

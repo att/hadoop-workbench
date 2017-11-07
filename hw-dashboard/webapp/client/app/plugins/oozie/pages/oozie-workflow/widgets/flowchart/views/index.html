@@ -1,0 +1,50 @@
+<div dap-core-js-plumb-container class="b-flowchart-widget__js-plumb-container" selected-module="selectedModule"
+     flowchart-right-padding="20" on-connection-selected="selectConnection(connection)"
+     options="plumbOptions" draggable-options="{}"
+     on-before-connection="validateNewConnection(info)" on-connection="onConnectionCreated(info)"
+     on-before-detach="confirmConnectionDeletion(info)" on-connection-detached="afterConnectionRemovedCb(info)"
+     on-connection-delete-request="deleteConnectionRequest(connection)" delete-icon-show-status="isDeleteOverlayVisible"
+     ng-click="onScreenClicked($event)" ng-dblclick="onScreenDoubleClicked($event)">
+
+    <div dap-core-js-plumb-item
+         ng-repeat="node in nodes"
+         ng-class="{'e-node_selected': node.isSelected, 'e-node_invalid': !node.isValid, 'e-node_multiple-selection': node.isMultipleSelected}"
+         ng-click="selectNode(node, $event)"
+         ng-dblclick="selectOpenNode(node, $event)"
+         ng-style="{top:node.position.top, left: node.position.left}"
+         node="node"
+         node-validator-cb="nodeValidatorCb"
+         class="e-node">
+
+        <div class="e-node__id-wrapper e-node__type-icon e-node__type-icon_{{node.subtype}}">
+            <div class="e-node__ellipsis_wrapper">
+                <span class="e-node__id" ng-bind="node.id"></span>
+            </div>
+        </div>
+
+        <ul class="e-node__properties-list">
+            <li class="e-node__properties-list__item">{{node.subtype}}</li>
+        </ul>
+
+        <ul class="e-node__counters-list" ng-if="metrics[node.id]">
+            <li class="e-node__counters-list__item" ng-repeat="metric in metrics[node.id]"
+            >
+                <div class="b-oozie-node-counter"
+                     ng-attr-title="{{metric.title + ': ' + metric.value}}"
+                >
+                    <span class="b-oozie-node-counter__id"
+                          ng-style="{'color': metric.color}"
+                    >{{metric.title}}</span>
+                     <span class="b-oozie-node-counter__value">{{metric.value}}</span>
+                </div>
+            </li>
+        </ul>
+
+        <div dap-core-js-plumb-remove-node="node" confirm-node-deletion-cb="confirmNodeDeletion(node)"
+             after-node-remove-cb="afterNodeRemovedCb(node)"
+             class="e-node__remove-node">
+        </div>
+
+    </div>
+    <div dap-core-js-plumb-connections connections="connections"></div>
+</div>

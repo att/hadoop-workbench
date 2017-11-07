@@ -1,0 +1,92 @@
+<div ng-show="errorMessage" class="b-users-settings-properties__error">
+    <div class="b-users-settings-properties__error__message">
+        {{errorMessage}}
+    </div>
+</div>
+<div ng-hide="errorMessage">
+    <h1 class="b-users-settings-properties__title">
+        User list
+        <a ng-show="userSettingsWriteAccess" ng-click="addUser()"
+           class="b-users-settings-properties__add-user__link ng-scope" title="Add user">
+            Add user
+        </a>
+    </h1>
+
+    <div ng-repeat="assignment in usersData.assignments"
+         class="b-users-settings-properties__table__tr">
+
+        <div class="b-users-settings-properties__table__tr__td b-users-settings-properties__table__tr__td_key">
+                <span contenteditable="{{userSettingsWriteAccess}}"
+                      class="b-users-settings-properties__table__tr__td__content"
+                      ng-model="assignment.user">
+                </span>
+        </div>
+        <div class="b-users-settings-properties__table__tr__td b-users-settings-properties__table__tr__td_value">
+            <div class="b-users-settings-properties__roles_container">
+                <div ng-repeat="role in assignment.roles" class="b-users-settings-properties__roles_container__role">
+                    {{role}}
+                    <a ng-show="userSettingsWriteAccess"
+                            class="b-users-settings-properties__roles_container__role__remove"
+                            ng-click="removeRole(assignment, role)"
+                            title="Remove role"></a>
+                </div>
+                <a ng-click="select(assignment)" ng-hide="isSelected(assignment)"
+                   ng-class="userSettingsWriteAccess ?
+                   'b-users-settings-properties__roles_container__add-role__link' :
+                   'b-users-settings-properties__roles_container__add-role__disabled'"
+                   class="ng-scope"
+                   ng-attr-title="{{addRoleTitle}}">
+                </a>
+            </div>
+            <div class="b-users-settings-properties__roles_input" ng-show="isSelected(assignment)">
+                <span contenteditable="true"
+                      focus-it="isSelected(assignment)"
+                      focus-it-delay="true"
+                      class="b-users-settings-properties__roles_container__role__add"
+                      placeholder-text=""
+                      ng-model="assignment.inputRoleHolder"
+
+                      input-autocomplete
+                      input-autocomplete-skip-list-generation="true"
+                      input-autocomplete-floating-on-choose="selectValue"
+                      input-autocomplete-floating-data="autocompleteRolesFiltered"
+                      input-autocomplete-floating-model="assignment.inputRoleHolder"
+                      input-autocomplete-floating-enabled="autocompleteChannelExistingItem && autocompleteChannelExistingItem.isActive && isSelected(assignment)"
+
+                      autocompletable-part-of-input
+                      ac-model="assignment.inputRoleHolder"
+                      ac-apply-autocompletable-value-cb="autocompleteChannelExistingItem.applyAutocompletableValueCb"
+                      ac-is-enabled="isSelected(assignment)"
+                      ac-pattern-config="autocompleteConfig">
+                </span>
+                <a ng-click="cancelAddRole()" class="b-users-settings-properties__cancel-add-role__link ng-scope" title="Cancel">
+                    Cancel
+                </a>
+            </div>
+            <div
+                 class="b-config-properties-editor__new-item__value"
+                 navigable-list
+                 nl-externally-selected-index="listSelectedIndex"
+                 nl-on-choose="selectValue"
+                 ng-if="autocompleteChannelExistingItem && autocompleteChannelExistingItem.isActive && isSelected(assignment)">
+                <ul navigable-list-items="autocompleteRolesFiltered"
+                    nl-selector="li"
+                    nl-selected-class="selected"
+                    nl-highlighted-class="highlighted"
+                    class="b-autocomplete__list-container__list">
+                    <li class="b-autocomplete__list-container__list__item"
+                        ng-repeat="item in autocompleteRolesFiltered"
+                        ng-click="selectValue(item)">
+                        {{item.key}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div ng-show="userSettingsWriteAccess"
+                class="b-users-settings-properties__remove-user b-users-settings-properties__table__tr__td_remove_button">
+            <a class="b-users-settings-properties__remove-user__link" ng-click="removeUser(assignment)"
+               title="Remove"></a>
+        </div>
+    </div>
+</div>

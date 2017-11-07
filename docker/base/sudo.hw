@@ -1,0 +1,2 @@
+Defaults:hw !requiretty
+hw        ALL=(ALL)       NOPASSWD: ALL

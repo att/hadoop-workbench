@@ -1,0 +1,59 @@
+<div class="navbar"
+     ng-class="{'navbar-empty': !currentUser}"
+     role="navigation">
+    <div ng-if="currentUser"
+         class="general-navigation clearfix">
+        <a ui-sref="app.dashboard" class="navbar-brand"><i></i></a>
+        <nav class="dap-navigation">
+            <ul class="dap-navigation-list clearfix" click-outside="clickOutsideMenu">
+                <li ng-repeat="item in menuItemsToRender" class="list-item" ng-class="{'active': selectedItem === item}">
+                    <a class="list-item__link"
+                       ng-class="item.icon"
+                       ng-click="selectMenuItem(item)">{{item.title}}</a>
+                    <ul class="dap-navigation-sub" ng-if="selectedItem === item">
+                        <li>
+                            <dap-widget name="item.dapWidget"></dap-widget>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <ul class="nav navbar-nav pull-right hide-before-init list-inline" dap-show-after-init>
+            <li class="main-menu__close_all main-menu__right-item">
+                <button class="btn btn-sm btn-default b-clusters-browser__list__item__link__buttons-line-button main-menu__close_all__button"
+                ng-click="closeAllWidgets()">
+                    Close all widgets
+                </button>
+            </li>
+            <li ng-if="currentUser" class="main-menu__right-item main-menu__login-dropdown"
+                ng-click="loginDropdownClicked()"
+                click-outside="clickOutsideLoginDropdown">
+                <a class="main-menu__right-item__link main-menu__login-dropdown_label">
+                    <i class="navbar-user-icon"></i>
+                    {{currentUser.login}}
+                </a>
+                <ul class="main-menu__login-dropdown__menu" ng-show="isLoginDropdownOpen">
+                    <li>
+                        <a class="main-menu__login-dropdown__menu__item" ng-click="logOut()">Log out</a>
+                    </li>
+                    <li>
+                        <a class="main-menu__login-dropdown__menu__item"
+                           ng-click="openUserSettingsWidget()">Settings</a>
+                    </li>
+                    <li ng-show="appSettingsRead">
+                        <a class="main-menu__login-dropdown__menu__item" ng-click="openConfigurationWidget()">Configuration</a>
+                    </li>
+                    <li>
+                        <a class="main-menu__login-dropdown__menu__item" ng-click="openContributorsWidget()">Contributors</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li ng-if="!currentUser" class="main-menu__right-item">
+                <a ui-sref="app.auth-login" class="main-menu__right-item__link">Log in</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="content" ui-view window-resize-notifier></div>
+<div alerts-container></div>

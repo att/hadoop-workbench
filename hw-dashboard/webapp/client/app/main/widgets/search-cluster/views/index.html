@@ -1,0 +1,77 @@
+<div navigable-list
+     nl-on-choose="openItem">
+    <form class="dap-navigation-form">
+        <label for="nav-search" class="nav-search-label">Add to Workbench</label>
+
+        <div class="nav-search-container">
+            <input type="text" id="nav-search" name="search_word"
+                   autocomplete="off"
+                   placeholder="Search Cluster or Create New..."
+                   ng-class="{'requesting': requesting}"
+                   ng-model="searchStr"
+                   ng-model-options="{debounce: 100}"
+                   navigable-list-input
+                   ng-keydown="onKeyDown($event)"
+                   focus-it="true"
+                   style="background-color: #fff;">
+                                    <span class="placeholder-tip">
+                                        Enter to Open
+                                        <i class="placeholder-tip-icon" ng-click="searchStr = ''"></i>
+                                    </span>
+            <i class="b-menu-search-items__nav-search-container__requesting-icon" ng-show="requesting"></i>
+
+            <div class="b-menu-search-items__list-container" ng-show="!requesting">
+                <div class="b-menu-search-items__list-container__no-matches"
+                     ng-show="plainPlatformsClustersFiltered.length === 0">
+                    No matches found
+                    <button ng-show="platformWriteAccess"
+                            class="btn btn-success btn-lg b-menu-search-items__list-container__no-matches-label"
+                            ng-click="showPlatformsList()">
+                        Create New Platform
+                    </button>
+                </div>
+                <div class="b-tab-pages__tab-page__control__popup__search" ng-show="dropdownVisible">
+                    <ul class="b-tab-pages__tab-page__control__popup__popup-list" >
+                        <li class="b-tab-pages__tab-page__control__popup__popup-list__popup-list-item" ng-repeat="item in platformTypes" ng-click="createNewPlatform(item)">
+                            <i ng-if="platformIcons" class="{{platformIcons[item.id]}}" ng-hide="!platformIcons"></i>
+                            <span class="b-tab-pages__tab-page__control__popup__popup-list__popup-list-item__title">{{item.title}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="b-menu-search-items__list-container__list"
+                    ng-show="plainPlatformsClustersFiltered.length > 0"
+                    navigable-list-items="plainPlatformsClustersFiltered"
+                    nl-selector="li"
+                    nl-selected-class="selected"
+                    nl-highlighted-class="highlighted">
+
+                    <li class="b-add-service-search__omnibox__item"
+                        ng-repeat="item in plainPlatformsClustersFiltered"
+                        ng-class="{
+                            'b-add-service-search__omnibox__item_parent': item.itemType == 'platform',
+                            'b-add-service-search__omnibox__item_child': item.itemType == 'cluster'
+                        }">
+
+                        <a class="b-add-service-search__omnibox__item__link"
+                           style="padding: 8px 30px 8px 8px;"
+                           ng-click="openItem(item)"
+                           ng-if="item.itemType == 'platform'">
+                            <i class="ic-search-cluster-platform-{{::item.type.toLowerCase()}}"></i>
+                            <span class="b-add-service-search__omnibox__item__link__text"
+                                  style="position: relative;top: 1px;">{{item.title}}</span>
+                        </a>
+                        <a class="b-add-service-search__omnibox__item__link"
+                           ng-click="openItem(item)"
+                           ng-if="item.itemType == 'cluster'"
+                           style="padding:8px 8px 8px 40px;">
+                            <i class="ic-search-cluster-{{::item.platform.type.toLowerCase()}}-cluster"></i>
+                            <span class="b-add-service-search__omnibox__item__link__text" style="">{{item.title}}</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn btn-secondary btn-lg" ng-click="close()">Cancel</button>
+    </form>
+</div>

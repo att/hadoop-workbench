@@ -1,0 +1,20 @@
+<div class="alert-message" ng-class="model.css" ng-mouseenter="onMouseEnter()"
+     ng-mouseleave="onMouseLeave()">
+    <div class="alert-message__header">
+        <i class="alert-message__header__close-icon" ng-click="model.action(close) || close()"></i>
+        <i class="alert-message__header__count" ng-show="model.count > 1">{{model.count}}</i>
+        <div class="alert-message__header__title" title="{{model.title}}">{{model.title}}</div>
+    </div>
+    <div class="alert-message__content" ng-class="{'with-action': model.action}">
+        <div class="alert-message__text" ng-bind-html="model.text"></div>
+        <i class="alert-message__text-action-icon" ng-if="model.action" ng-click="model.action(close)"></i>
+
+        <div class="alert-message__buttons" ng-show="model.buttons.length > 0">
+            <button class="btn btn-sm"
+                    ng-repeat="btn in model.buttons"
+                    ng-class="btn.css"
+                    ng-click="btn.action(close)">{{btn.text}}
+            </button>
+        </div>
+    </div>
+</div>

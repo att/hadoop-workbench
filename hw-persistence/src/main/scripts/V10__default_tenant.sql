@@ -1,0 +1,1 @@
+INSERT IGNORE INTO TENANT (NAME, DESCRIPTION) VALUES ('Default', 'unassigned components');

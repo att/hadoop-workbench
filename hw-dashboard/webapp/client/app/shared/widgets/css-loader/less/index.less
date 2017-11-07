@@ -1,0 +1,253 @@
+.cssload {
+  width: 150px;
+  height: 11px;
+  position: absolute;
+  line-height: 0px;
+  top: calc(50% - 20px);
+  left: calc(50% - 42px);
+  transform: translate(-50%, -50%);
+}
+
+.cssload-loader {
+  display: inline-block;
+  width: 100px;
+  height: 12px;
+  transform: translate(20%, -50%);
+  -o-transform: translate(20%, -50%);
+  -ms-transform: translate(20%, -50%);
+  -webkit-transform: translate(20%, -50%);
+  -moz-transform: translate(20%, -50%);
+}
+
+div.cssload-loader-cluster {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 32px;
+  background: #000;
+}
+
+div.cssload-loader-cluster:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 3px;
+  height: 3px;
+  background: #08e428;
+  animation: cssload-cluster-bloom 1s ease-in-out infinite;
+  -o-animation: cssload-cluster-bloom 1s ease-in-out infinite;
+  -ms-animation: ccssload-cluster-bloom 1s ease-in-out infinite;
+  -webkit-animation: cssload-cluster-bloom 1s ease-in-out infinite;
+  -moz-animation: cssload-cluster-bloom 1s ease-in-out infinite;
+}
+
+.cssload-loader > div{
+  content: " ";
+  width: 5px;
+  height: 5px;
+  background: rgba(255,255,255,0.96);
+
+  position: absolute;
+  animation: cssload-shift 2.3s linear infinite;
+  -o-animation: cssload-shift 2.3s linear infinite;
+  -ms-animation: cssload-shift 2.3s linear infinite;
+  -webkit-animation: cssload-shift 2.3s linear infinite;
+  -moz-animation: cssload-shift 2.3s linear infinite;
+}
+.cssload-loader > div:nth-of-type(1) {
+  animation-delay: -0.46s;
+  -o-animation-delay: -0.46s;
+  -ms-animation-delay: -0.46s;
+  -webkit-animation-delay: -0.46s;
+  -moz-animation-delay: -0.46s;
+}
+.cssload-loader > div:nth-of-type(2) {
+  animation-delay: -0.92s;
+  -o-animation-delay: -0.92s;
+  -ms-animation-delay: -0.92s;
+  -webkit-animation-delay: -0.92s;
+  -moz-animation-delay: -0.92s;
+}
+.cssload-loader > div:nth-of-type(3) {
+  animation-delay: -1.38s;
+  -o-animation-delay: -1.38s;
+  -ms-animation-delay: -1.38s;
+  -webkit-animation-delay: -1.38s;
+  -moz-animation-delay: -1.38s;
+}
+.cssload-loader > div:nth-of-type(4) {
+  animation-delay: -1.84s;
+  -o-animation-delay: -1.84s;
+  -ms-animation-delay: -1.84s;
+  -webkit-animation-delay: -1.84s;
+  -moz-animation-delay: -1.84s;
+}
+
+
+
+@keyframes cssload-shift {
+  0% {
+    left: -33px;
+    opacity: 0;
+    background-color: rgb(19,127,234);
+  }
+  10% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 55px;
+    opacity: 1;
+  }
+  100% {
+    left: 88px;
+    background-color: rgb(24,96,168);
+    opacity: 0;
+  }
+}
+
+@-o-keyframes cssload-shift {
+  0% {
+    left: -33px;
+    opacity: 0;
+    background-color: rgb(19,127,234);
+  }
+  10% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 55px;
+    opacity: 1;
+  }
+  100% {
+    left: 88px;
+    background-color: rgb(24,96,168);
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes cssload-shift {
+  0% {
+    left: -33px;
+    opacity: 0;
+    background-color: rgb(19,127,234);
+  }
+  10% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 55px;
+    opacity: 1;
+  }
+  100% {
+    left: 88px;
+    background-color: rgb(24,96,168);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes cssload-shift {
+  0% {
+    left: -33px;
+    opacity: 0;
+    background-color: rgb(19,127,234);
+  }
+  10% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 55px;
+    opacity: 1;
+  }
+  100% {
+    left: 88px;
+    background-color: rgb(24,96,168);
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes cssload-shift {
+  0% {
+    left: -33px;
+    opacity: 0;
+    background-color: rgb(19,127,234);
+  }
+  10% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 55px;
+    opacity: 1;
+  }
+  100% {
+    left: 88px;
+    background-color: rgb(24,96,168);
+    opacity: 0;
+  }
+}
+
+@keyframes cssload-cluster-bloom {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes cssload-cluster-bloom {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes cssload-cluster-bloom {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes cssload-cluster-bloom {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes cssload-cluster-bloom {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

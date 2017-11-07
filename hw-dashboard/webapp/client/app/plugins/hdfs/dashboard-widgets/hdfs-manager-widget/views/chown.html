@@ -1,0 +1,48 @@
+<div class="b-hdfs__widgets_chown">
+    <h3 class="b-hdfs__widgets_chown__title">Change owner/group</h3>
+
+    <div>
+        <label class="b-hdfs__widgets_chown__label">
+            User
+            <select name="user" ng-model="tempItem.owner" class="b-hdfs__widgets_chown__select">
+                <option value="cloudera">cloudera</option>
+                <option value="hdfs">hdfs</option>
+                <option value="llama">llama</option>
+                <option value="yarn">yarn</option>
+            </select>
+        </label>
+    </div>
+
+    <div>
+        <label class="b-hdfs__widgets_chown__label">
+            Group
+            <select name="group" ng-model="tempItem.group" class="b-hdfs__widgets_chown__select">
+                <option value="hadoop">hadoop</option>
+                <option value="sqoop2">sqoop2</option>
+                <option value="supergroup">supergroup</option>
+            </select>
+        </label>
+    </div>
+
+    <label class="b-hdfs__widgets_chown__standalone-label">
+        Recursive
+        <input type="checkbox" ng-model="tempItem.recursive" class="b-hdfs__widgets_chown__checkbox" ng-class="{'checked': tempItem.recursive}"/>
+    </label>
+
+    <div class="b-hdfs__right-side-widgets__buttons">
+        <button class="b-hdfs__right-side-widgets__cancel-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && hideWidgets()">
+            Cancel
+        </button>
+        <button class="b-hdfs__right-side-widgets__confirm-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && updateItems()">
+            Change
+        </button>
+
+        <span class="b-hdfs__right-side-widgets__requesting-spinner" ng-show="isRequesting">
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce1"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce2"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce3"></span>
+        </span>
+    </div>
+</div>

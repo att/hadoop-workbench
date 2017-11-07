@@ -1,0 +1,233 @@
+// widget main styles
+.b-node-selector-widget {
+  width  : 100%;
+  height : 100%;
+
+  &__header {
+    color         : #333333;
+    font-size     : 16px;
+    font-weight   : bold;
+    line-height   : 33px;
+    border-bottom : 1px solid #e3e7ec;
+    padding-left  : 15px;
+  }
+
+  &__search-node-input {
+    border       : none;
+    background   : url("../../../../../../../../resources/img/oozie-plugin-node-selector-widget-search-box-icon.png") no-repeat 15px center;
+    padding-left : 40px;
+    font-size    : 15px;
+    line-height  : 34px;
+
+    .placeholder(#747980);
+
+    &:focus {
+      outline : none;
+    }
+  }
+
+  &__loading-children-spinner {
+    display     : inline-block;
+    margin-left : 10px;
+
+    &__bounce1, &__bounce2, &__bounce3 {
+      width                       : 8px;
+      height                      : 8px;
+      background-color            : #137fea;
+
+      border-radius               : 100%;
+      display                     : inline-block;
+
+      animation                   : bouncedelay 1.4s infinite ease-in-out;
+      /* Prevent first frame from flickering when animation starts */
+      -webkit-animation-fill-mode : both;
+      animation-fill-mode         : both;
+    }
+
+    &__bounce1 {
+      -webkit-animation-delay : -0.32s;
+      animation-delay         : -0.32s;
+    }
+
+    &__bounce2 {
+      -webkit-animation-delay : -0.16s;
+      animation-delay         : -0.16s;
+    }
+
+    @keyframes bouncedelay {
+      0%, 80%, 100% {
+        transform         : scale(0.0);
+        -webkit-transform : scale(0.0);
+      }
+      50% {
+        transform         : scale(1.0);
+        -webkit-transform : scale(1.0);
+      }
+    }
+  }
+
+  &__nodes-tree {
+    padding : 0 15px;
+  }
+
+  treecontrol ul {
+    list-style : none;
+    padding    : 0;
+    margin     : 0;
+
+    li {
+      cursor : pointer;
+    }
+  }
+
+  treeitem li {
+    position    : relative;
+    padding     : 0 0 0 20px;
+    line-height : 20px;
+  }
+
+  // ---- most weird looking deep nesting selectors below are here because
+  // ---- treecontrol implementation doesn't support inserting classes to identify levels
+
+  /*targeting 1st level*/
+  treecontrol > ul > li > div > .b-node-selector-widget__tree-node {
+    padding-left  : 30px;
+    position      : relative;
+    color         : #545a60;
+    font-size     : 14px;
+    font-weight   : bold;
+    border        : 1px solid #c7d0d9;
+    border-radius : 3px;
+    box-shadow    : 0 1px 2px 0 rgba(0, 0, 1, 0.1);
+    line-height   : 32px;
+    margin        : 3px 0;
+    display       : block;
+  }
+
+  /*targeting 2nd level*/
+  treecontrol > ul > li > treeitem > ul > li {
+    border-top   : 1px solid #dde6f0;
+    padding-left : 0;
+
+    &:first-child {
+      border : none;
+    }
+
+    > div > .b-node-selector-widget__tree-node {
+      display      : block;
+      color        : #7e858d;
+      padding-left : 30px;
+      font-size    : 14px;
+      line-height  : 24px;
+
+      &:hover {
+        color      : #fff;
+        background : #137fea;
+      }
+    }
+  }
+
+  treecontrol > ul > li > treeitem > ul > li.tree-collapsed > .tree-label > .b-node-selector-widget__tree-node.has-children > span:after /*targeting 2nd level*/                                                                                            {
+    top : 8px;
+  }
+
+  treecontrol > ul > li > treeitem > ul > li.tree-expanded > .tree-label > .b-node-selector-widget__tree-node.has-children > span:after /*targeting 2nd level*/                                                                                            {
+    top : 11px;
+  }
+
+  // targeting 3rd level
+  treecontrol > ul > li > treeitem > ul > li > treeitem {
+    li {
+      border-bottom : 1px solid #dde6f0;
+
+      &:last-child {
+        border-bottom : none;
+      }
+    }
+
+    .b-node-selector-widget__tree-node {
+      background  : none !important;
+      color       : #747980;
+      font-size   : 14px;
+      line-height : 24px;
+    }
+  }
+}
+
+[highlight-text-by-search] em {
+  font-style  : normal;
+  font-weight : bold;
+  color       : #3F3F3F;
+}
+
+.tree-collapsed > .tree-label > .b-node-selector-widget__tree-node.has-children > span:after {
+  content       : "";
+  position      : absolute;
+  top           : 13px;
+  right         : 21px;
+  display       : block;
+  border-left   : 5px solid #616366;
+  border-top    : 5px solid transparent;
+  border-bottom : 5px solid transparent;
+}
+
+.tree-expanded > .tree-label > .b-node-selector-widget__tree-node.has-children > span:after {
+  content      : "";
+  position     : absolute;
+  top          : 15px;
+  right        : 20px;
+  display      : block;
+  border-top   : 5px solid #616366;
+  border-left  : 5px solid transparent;
+  border-right : 5px solid transparent;
+}
+
+.b-node-selector-widget__nodes-tree > treecontrol > ul > li.tree-collapsed > i.tree-branch-head,
+.b-node-selector-widget__nodes-tree > treecontrol > ul > li.tree-expanded > i.tree-branch-head,
+.b-node-selector-widget__nodes-tree > treecontrol > ul > li.tree-expanded > treeitem > ul > li.tree-collapsed > i.tree-branch-head,
+.b-node-selector-widget__nodes-tree > treecontrol > ul > li.tree-expanded > treeitem > ul > li.tree-expanded > i.tree-branch-head,
+.b-node-selector-widget__nodes-tree > treecontrol > ul > li.tree-expanded > treeitem > ul > li.tree-expanded > treeitem > ul > li.tree-leaf > i.tree-leaf-head {
+  display : none;
+}
+
+.tree-expanded > div > .b-node-selector-widget__tree-node {
+  background    : #e6ebef;
+  margin-bottom : 0;
+}
+
+@node-collapsed-bg: linear-gradient(0deg, #e6ecf2 0%, #fafafa 100%);
+@node-expanded-bg: #e6ebef;
+
+@types-list: start, end, join, fork, pig, fs, java, map-reduce, map-reduce2, decision, kill, sub-workflow, sqoop, hive, email, distcp, ssh, shell, spark;
+
+.b-node-selector-widget__tree-node.workflow-control {
+  background : url("../../../../../../../../resources/img/oozie-plugin-node-selector-widget-workflow-control-node-icon.png") no-repeat 2px center, @node-collapsed-bg;
+}
+
+.b-node-selector-widget__tree-node.action {
+  background : url("../../../../../../../../resources/img/oozie-plugin-node-selector-widget-action-node-icon.png") no-repeat 2px center, @node-collapsed-bg;
+}
+
+.tree-expanded > div > .b-node-selector-widget__tree-node.workflow-control {
+  background : url("../../../../../../../../resources/img/oozie-plugin-node-selector-widget-workflow-control-node-icon.png") no-repeat 2px center, @node-expanded-bg;
+}
+
+.tree-expanded > div > .b-node-selector-widget__tree-node.action {
+  background : url("../../../../../../../../resources/img/oozie-plugin-node-selector-widget-action-node-icon.png") no-repeat 2px center, @node-expanded-bg;
+}
+
+.subtypes-background-styles(@index) when (@index > 0) {
+  @page-type: extract(@types-list, @index);
+
+  .b-node-selector-widget__tree-node.@{page-type} {
+    background : url("../../../../../../../../resources/img/oozie-plugin-node-selector-widget-@{page-type}-node-icon.png") no-repeat 2px center;
+  }
+
+  .subtypes-background-styles(@index - 1);
+}
+
+.subtypes-background-styles(length(@types-list));
+
+.b-node-selector-widget__nodes-tree > treecontrol > ul > li {
+  margin-left : -20px;
+}

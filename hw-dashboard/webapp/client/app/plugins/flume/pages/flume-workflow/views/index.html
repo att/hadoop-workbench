@@ -1,0 +1,27 @@
+<div ng-if="loadDataError" class="b-oozie-plugin b-oozie-plugin_load-error">
+    <div class="b-oozie-plugin__load-error">Pipeline cannot be displayed. See <a ng-click="goToTextTab()">text</a> version</div>
+</div>
+<div ng-if="!loadDataError" class="b-flume-plugin"
+     uploader="fileUploader"
+     nv-file-drop
+     drag-file-class="b-flume-plugin_file-over">
+    <div flume-flowchart class="b-flowchart-widget"
+         connections="moduleConnections" nodes="selectedModule.getNodes()"
+         node-validator-cb="nodeValidatorCallback"
+         selected-node-container="selectedNodeContainer"
+         multiple-selected-node-container="multipleSelectedNodeContainer"
+         selected-connection="selectedConnection"
+         on-connection-created="addNewConnection"
+         after-node-removed-cb="removeNode" after-connection-removed-cb="removeConnection"
+         selected-module="selectedModule" alert-title="{{alertTitle}}"
+         metrics="metrics"
+         dashboard-widget="dashboardWidgetContainer.dashboardWidget"
+    >
+    </div>
+    <div class="b-oozie-plugin-widget-backdrop" ng-show="showWorkflowPreloader">
+        <div class="b-oozie-plugin-widget-backdrop__spinner">
+            <div class="b-oozie-plugin-widget-backdrop__spinner__top"></div>
+            <div class="b-oozie-plugin-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<!--<div class="b-deployment__files-list"
+
+    infinite-scroll
+    infinite-scroll-callback="loadMoreFilteredComponents()"
+    infinite-scroll-distance="100"
+
+>
+
+    <table>
+        <colgroup>
+            <col span="1"
+                 class="b-deployment__files-list__item-property-col-width-group">
+            <col span="1"
+                 class="b-deployment__files-list__item-property-col-width-name">
+            <col span="1"
+                 class="b-deployment__files-list__item-property-col-width-group">
+        </colgroup>
+        <thead>
+        <tr class="b-deployment__files-list__header"
+            ng-class="{
+                'b-deployment__files-list__item_highlighted': isHeaderRowSelected($index)
+                }"
+        >
+            <th >
+                <a ng-click="sortType = 'type'; sortReverse = !sortReverse"
+                   class="b-deployment__files-list__header__column-name">
+
+                </a>
+            </th>
+            <th >
+                <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                   class="b-deployment__files-list__header__column-name">
+                    Name
+                </a>
+            </th>
+            <th >
+                <a ng-click="sortType = 'type'; sortReverse = !sortReverse"
+                   class="b-deployment__files-list__header__column-name">
+                    Version
+                </a>
+            </th>
+            <th >
+                <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                   class="b-deployment__files-list__header__column-name">
+                    App Path
+                </a>
+            </th>
+            <th >
+                <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                   class="b-deployment__files-list__header__column-name">
+                   Running Coordinator
+                </a>
+            </th>
+            <th >
+                <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                   class="b-deployment__files-list__header__column-name">
+                    Running Workflow
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            class="b-deployment__files-list__item"
+            ng-class="{
+                'selected':false && selectedItems.indexOf(item) !== -1,
+                'b-deployment__files-list__item_highlighted': isFileRowSelected($index)
+                }"
+            ng-click="itemClicked(item)"
+
+            ng-repeat="component in componentsFiltered | limitTo:limitComponentList">
+            <td>
+                <span class="b-deployment__files-list__item-property b-deployment__files-list__item-property__type"
+                      ng-class="'b-deployment__files-list__item-property__type-' + item.type.toLowerCase()"
+                      title="type values zzzzz">
+                                <i class="icon-oozie-tenant"></i>
+                    <i ng-if="::component.isTemplate"
+                       class="icon-{{::component.info.type}}-tenant"></i>
+                    <i ng-if="::component.isDeployedComponent"
+                       class="icon-{{::component.type.toLowerCase()}}-{{::component.platform.type.toLowerCase()}}"></i>
+
+                </span>
+
+            </td>
+            <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      title="sdfjkadf ">{{::component.info.name}}</span>
+            </td>
+            <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      title="sdfjkadf ">{{::component.info.version}}</span>
+            </td>
+            <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      title="sdfjkadf ">
+
+                    {{::component.platform.title}}/{{::component.cluster.title}}/{{::component.service.title}}
+                    <span ng-if="component.type === 'OOZIE'">{{::component.path}}</span>
+                </span>
+            </td>
+            <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      title="">
+
+                    <span ng-if="component.type === 'OOZIE'">2</span>
+                </span>
+            </td>
+
+            <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      title="">
+                    <span ng-if="component.type === 'OOZIE'">1</span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>-->

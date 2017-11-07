@@ -1,0 +1,7 @@
+{
+    "version": "${project.version}",
+    "jenkinsBuildNumber": "${jenkins.build.number}",
+    "jenkinsBuildId": "${jenkins.build.id}",
+    "gitCommit": "${jenkins.build.git.commit}",
+    "gitBranch": "${jenkins.build.git.branch}"
+}

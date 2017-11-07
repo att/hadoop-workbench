@@ -1,0 +1,11 @@
+<div class="b-status-bar-tabs" ng-show="tabs.length > 0">
+    <ul class="b-status-bar-tabs__tabs">
+        <li ng-repeat="tab in tabs" class="b-status-bar-tabs__tabs__tab">
+            <span class="b-status-bar-tabs__tabs__tab__title"
+                  title="{{ tab.tooltip ? tab.tooltip : tab.label }}">
+                {{ tab.label }}:
+            </span>
+            <span class="b-status-bar-tabs__tabs__tab__value">{{ tab.value }}</span>
+        </li>
+    </ul>
+</div>

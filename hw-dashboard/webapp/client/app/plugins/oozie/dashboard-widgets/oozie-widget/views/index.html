@@ -1,0 +1,16 @@
+<dap-widget name="'ide-tab-pages'" params="{widget: $dashboardWidget}"></dap-widget>
+
+<div class="b-widget-backdrop" ng-show="showPreloader">
+    <div class="b-widget-backdrop__spinner">
+        <div class="b-widget-backdrop__spinner__top"></div>
+        <div class="b-widget-backdrop__spinner__bottom"></div>
+    </div>
+</div>
+<div download-file="downloadUrl" class="b-oozie-plugin__download-file-container" on-success="onExportSuccess()"
+     on-error="onExportError(error)"></div>
+
+<div class="b-widget-backdrop__error-container" ng-show="errorMessage">
+    <p class="b-widget-backdrop__error-container__error-description">
+        {{errorMessage}}
+    </p>
+</div>

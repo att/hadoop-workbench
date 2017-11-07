@@ -1,0 +1,46 @@
+@dashboard-widget-page-two-columns-right-container-width: 400px;
+
+.b-page-two-columns {
+  .clearfix;
+  height : 100%;
+
+  &__left-container {
+    height   : 100%;
+    width    : 100%;
+    float    : left;
+    overflow : auto;
+  }
+
+  &__right-container {
+    display     : none;
+    height      : 100%;
+    width       : @dashboard-widget-page-two-columns-right-container-width;
+    float       : left;
+    border-left : 1px solid #c7d0d9;
+    overflow    : auto;
+    position    : relative;
+
+    &__widget {
+      display  : block;
+      height   : 100%;
+      width    : 100%;
+      overflow : auto;
+    }
+
+    & > .ui-resizable-handle.ui-resizable-w {
+      position : absolute;
+      bottom   : 0;
+      left     : 0;
+      top      : 0;
+      width    : 4px;
+      cursor   : w-resize;
+    }
+  }
+
+  &&_split-containers > &__left-container {
+    width : ~'calc( 100% - '@dashboard-widget-page-two-columns-right-container-width ~' )';
+  }
+  &&_split-containers > &__right-container {
+    display : block;
+  }
+}

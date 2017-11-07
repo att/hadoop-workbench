@@ -1,0 +1,67 @@
+.btn {
+  display          : inline-block;
+  font-weight      : @btn-font-weight;
+  text-align       : center;
+  vertical-align   : middle;
+  cursor           : pointer;
+  background-image : none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border           : 1px solid transparent;
+  white-space      : nowrap;
+  user-select      : none;
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      outline : 0;
+    }
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor         : not-allowed;
+    pointer-events : none; // Future-proof disabling of clicks
+    opacity        : .3;
+    box-shadow     : none;
+  }
+}
+
+// Button colors
+// --------------------------------------------------
+
+.btn-default {
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border; @btn-default-box-shadow; @btn-default-hover-color; @btn-default-hover-bg; @btn-default-active-color; @btn-default-active-bg);
+}
+
+.btn-secondary {
+  .button-variant(@btn-secondary-color; @btn-secondary-bg; @btn-secondary-border; @btn-secondary-box-shadow; @btn-secondary-hover-color; @btn-secondary-hover-bg; @btn-secondary-active-color; @btn-secondary-active-bg);
+}
+
+.btn-success {
+  .button-variant(@btn-success-color; @btn-success-bg; @btn-success-border; @btn-success-box-shadow; @btn-success-hover-color; @btn-success-hover-bg; @btn-success-active-color; @btn-success-active-bg);
+}
+
+.btn-error {
+  .button-variant(@btn-error-color; @btn-error-bg; @btn-error-border; @btn-error-box-shadow; @btn-error-hover-color; @btn-error-hover-bg; @btn-error-active-color; @btn-error-active-bg);
+}
+
+.btn-warning {
+  .button-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border; @btn-warning-box-shadow; @btn-warning-hover-color; @btn-warning-hover-bg; @btn-warning-active-color; @btn-warning-active-bg);
+}
+
+// Button sizes
+// --------------------------------------------------
+
+.btn-lg {
+  .button-size(@btn-large-padding-vertical; @btn-large-padding-horizontal; @btn-large-font-size; @btn-large-line-height; @btn-large-border-radius);
+}
+
+.btn-md {
+  .button-size(@btn-middle-padding-vertical; @btn-middle-padding-horizontal; @btn-middle-font-size; @btn-middle-line-height; @btn-middle-border-radius);
+}
+
+.btn-sm {
+  .button-size(@btn-small-padding-vertical; @btn-small-padding-horizontal; @btn-small-font-size; @btn-small-line-height; @btn-small-border-radius);
+}

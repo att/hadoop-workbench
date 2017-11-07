@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hadoop Workbench</title>
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABILAAASCwAAAAAAAAAAAAD////////////////+/fz//v79/////////////////////////v3//v38/////////v7//v79///+/v/////////////+/v/+/v3///////z9/f/s5d7/6t/U/+rf1P/s5d3//P38///////+/v3///7+//3//////v7////+/////v///v3//v///9nGtP+3f0f/s2MT/7FdCf+wXQn/s2MS/7uBR//axbH///////Hq4v/DlWj/7ube//////////7/+/z9/8Oacf/BYgP/3XEG/+d8Ev/nfRT/3ngT/85vEP++YQT/sVgA/8igeP/i3NX/y2gG/9CVWv/5/v///////8qlf//VaAD/9IUX/+Z+Fv/iehP/5nwT/++BFP/tgBT/03QU/8VsFP+2VwD/xqWF/9mkcP/ZawD/3Mi1/97RxP/RcRH/43oT/7llEP+zYA7/tWIP/7NhDv++Zw//5HsT/+6AE//IbRH/xGoQ/7RjEf+0dDP/7XsJ/8qTXf/OmGH/1G0G/65gEf/IbBD/43oS/+Z8E//kehL/yGwQ/7NgDv/lfBP/4XkS/8NqEf+yYA7/w2gN//ODFP/IeCn/yHUj/7liDf/ZdRL/8oIU/+t/E//rfxP/638T//KDFP/WcxH/v2cP/9FxEf+xYA7/wWkQ/+t/FP/ugBP/yngm/7FlGP/LbQ//8YIU/+h9E//qfhP/6n4T/+p+E//ofRP/8oIU/8drEP+uXg//43sV/++CFv/pfRP/74EU/8p9L/+nXxj/4nkR/+x/E//qfhP/6n4T/+p+E//qfhP/6n4T/+t+E//lfBP/53kM/+N0Bf/jdAb/7H8S/+mAF//FhEL/p2Yl/+h7D//rfxT/6n4T/+p+E//qfhP/6n4T/+p+E//qfxX/63sM/8+GPP/axbD/1qh5/+F1Cv/tiyj/zKN6/7qUbf/bdA3/7X8S/+p/Ff/qfhT/6n4T/+p+E//qfhP/7IEW/+BzB//XvaP//////8K3rP/agiv/6ZhG/+HSw//f18//xIA7//eOJf/meAz/6X0R/+p+FP/qfhT/6n8U/+t+E//icgT/1ad4/8W5rv94RBD/55dG/9auhP/7/f///////8ewmP/ajUH//Z4//+2FHv/oexD/6HsO/+Z5DP/whh3/134m/9ZwC//gjz//6JpN/9OgbP/y8O7////////////8/P3/176m/+CgYP/5qlz//61b//2pVP//rln/9qxi/9qUTv/7p1L/7KBU/9euhP/y8O7///////7+/v///////v38///////o3tT/1a6H/9yfYf/bmlj/0JFS/7l8P//Rk1T/2a6C/9/Qwf/7+/z///////7+/v//////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==" rel="icon" type="image/x-icon">
+</head>
+<body ng-controller="appController">
+
+<div class="content-wrapper" ui-view>
+</div>
+
+<footer class="footer text-center" ng-if="!user.isLoggedIn">
+    <div>
+        <span ng-bind="'Hadoop workbench'"></span>
+        <span ng-bind="credits.version"></span>
+        <span ng-if="credits.jenkinsBuildNumber" ng-bind=" 'Build:' + credits.jenkinsBuildNumber"></span>
+        <span ng-bind="credits.jenkinsBuildId"></span>
+        <span ng-if="credits.gitCommit" ng-bind="'Commit: ' + (credits.gitCommit | limitTo: 8) "></span>
+    </div>
+</footer>
+</body>
+</html>

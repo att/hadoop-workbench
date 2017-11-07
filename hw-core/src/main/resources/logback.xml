@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds" debug="true">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>============> %date{yyyy-MM-dd hh:mm:ss:ms} %level[%thread] %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="akka" level="WARN" />
+    <logger name="com.directv" level="DEBUG" />
+    <logger name="scala.slick" level="WARN" />
+    <logger name="ro.fortsoft.pf4j" level="WARN" />
+    <logger name="com.mchange" level="WARN" />
+    <logger name="org.apache.cxf" level="WARN" />
+    <logger name="org.apache.cxf.interceptor.LoggingOutInterceptor" level="WARN" />
+    <logger name="com.directv.hw.logging.AuditLogger" level="DEBUG" />
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

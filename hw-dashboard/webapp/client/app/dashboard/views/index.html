@@ -1,0 +1,16 @@
+<div class="b-dashboard">
+    <div class="b-dashboard__widgets-list clearfix" ui-sortable="sortableConfig" ng-model="widgets">
+        <div
+                ng-repeat="w in widgets track by w.dashboardWidget.guid"
+                resizable="resizeConfig" resizable-context="w" resizable-callback-start="onWidgetResizeStart"
+                resizable-callback-stop="onWidgetResizeStop"
+                dashboard-widget-size="w.dashboardWidget"
+                ng-click="changeActiveWidget(w.dashboardWidget)"
+                class="b-dashboard__widgets-list__widget-cell">
+            <div class="b-dashboard__widgets-list__widget-cell__widget-wrapper">
+                <dap-widget name="'dashboard-widget-layout'" params="w.dashboardWidget" class=""></dap-widget>
+                <!--<ng-widget src="w.dashboardWidget.widgetName" options="{widgetGUID: widget.guid}" class=""></ng-widget>-->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1473 @@
+{
+  "data": {
+    "subtypes": {
+      "source": [
+        {
+          "name": "avro",
+          "properties": [
+            {
+              "name": "bind",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "threads",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "compression-type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "ssl",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "keystore",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "keystore-password",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "keystore-type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "ipFilter",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "ipFilter.rules",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "exclude-protocols",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "thrift",
+          "properties": [
+            {
+              "name": "bind",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "threads",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "ssl",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "keystore",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "keystore-password",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "keystore-type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "exclude-protocols",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "kerberos",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "agent-principal",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "agent-keytab",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "exec",
+          "properties": [
+            {
+              "name": "command",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "shell",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "restartThrottle",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "restart",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "logStdErr",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "batchsize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "jms",
+          "properties": [
+            {
+              "name": "initialContextFactory",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "connectionFactory",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "providerURL",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "destinationName",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "destinationType",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "messageSelector",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "userName",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "passwordFile",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "converter.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "converter.charset",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "spooldir",
+          "properties": [
+            {
+              "name": "spoolDir",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "fileSuffix",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "deletePolicy",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "fileHeader",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "fileHeaderKey",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "basenameHeader",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "basenameHeaderKey",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "ignorePattern",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "trackerDir",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "maxBackoff",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "decodeErrorPolicy",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "deserializer",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "bufferMaxLines",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "bufferMaxLineLength",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "includePattern",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "consumeOrder",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "pollDelay",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "recursiveDirectorySearch",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "inputCharset",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "netcat",
+          "properties": [
+            {
+              "name": "bind",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "max-line-length",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "ack-every-event",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "seq",
+          "properties": [
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "totalEvents",
+              "type": "integer",
+              "required": false
+            }
+
+          ]
+        },
+        {
+          "name": "syslogtcp",
+          "properties": [
+            {
+              "name": "host",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "eventSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "keepFields",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "multiport_syslogtcp",
+          "properties": [
+            {
+              "name": "host",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "ports",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "eventSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "keepFields",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "portHeader",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "charset.default",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "readBufferSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "numProcessors",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "syslogudp",
+          "properties": [
+            {
+              "name": "host",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "keepFields",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "http",
+          "properties": [
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "bind",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "handler",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "selector.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "interceptors",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "enableSSL",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "keystore",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "keystorePassword",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "excludeProtocols",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "com.directv.chd.flume.source.CHDAvroSource",
+          "properties": [
+            {
+              "name": "bind",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "auditlog.context.factory.class",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "auditlog.jms.provider.url",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "auditlog.jms.auditlog.connection.factory.name",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "auditlog.jms.queue.name",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "auditlog.service.endpoint.url",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "auditLogV11XSupport",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "maxMsgLength",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "entityName",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "entityId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "applicationId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "geoId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "systemId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "userId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hostId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "serverId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "headers.required",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "headers.missing_bag_id",
+              "type": "string",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "sink": [
+        {
+          "name": "hdfs",
+          "properties": [
+            {
+              "name": "hdfs.path",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "hdfs.filePrefix",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.fileSuffix",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.inUsePrefix",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.inUseSuffix",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.rollInterval",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.rollSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.rollCount",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.idleTimeout",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.codeC",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.fileType",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.maxOpenFiles",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.minBlockReplicas",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.writeFormat",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.callTimeout",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.threadsPoolSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.rollTimerPoolSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.kerberosPrincipal",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.kerberosKeytab",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.proxyUser",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.round",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.roundValue",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.roundUnit",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.timeZone",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.useLocalTimeStamp",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "serializer",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "serializer.compressionCodec",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "hdfs.closeTries",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "hdfs.retryInterval",
+              "type": "integer",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "logger",
+          "properties": [
+            {
+              "name": "maxBytesToLog",
+              "type": "integer",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "avro",
+          "properties": [
+            {
+              "name": "hostname",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "batch-size",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "connect-timeout",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "request-timeout",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "reset-connection-interval",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "compression-type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "compression-level",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "ssl",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "trust-all-certs",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "truststore",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "truststore-password",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "truststore-type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "maxIoWorkers",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "exclude-protocols",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "thrift",
+          "properties": [
+            {
+              "name": "hostname",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "batch-size",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "connect-timeout",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "request-timeout",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "connection-reset-interval",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "ssl",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "truststore",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "truststore-password",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "truststore-type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "exclude-protocols",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "kerberos",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "client-principal",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "client-keytab",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "server-principal",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "irc",
+          "properties": [
+            {
+              "name": "hostname",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "port",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "nick",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "user",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "chan",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "splitlines",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "splitchars",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "file_roll",
+          "properties": [
+            {
+              "name": "sink.directory",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sink.rollInterval",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "sink.serializer",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "sink.pathManager",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "sink.pathManager.extension",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "sink.pathManager.prefix",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "null",
+          "properties": [
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "hbase",
+          "properties": [
+            {
+              "name": "table",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "columnFamily",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "serializer",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "kerberosPrincipal",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "kerberosKeytab",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "zookeeperQuorum",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "znodeParent",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "coalesceIncrements",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "org.apache.flume.sink.solr.morphline.MorphlineSolrSink",
+          "properties": [
+            {
+              "name": "morphlineFile",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "morphlineId",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "batchDurationMillis",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "handlerClass",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "isProductionMode",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "recoverableExceptionClasses",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "isIgnoringRecoverableExceptions",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "org.apache.flume.sink.elasticsearch.ElasticSearchSink",
+          "properties": [
+            {
+              "name": "hostNames",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "indexName",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "indexType",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "clusterName",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "batchSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "ttl",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "serializer",
+              "type": "string",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "channel": [
+        {
+          "name": "memory",
+          "properties": [
+            {
+              "name": "capacity",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "transactionCapacity",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "keep-alive",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "byteCapacityBufferPercentage",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "byteCapacity",
+              "type": "integer",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "jdbc",
+          "properties": [
+            {
+              "name": "db.type",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "driver.class",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "driver.url",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "db.username",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "db.password",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "connection.properties.file",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "create.schema",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "create.index",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "create.foreignkey",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "transaction.isolation",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "maximum.connections",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "maximum.capacity",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "sysprop.user.home",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "file",
+          "properties": [
+            {
+              "name": "checkpointDir",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "useDualCheckpoints",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "backupCheckpointDir",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "dataDirs",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "transactionCapacity",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "checkpointInterval",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "maxFileSize",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "minimumRequiredSpace",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "capacity",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "keep-alive",
+              "type": "integer",
+              "required": false
+            },
+            {
+              "name": "use-log-replay-v1",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "use-fast-replay",
+              "type": "boolean",
+              "required": false
+            },
+            {
+              "name": "encryption.activeKey",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "encryption.cipherProvider",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "encryption.keyProvider",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "encryption.keyProvider.keyStoreFile",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "encryption.keyProvider.keyStorePasswordFile",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "encryption.keyProvider.keys",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "checkpointOnClose",
+              "type": "boolean",
+              "required": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

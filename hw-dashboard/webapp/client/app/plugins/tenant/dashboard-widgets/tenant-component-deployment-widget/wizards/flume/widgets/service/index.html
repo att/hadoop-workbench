@@ -1,0 +1,26 @@
+<div class="b-create-service-wizard-step b-create-service-search" navigable-list nl-on-choose="selectService">
+    <h2 class="b-create-service-wizard-step__title">Select service</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a service name..."
+           ng-model="searchString"
+           navigable-list-input
+           focus-it="true"/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options b-create-service-search__omnibox"
+        navigable-list-items="servicesFiltered">
+        <li ng-repeat="s in servicesFiltered"
+            ng-class="{chosen: data.service.title === s.title}">
+            <a class="b-create-service-wizard-step__options-item" ng-click="selectService(s)">
+                <i ng-class="s.type === 'OOZIE' ? 'icon-oozie' : ( s.type === 'FLUME' ? 'icon-flume' : '' )"></i>
+                {{::s.title}}
+            </a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="showValidationErrors">No service is selected</span>
+    <div ng-if="servicesFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

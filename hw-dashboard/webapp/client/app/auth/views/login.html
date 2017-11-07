@@ -1,0 +1,32 @@
+<div class="b-auth-sign-in">
+    <h3 class="b-auth-sign-in_title">
+        <i class="b-auth-sign-in_title__logo"></i>
+        <span class="b-auth-sign-in_title__text">Hadoop Workbench</span></h3>
+    <form name="authLoginForm" ng-submit="logIn(credentials)" novalidate>
+        <div class="b-auth-sign-in_error" ng-if="errorMessage">
+            <label> {{ errorMessage }}</label>
+        </div>
+        <div class="b-auth-sign-in_login">
+            <input type="text" class="b-auth-sign-in_login__input"
+                   ng-class="{invalid: authLoginForm.login.$invalid && (authLoginForm.login.$touched || showValidationErrors)}" name="login"
+                   ng-model="credentials.login" placeholder="Login" required=""/>
+            <div class="form-input-validation-message"
+                 ng-if="authLoginForm.login.$error.required && (authLoginForm.login.$touched || showValidationErrors)">
+                Required field
+            </div>
+        </div>
+        <div class="b-auth-sign-in_password">
+            <input type="password" class="b-auth-sign-in_password__input"
+                   ng-class="{invalid: authLoginForm.password.$invalid && (authLoginForm.password.$touched || showValidationErrors)}"
+                   name="password" ng-model="credentials.password" placeholder="Password" required=""/>
+            <div class="form-input-validation-message"
+                 ng-if="authLoginForm.password.$error.required && (authLoginForm.password.$touched || showValidationErrors)">
+                Required field
+            </div>
+        </div>
+
+        <div class="b-auth-sign-in_btn-block">
+            <button class="b-auth-sign-in_sign-in-btn btn btn-default btn-lg">Log In</button>
+        </div>
+    </form>
+</div>

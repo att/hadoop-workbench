@@ -1,0 +1,420 @@
+<workflow-app name="name1" xmlns="uri:oozie:workflow:0.5">
+    <parameters>
+        <property>
+            <name>name0</name>
+            <value>value0</value>
+            <description>description0</description>
+        </property>
+        <property>
+            <name>name1</name>
+            <value>value1</value>
+            <description>description1</description>
+        </property>
+    </parameters>
+    <global>
+        <job-tracker>job-tracker0</job-tracker>
+        <name-node>name-node0</name-node>
+        <job-xml>job-xml0</job-xml>
+        <job-xml>job-xml1</job-xml>
+        <configuration>
+            <property>
+                <name>name2</name>
+                <value>value2</value>
+                <description>description2</description>
+            </property>
+            <property>
+                <name>name3</name>
+                <value>value3</value>
+                <description>description3</description>
+            </property>
+        </configuration>
+    </global>
+    <credentials>
+        <credential name="name3" type="type1">
+            <property>
+                <name>name4</name>
+                <value>value4</value>
+                <description>description4</description>
+            </property>
+            <property>
+                <name>name5</name>
+                <value>value5</value>
+                <description>description5</description>
+            </property>
+            <property>
+                <name>name6</name>
+                <value>value6</value>
+                <description>description6</description>
+            </property>
+            <property>
+                <name>name7</name>
+                <value>value7</value>
+                <description>description7</description>
+            </property>
+        </credential>
+        <credential name="name5" type="type3">
+            <property>
+                <name>name8</name>
+                <value>value8</value>
+                <description>description8</description>
+            </property>
+            <property>
+                <name>name9</name>
+                <value>value9</value>
+                <description>description9</description>
+            </property>
+            <property>
+                <name>name10</name>
+                <value>value10</value>
+                <description>description10</description>
+            </property>
+            <property>
+                <name>name11</name>
+                <value>value11</value>
+                <description>description11</description>
+            </property>
+        </credential>
+    </credentials>
+    <start to="map-reduce-test"/>
+    <action cred="cred" name="map-reduce-test" retry-interval="100" retry-max="200">
+        <map-reduce>
+            <job-tracker>job-tracker value</job-tracker>
+            <name-node>name-node value</name-node>
+            <prepare>
+                <delete path="path to delete"/>
+                <mkdir path="path to mkdir"/>
+            </prepare>
+            <streaming>
+                <mapper>mapper value</mapper>
+                <reducer>reducer value</reducer>
+                <record-reader>record-reader value</record-reader>
+                <record-reader-mapping>record-reader mapping</record-reader-mapping>
+                <record-reader-mapping>record-reader mapping</record-reader-mapping>
+                <env>env value</env>
+                <env>env value</env>
+            </streaming>
+            <job-xml>job-xml value</job-xml>
+            <configuration>
+                <property>
+                    <name>name</name>
+                    <value>value</value>
+                    <description>description</description>
+                </property>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+            </configuration>
+            <file>file 1 value</file>
+            <file>file 2 value</file>
+            <archive>archive value</archive>
+        </map-reduce>
+        <ok to="pig-test"/>
+        <error to="name11"/>
+    </action>
+    <action cred="pig cred" name="pig-test" retry-interval="100" retry-max="200">
+        <pig>
+            <job-tracker>pig job-tracker</job-tracker>
+            <name-node>pig name-node</name-node>
+            <prepare>
+                <delete path="pig delete path"/>
+                <delete path="pig delete path 2"/>
+                <mkdir path="pig delete path 2"/>
+                <mkdir path="pig delete path 2"/>
+            </prepare>
+            <job-xml>pig job-xml</job-xml>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <script>alert(&quot;hello world!&quot;)</script>
+            <param>pig param</param>
+            <param>pig param</param>
+            <argument>pig argument</argument>
+            <argument>pig argument</argument>
+            <file>pig file</file>
+            <file>pig file</file>
+            <archive>pig archive</archive>
+            <archive>pig archive</archive>
+        </pig>
+        <ok to="subworkflow-name"/>
+        <error to="name11"/>
+    </action>
+    <action cred="subworkflow cred" name="subworkflow-name" retry-interval="100" retry-max="100">
+        <sub-workflow>
+            <app-path>subworkflow path</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+        </sub-workflow>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="fs cred" name="fs-test" retry-interval="100" retry-max="200">
+        <fs>
+            <name-node>fs name-node</name-node>
+            <job-xml>fs job-xml</job-xml>
+            <job-xml>fs job-xml</job-xml>
+            <job-xml>fs job-xml</job-xml>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <delete path="delete path 1"/>
+            <mkdir path="mkdir path 1"/>
+            <delete path="delete path 2"/>
+            <mkdir path="mkdir path 2"/>
+            <move source="move source 1" target="move target 1"/>
+        </fs>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="java cred" name="java-name" retry-interval="100" retry-max="200">
+        <java>
+            <job-tracker>java job-tracker</job-tracker>
+            <name-node>java name-node</name-node>
+            <prepare>
+                <delete path="java delete path"/>
+                <delete path="java delete path 2"/>
+                <mkdir path="java delete path 2"/>
+                <mkdir path="java delete path 2"/>
+            </prepare>
+            <job-xml>java job-xml</job-xml>
+            <job-xml>java job-xml</job-xml>
+            <job-xml>java job-xml</job-xml>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <main-class>com.directv.oozie.Bender</main-class>
+            <java-opt>-d64</java-opt>
+            <arg>java arg 1</arg>
+            <arg>java arg 2</arg>
+            <arg>java arg 3</arg>
+            <arg>java arg 4</arg>
+            <file>java file 1</file>
+            <file>java file 2</file>
+            <file>java file 3</file>
+            <archive>java archive 1</archive>
+            <archive>java archive 2</archive>
+            <archive>java archive 3</archive>
+            <capture-output/>
+        </java>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="hive cred" name="hive-name" retry-interval="100" retry-max="200">
+        <hive xmlns="uri:oozie:hive-action:0.5">
+            <job-tracker>hive job-tracker</job-tracker>
+            <name-node>hive name-node</name-node>
+            <prepare>
+                <delete path="hive delete path"/>
+                <delete path="hive delete path 2"/>
+                <mkdir path="hive delete path 2"/>
+                <mkdir path="hive delete path 2"/>
+            </prepare>
+            <job-xml>hive job-xml</job-xml>
+            <job-xml>hive job-xml</job-xml>
+            <job-xml>hive job-xml</job-xml>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <script>com.directv.oozie.Bender</script>
+            <param>hive param 1</param>
+            <param>hive param 2</param>
+            <param>hive param 3</param>
+            <param>hive param 4</param>
+            <argument>hive arg 1</argument>
+            <argument>hive arg 2</argument>
+            <argument>hive arg 3</argument>
+            <argument>hive arg 4</argument>
+            <file>hive file 1</file>
+            <file>hive file 2</file>
+            <file>hive file 3</file>
+            <archive>hive archive 1</archive>
+            <archive>hive archive 2</archive>
+            <archive>hive archive 3</archive>
+        </hive>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="sqoop cred" name="sqoop-name" retry-interval="100" retry-max="200">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.4">
+            <job-tracker>sqoop job-tracker</job-tracker>
+            <name-node>sqoop name-node</name-node>
+            <prepare>
+                <delete path="sqoop delete path"/>
+                <delete path="sqoop delete path 2"/>
+                <mkdir path="sqoop delete path 2"/>
+                <mkdir path="sqoop delete path 2"/>
+            </prepare>
+            <job-xml>sqoop job-xml</job-xml>
+            <job-xml>sqoop job-xml</job-xml>
+            <job-xml>sqoop job-xml</job-xml>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <command>com.directv.oozie.Bender</command>
+            <file>sqoop file 1</file>
+            <file>sqoop file 2</file>
+            <file>sqoop file 3</file>
+        </sqoop>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="email cred" name="email-name" retry-interval="100" retry-max="200">
+        <email xmlns="uri:oozie:email-action:0.2">
+            <to>anybody</to>
+            <cc>somebody</cc>
+            <subject>hello world</subject>
+            <body>mybody</body>
+            <content_type>nobody</content_type>
+        </email>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="distcp cred" name="distcp-name" retry-interval="100" retry-max="200">
+        <distcp xmlns="uri:oozie:distcp-action:0.2">
+            <job-tracker>distcp job-tracker</job-tracker>
+            <name-node>distcp name-node</name-node>
+            <prepare>
+                <delete path="distcp delete path"/>
+                <delete path="distcp delete path 2"/>
+                <mkdir path="distcp delete path 2"/>
+                <mkdir path="distcp delete path 2"/>
+            </prepare>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <java-opts>-d64</java-opts>
+            <arg>distcp arg 1</arg>
+            <arg>distcp arg 2</arg>
+            <arg>distcp arg 3</arg>
+            <arg>distcp arg 4</arg>
+        </distcp>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="ssh cred" name="ssh-name" retry-interval="100" retry-max="200">
+        <ssh xmlns="uri:oozie:ssh-action:0.2">
+            <host>ssh host</host>
+            <command>ssh command</command>
+            <args>-rf</args>
+            <args>--help</args>
+            <args>--quit</args>
+            <capture-output/>
+        </ssh>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <action cred="shell cred" name="shell-name" retry-interval="100" retry-max="200">
+        <shell xmlns="uri:oozie:shell-action:0.3">
+            <job-tracker>shell job-tracker</job-tracker>
+            <name-node>shell name-node</name-node>
+            <prepare>
+                <delete path="shell delete path"/>
+                <delete path="shell delete path 2"/>
+                <mkdir path="shell delete path 2"/>
+                <mkdir path="shell delete path 2"/>
+            </prepare>
+            <job-xml>shell job-xml</job-xml>
+            <job-xml>shell job-xml</job-xml>
+            <job-xml>shell job-xml</job-xml>
+            <configuration>
+                <property>
+                    <name>name2</name>
+                    <value>value2</value>
+                    <description>description2</description>
+                </property>
+                <property>
+                    <name>name3</name>
+                    <value>value3</value>
+                    <description>description3</description>
+                </property>
+            </configuration>
+            <exec>cat</exec>
+            <argument>shell arg 1</argument>
+            <argument>shell arg 2</argument>
+            <argument>shell arg 3</argument>
+            <argument>shell arg 4</argument>
+            <env-var>shell var 1</env-var>
+            <env-var>shell var 2</env-var>
+            <env-var>shell var 3</env-var>
+            <env-var>shell var 4</env-var>
+            <file>shell file 1</file>
+            <file>shell file 2</file>
+            <file>shell file 3</file>
+            <file>shell file 4</file>
+            <archive>shell archive 1</archive>
+            <archive>shell archive 2</archive>
+            <archive>shell archive 3</archive>
+            <archive>shell archive 4</archive>
+            <capture-output/>
+        </shell>
+        <ok to="name11"/>
+        <error to="name11"/>
+    </action>
+    <end name="name11"/>
+</workflow-app>

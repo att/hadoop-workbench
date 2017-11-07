@@ -1,0 +1,29 @@
+<div class="b-hdfs__widgets_rename-item">
+    <h3 class="b-hdfs__widgets_rename-item__title">Renaming</h3>
+    <label class="b-hdfs__widgets_rename-item__label">
+        Enter new name
+        <input class="b-hdfs__widgets_rename-item__input input" type="text" title="New item name" ng-model="tempItem.name"
+               focus-it="isRenameItemWidgetShown()"
+               focus-it-delay="true"
+               on-key-enter-callback="!isRequesting && renameItem()"
+               on-key-escape-callback="!isRequesting && hideWidgets()"
+        />
+    </label>
+
+    <div class="b-hdfs__right-side-widgets__buttons">
+        <button class="b-hdfs__right-side-widgets__cancel-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && hideWidgets()">
+            Cancel
+        </button>
+        <button class="b-hdfs__right-side-widgets__confirm-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && renameItem()">
+            Rename
+        </button>
+
+        <span class="b-hdfs__right-side-widgets__requesting-spinner" ng-show="isRequesting">
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce1"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce2"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce3"></span>
+        </span>
+    </div>
+</div>

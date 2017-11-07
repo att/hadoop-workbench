@@ -1,0 +1,20 @@
+.b-security-settings-properties {
+  &__icon-save {
+    .icon-el-save();
+  }
+}
+
+.b-security-settings__properties-widget__icon {
+  display    : inline-block;
+  width      : 24px;
+  height     : 24px;
+  background : url("../../../../../resources/img/options-editor-widget-icon.png");
+
+  &:hover {
+    background : url("../../../../../resources/img/options-editor-widget-icon_hover.png");
+  }
+
+  .active > & {
+    background : url("../../../../../resources/img/options-editor-widget-icon_pressed.png") no-repeat center;
+  }
+}

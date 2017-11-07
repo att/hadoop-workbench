@@ -1,0 +1,19 @@
+<div class="b-editor">
+    <textarea ui-codemirror="codeMirrorOpts" ng-model="container.text" ng-hide="container.errorMessage"></textarea>
+    <uib-pagination total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage" max-size="10"
+                    ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"
+                    boundary-links="true"
+                    template-url="/app/plugins/editor/views/pagination.html" ng-if="pagination">
+    </uib-pagination>
+    <span class="b-editor__requesting-spinner ng-hide" ng-show="requesting">
+            <span class="b-editor__requesting-spinner__bounce1"></span>
+            <span class="b-editor__requesting-spinner__bounce2"></span>
+            <span class="b-editor__requesting-spinner__bounce3"></span>
+    </span>
+</div>
+
+<div class="b-widget-backdrop__error-container" ng-show="container.errorMessage">
+    <p class="b-widget-backdrop__error-container__error-description">
+        {{container.errorMessage}}
+    </p>
+</div>

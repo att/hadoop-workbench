@@ -1,0 +1,124 @@
+<div class="b-flume-instances">
+    <div class="b-flume-instances__controls">
+        <a class="b-flume-instances__control b-flume-instances__control_add-host pull-left"
+           ng-click="toggleAddHostField()"
+           ng-disabled="availableHosts.length === 0"></a>
+        <a class="b-flume-instances__control b-flume-instances__control_refresh pull-left"
+           ng-click="refreshServiceInstances()"></a>
+        <a class="b-flume-instances__control b-flume-instances__control_hide b-info-viewer__hide-icon pull-right"
+           ng-click="hide()">
+        </a>
+        <label class="b-flume-instances__control b-flume-instances__control_auto-refresh pull-right">
+            <input type="checkbox" ng-model="isAutoRefresh" class="checkbox" ng-class="{'checked': isAutoRefresh}"/>
+            Auto refresh
+        </label>
+    </div>
+    <div ng-show="error" class="b-oozie-jobs__error-message-container" ng-attr-title="{{error.message}}">
+        {{error.message}}
+    </div>
+    <div class="b-flume-instances__content"
+         ng-class="{
+                    'b-flume-instances__content_overlay': error,
+                    'b-flume-instances__content_with-top-message': error,
+                }">
+        <ul class="b-flume-instances__list">
+            <li class="b-flume-instances__list__item"
+                ng-repeat="instance in instances track by instance.id"
+                context-menu=""
+                data-target="menu-{{instance.id}}"
+                ng-class="{
+                    'active':selectedInstance.id === instance.id
+                }">
+                <div class="b-flume-instances__list__item__content" ng-click="selectInstance(instance, true)">
+                    <span class="b-flume-instances__list__item__content__expand"
+                          ng-click="toggleShowErrorsForInstance($event, instance)"
+                          ng-class="{
+                                'b-flume-instances__list__item__content__expand_inactive': instance.errors.length === 0
+                            }">
+                        <span class="b-flume-instances__list__item__content__expand__icon"
+                              ng-class="{
+                                    'b-flume-instances__list__item__content__expand__icon_expanded': expandedInstances[instance.id]
+                                }">
+                        </span>
+                        <span class="b-flume-instances__list__item__content__errors-counter"
+                              ng-show="instance.errors.length > 0">
+                            {{instance.errors.length}}
+                        </span>
+                    </span>
+                    <span class="b-flume-instances__list__item__content__text">{{instance.host.hostname}}</span>
+                    <span class="b-flume-instances__list__item__content__icons"
+                          ng-attr-title="{{instance.state}}">
+                        <span class="b-flume-instances__list__item__content__icons__icon"
+                              ng-class="{
+                                'b-flume-instances__list__item__content__icons__icon_started':instance.state === states.STARTED,
+                                'b-flume-instances__list__item__content__icons__icon_stopped':instance.state === states.STOPPED,
+                                'b-flume-instances__list__item__content__icons__icon_busy':instance.state === states.BUSY,
+                                'b-flume-instances__list__item__content__icons__icon_unknown':instance.state === states.UNKNOWN
+                              }"></span>
+                    </span>
+                </div>
+                <div class="b-flume-instances__list__item__errors"
+                     ng-if="expandedInstances[instance.id] && instance.errors.length > 0">
+                    <div class="b-flume-instances__list__item__errors__message"
+                         ng-repeat="errorMessage in instance.errors">
+                        {{errorMessage}}
+                    </div>
+                </div>
+
+                <ul class="b-dropdown-menu" role="menu" id="menu-{{instance.id}}">
+                    <li>
+                        <a tabindex="1"
+                           ng-click="startInstance(instance)">Start</a>
+                    </li>
+                    <li>
+                        <a tabindex="2"
+                           ng-disabled="instance.state === states.STOPPED"
+                           ng-click="stopInstance(instance)">Stop</a>
+                    </li>
+                    <li>
+                        <a tabindex="3"
+                           ng-disabled="instance.state === states.STARTED"
+                           ng-click="removeInstance(instance)">Delete</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="b-flume-instances__add-instance"
+             ng-if="!(availableHosts && availableHosts.length) || addHostFieldVisible">
+            <form class="b-flume-instances__add-instance__form" ng-if="availableHosts && availableHosts.length"
+                  name="addHostForm">
+                <select class="input b-flume-instances__add-instance__form__select" name="addedHost"
+                        ng-model="addedHost.data"
+                        ng-options="host.hostname for host in availableHosts  track by host.id"
+                        focus-it="true"></select>
+                <button type="submit" class="btn btn-default btn-md" ng-click="confirmAddHost(addedHost)">Add Host
+                </button>
+                <button class="btn btn-secondary btn-md" ng-click="toggleAddHostField()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="b-flume-instances__bottom-controls">
+
+        <a class="b-flume-instances__control b-flume-instances__control_start"
+           ng-click="startInstance(selectedInstance)"
+           ng-disabled="!selectedInstance || selectedInstance.state === states.STARTED"></a>
+
+        <a class="b-flume-instances__control b-flume-instances__control_stop"
+           ng-click="stopInstance(selectedInstance)"
+           ng-disabled="!selectedInstance || selectedInstance.state === states.STOPPED"></a>
+
+        <a class="b-flume-instances__control b-flume-instances__control_delete pull-right"
+           ng-click="removeInstance(selectedInstance)"
+           ng-disabled="!selectedInstance"></a>
+    </div>
+
+    <div class="b-widget-backdrop"
+         style="top: 25px;"
+         ng-show="loadersCounter > 0">
+        <div class="b-widget-backdrop__spinner">
+            <div class="b-widget-backdrop__spinner__top"></div>
+            <div class="b-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

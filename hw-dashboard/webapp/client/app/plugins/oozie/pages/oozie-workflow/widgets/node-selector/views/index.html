@@ -1,0 +1,24 @@
+<div class="b-node-selector-widget">
+    <div class="b-node-selector-widget__header">Add node</div>
+    <input type="text" ng-model="subtypeFilter" placeholder="Search a node..." class="b-node-selector-widget__search-node-input"/>
+
+    <div class="b-node-selector-widget__nodes-tree">
+        <treecontrol class="tree-classic"
+                     tree-model="nodesMetadataFiltered"
+                     options="treeOptions"
+                     on-node-toggle="onToggledNode(node, expanded)"
+                     on-selection="onSelectedNode(node, selected)"
+                     selected-node="selectedNode"
+                     expanded-nodes="expandedNodes">
+        <span class="{{::node.name}} b-node-selector-widget__tree-node"
+              ng-class="::{'has-children': node.canHaveTemplates || node.children.length > 0}">
+            <span highlight-text-by-search="subtypeFilter">{{::node.title}}</span>
+            <span ng-if="node.loadingChildren === true" class="b-node-selector-widget__loading-children-spinner">
+                <span class="b-node-selector-widget__loading-children-spinner__bounce1"></span>
+                <span class="b-node-selector-widget__loading-children-spinner__bounce2"></span>
+                <span class="b-node-selector-widget__loading-children-spinner__bounce3"></span>
+            </span>
+        </span>
+        </treecontrol>
+    </div>
+</div>

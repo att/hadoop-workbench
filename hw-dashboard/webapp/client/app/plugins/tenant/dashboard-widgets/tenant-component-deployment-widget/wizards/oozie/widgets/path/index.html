@@ -1,0 +1,20 @@
+<div class="b-create-service-wizard-step">
+    <div class="b-create-service-wizard-step__path__header">
+        <h2 class="b-create-service-wizard-step__title">Deployment folder name</h2>
+    </div>
+    <div class="b-create-service-wizard-step__path__file-browser">
+        <dap-widget
+                name="'hdfs-manager-widget'"
+                params="{
+                    src: src,
+                    breadcrumb: true,
+                    embedded: true,
+                    actions: false,
+                    events: fileManagerEvents,
+                    enterFolderOnCreate:true,
+                    foldersOnly: true,
+                    quickCreateWidget: {openFileBrowser:true}
+                 }">
+        </dap-widget>
+    </div>
+</div>

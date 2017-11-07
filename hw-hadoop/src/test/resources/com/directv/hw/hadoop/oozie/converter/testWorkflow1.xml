@@ -1,0 +1,177 @@
+<workflow-app name="DMS-UDM-Transform-Workflow" xmlns="uri:oozie:workflow:0.4">
+
+    <start to="check-lock"/>
+
+    <!-- Check does _RUNNING directory exist in vendor specific wf folder on HDFS (check lock) -->
+    <decision name="check-lock">
+        <switch>
+            <case to="job-still-running-auditlog-record">
+                ${fs:exists(concat(wf:conf('oozie.wf.application.path'), '/_RUNNING')) == "true"}
+            </case>
+            <default to="acquire-job-lock"/>
+        </switch>
+    </decision>
+
+    <!-- If _RUNNING folder does not exist then crete this folder (acquire lock) -->
+    <action name="acquire-job-lock">
+        <fs>
+            <mkdir path="${wf:conf('oozie.wf.application.path')}/_RUNNING"/>
+        </fs>
+        <ok to="job-start-auditlog-record"/>
+        <error to="job-start-auditlog-record"/>
+    </action>
+
+    <action name="job-start-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_UDM_WF_03</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+            <arg>-msg</arg><arg>DMS-UDM-WF Job started</arg>
+            <file>lib/vd-auditlog.properties#vd-auditlog.properties</file>
+        </java>
+        <ok to="run-dms-v5-udm-transform"/>
+        <error to="run-dms-v5-udm-transform"/>
+    </action>
+
+    <action name="run-dms-v5-udm-transform">
+        <sub-workflow>
+            <app-path>${wf:conf('oozie.wf.application.path')}/workflows/core</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property>
+                    <name>source.oozie.wf.application.path</name>
+                    <value>${wf:conf('oozie.wf.application.path')}</value>
+                </property>
+                <property>
+                    <name>dms.udm.transform.version</name>
+                    <value>dms-v5</value>
+                </property>
+                <property>
+                    <name>dms_version</name>
+                    <value>v5</value>
+                </property>
+                <property>
+                    <name>dms.udm.transform.input.path.headers</name>
+                    <value>${wf:conf('dms.udm.transform.input.path.headers.v5')}</value>
+                </property>
+                <property>
+                    <name>dms.udm.transform.input.path.data</name>
+                    <value>${wf:conf('dms.udm.transform.input.path.data.v5')}</value>
+                </property>
+            </configuration>
+        </sub-workflow>
+        <ok to="run-dms-v6-udm-transform"/>
+        <error to="run-dms-v6-udm-transform"/>
+    </action>
+
+    <action name="run-dms-v6-udm-transform">
+        <sub-workflow>
+            <app-path>${wf:conf('oozie.wf.application.path')}/workflows/core</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property>
+                    <name>source.oozie.wf.application.path</name>
+                    <value>${wf:conf('oozie.wf.application.path')}</value>
+                </property>
+                <property>
+                    <name>dms.udm.transform.version</name>
+                    <value>dms-v6</value>
+                </property>
+                <property>
+                    <name>dms_version</name>
+                    <value>v6</value>
+                </property>
+                <property>
+                    <name>dms.udm.transform.input.path.headers</name>
+                    <value>${wf:conf('dms.udm.transform.input.path.headers.v6')}</value>
+                </property>
+                <property>
+                    <name>dms.udm.transform.input.path.data</name>
+                    <value>${wf:conf('dms.udm.transform.input.path.data.v6')}</value>
+                </property>
+            </configuration>
+        </sub-workflow>
+        <ok to="job-complete-auditlog-record"/>
+        <error to="job-complete-auditlog-record"/>
+    </action>
+
+    <action name="job-still-running-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_UDM_WF_02</arg>
+            <arg>-severity</arg><arg>WARN</arg>
+            <arg>-msg</arg><arg>DMS-UDM-WF Job is still running</arg>
+            <file>lib/vd-auditlog.properties#vd-auditlog.properties</file>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <action name="job-complete-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_UDM_WF_04</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+            <arg>-msg</arg><arg>DMS-UDM-WF Job completed</arg>
+            <file>lib/vd-auditlog.properties#vd-auditlog.properties</file>
+        </java>
+        <ok to="commit"/>
+        <error to="commit"/>
+    </action>
+
+    <!-- Delete _RUNNING folder (release lock) if job was succesed -->
+    <action name="commit">
+        <fs>
+            <delete path="${wf:conf('oozie.wf.application.path')}/_RUNNING"/>
+        </fs>
+        <ok to="end" />
+        <error to="end" />
+    </action>
+
+    <!-- Delete _RUNNING folder (release lock) if job was failed -->
+    <action name="cleanup">
+        <fs>
+            <delete path="${wf:conf('oozie.wf.application.path')}/_RUNNING"/>
+        </fs>
+        <ok to="fail" />
+        <error to="fail" />
+    </action>
+
+    <kill name="fail">
+        <message>DMS-UDM-WF job failed, error message: ${wf:errorMessage(wf:lastErrorNode())}</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

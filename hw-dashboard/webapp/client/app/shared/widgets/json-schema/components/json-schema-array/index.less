@@ -1,0 +1,29 @@
+.json-schema-array {
+  .clearfix;
+  line-height : 25px;
+  display     : block;
+  position    : relative;
+
+  &__item {
+    padding-left : 10px;
+  }
+
+  &__buttons {
+    &__add {
+      color        : #4899ea;
+      font-size    : 14px;
+      font-weight  : 400;
+      position     : relative;
+      padding-left : 20px;
+      margin-left  : 10px;
+
+      &:after {
+        .add-array-item-icon;
+        position : absolute;
+        top      : 0;
+        left     : 0;
+        content  : '';
+      }
+    }
+  }
+}

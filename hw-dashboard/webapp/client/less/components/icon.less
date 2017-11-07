@@ -1,0 +1,20 @@
+.new-icon-base(@w, @h) {
+  display        : inline-block;
+  vertical-align : middle;
+  width          : @w;
+  height         : @h;
+}
+
+.icon-el(@positionX: 0px; @positionY: center; @width: 16px; @height: 16px; @gradientStr: linear-gradient(0deg, #ffa 0%, #dee 100%); @url) {
+  .new-icon-base(@width, @height);
+  background : url("@{url}") no-repeat @positionX @positionY, @gradientStr;
+}
+
+.new-icon_el(@url; @positionX: 0px; @positionY: center; @startColor: #fff; @endColor: #fff; @width: 16px; @height: 16px) {
+  .new-icon-base(@width, @height);
+  background : url("@{url}") no-repeat @positionX @positionY, linear-gradient(0deg, @startColor 0%, @endColor 100%);
+}
+
+.icon-element(@width:16px, @height: 16px) {
+  .new-icon-base(@width, @height);
+}

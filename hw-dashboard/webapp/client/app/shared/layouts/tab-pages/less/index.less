@@ -1,0 +1,151 @@
+.b-tab-pages {
+  height   : 100%;
+  position : relative;
+
+  &__tab-page {
+    height : 100%;
+    .clearfix;
+
+    &__widget {
+      display  : block;
+      height   : ~'calc(100% - 25px)';
+      width    : 100%;
+      overflow : auto;
+    }
+
+    &__header {
+      .clearfix;
+      height        : 25px;
+      border-bottom : 1px solid #c7d0d9;
+      text-align    : center;
+    }
+
+    &__tabs,
+    &__controls {
+      float   : left;
+      padding : 0 3px;
+    }
+
+    &__tabs {
+      &&_right {
+        float       : right;
+        border-left : 1px solid #c7d0d9;
+        height      : 25px;
+        padding     : 0 3px;
+      }
+
+      &&_expanded&_right {
+        width : 400px;
+      }
+
+      &&_expanded&&_right > .b-tab-pages__tab-page__control.b-tab-pages__tab-page__control_hide-btn {
+        display : inline-block;
+      }
+    }
+
+    &__control {
+      float   : none;
+      display : inline-block;
+
+      &&_tab {
+      }
+
+      &&_hide-btn {
+        float   : right;
+        display : none;
+      }
+
+      &&_hide-icon {
+        display : inline-block;
+        .icon-base(24px, 24px, '../../resources/img/icon_hide_rpanel.png');
+        &:hover {
+          display : inline-block;
+          .icon-base(24px, 24px, '../../resources/img/icon_hide_rpanel_hover.png');
+        }
+      }
+
+      &__link {
+        font-size       : 14px;
+        text-decoration : none;
+        position        : relative;
+        background      : transparent;
+        display         : block;
+        cursor          : pointer;
+        color           : #494a4c;
+        //        height          : 24px;
+        line-height     : 23px;
+        padding         : 0 5px 0 0;
+
+        &:active {
+          color           : #137fea;
+        }
+        &.active {
+          color           : #137fea;
+          font-weight     : 700;
+        }
+
+        &:hover,
+        &:focus {
+          text-decoration : none;
+        }
+      }
+
+      &__icon {
+        vertical-align : middle;
+        position       : relative;
+      }
+
+      &__link[disabled]:active,
+      &__link[disabled] {
+        color           : #87888a;
+        text-decoration : none;
+      }
+
+
+      &__popup {
+
+        width: 200px;
+        position: absolute;
+        z-index: 1000;
+        background: transparent;
+        top: 0px;
+        left: 0px;
+
+        &__popup-list {
+
+          margin: 24px 0 0 0;
+          padding: 0;
+          background: white;
+          border: solid 1px #dde6f0;
+
+          &__popup-list-item {
+            cursor: pointer;
+
+            width: 100%;
+            list-style: none;
+            text-align: left;
+            padding: 5px 0 5px 10px;
+
+            &:hover {
+              background-color: #dde6f0;
+            }
+
+            &__title {
+              vertical-align: middle;
+            }
+          }
+
+        }
+      }
+
+
+    }
+
+    &__page-controls {
+      float : left;
+    }
+  }
+}
+
+.b-tab-pages__tab-page__control_hide-btn {
+}

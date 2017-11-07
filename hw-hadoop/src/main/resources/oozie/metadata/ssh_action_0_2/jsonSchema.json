@@ -1,0 +1,91 @@
+{
+  "name": "ssh",
+  "version": "0.2",
+  "canHaveTemplates": true,
+  "restrictions": [],
+  "warnings": [],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "ssh_0_2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "argsOrArg": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 1,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "title": "args",
+                  "properties": {
+                    "args": {
+                      "type": "array",
+                      "title": "args list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "args",
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "title": "arg",
+                  "properties": {
+                    "arg": {
+                      "type": "array",
+                      "title": "arg list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "arg",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "capture-output": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "host",
+          "command",
+          "args",
+          "capture-output"
+        ]
+      },
+      "cred": {
+        "type": "string"
+      },
+      "retry-max": {
+        "type": "string"
+      },
+      "retry-interval": {
+        "type": "string"
+      }
+    },
+    "required": [
+    ]
+  }
+}

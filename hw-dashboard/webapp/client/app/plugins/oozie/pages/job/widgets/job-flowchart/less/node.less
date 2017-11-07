@@ -1,0 +1,45 @@
+.e-job-action-node {
+
+  border-color : #b8c2cc;
+  background   : #f7f9fa;
+
+  &.success {
+    background   : #d3f0d4;
+    border-color : #95cb97;
+  }
+
+  &.success > &__status-bar {
+    border-top : 1px solid #95cb97;
+    background : #c3e4c4;
+  }
+
+  &.error {
+    background   : #fbe8e8;
+    border-color : #e9afaf;
+  }
+
+  &.error > &__status-bar {
+    border-top : 1px solid #e9afaf;
+    background : #f5d9d9;
+  }
+
+  &__status-bar {
+    font-weight   : 700;
+    color         : #616366;
+    border-top    : 1px solid #b8c2cc;
+    background    : #ebebeb;
+    line-height   : 21px;
+    margin        : 0 -8px -5px -8px;
+    border-radius : 0 0 5px 5px;
+    padding       : 0 5px;
+
+    &__execution-time {
+      float: right;
+      font-size: smaller;
+    }
+  }
+
+  &__properties-list {
+    margin-top : 3px;
+  }
+}

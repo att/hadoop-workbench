@@ -1,0 +1,141 @@
+@import "../pages/oozie-workflow/less/index";
+@import "../pages/jobs/less/index";
+@import "../pages/job/less/index";
+@import "../pages/job-log/less/index";
+@import "../pages/oozie-node-properties/less/index";
+
+.b-oozie-plugin {
+  &__pipeline-properties {
+    padding : 8px;
+
+    &__title {
+      color         : #484a4c;
+      font-size     : 14px;
+      font-weight   : 700;
+      margin-bottom : 8px;
+    }
+
+    &__table {
+      border : 1px solid #ECEFF1;
+      width  : 100%;
+
+      &__tr + &__tr {
+        border-top : 1px solid #D6DBE0;
+      }
+
+      &__tr {
+        .clearfix();
+        background : #ffffff;
+
+        &:nth-child(odd) {
+          background : #F3F5F8;
+        }
+
+        &__td {
+          padding        : 8px;
+          vertical-align : top;
+          float          : left;
+          word-wrap      : break-word;
+
+          &_key {
+            width : 40%;
+          }
+
+          &_value {
+            width : 60%;
+          }
+
+          &__content {
+            color       : #494a4d;
+            font-size   : 12px;
+            font-weight : 400;
+            line-height : 16px;
+            text-align  : left;
+            width       : 100%;
+            display     : inline-block;
+            outline     : transparent;
+
+            &[contentEditable=true]:empty:focus:before {
+              content    : attr(placeholder-text);
+              color      : rgba(186, 186, 186, 0.5);
+              font-style : italic;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+  &__node-selector-widget__icon {
+    .icon-el-node-selector-widget();
+  }
+  .active > &__node-selector-widget__icon {
+    .icon-node-selector-widget_active;
+  }
+
+  &__options-editor-widget__icon {
+    .icon-el-options-editor-widget();
+  }
+  .active > &__options-editor-widget__icon {
+    .icon-options-editor-widget_active;
+  }
+
+  &__alerts-container-widget__icon {
+    .icon-el-alerts-container-widget();
+  }
+  .active > &__alerts-container-widget__icon {
+    .icon-alerts-container-widget_active;
+  }
+
+  &__log-container-widget__icon {
+    .icon-el-log();
+  }
+  .active > &__log-container-widget__icon {
+    .icon-log_active;
+  }
+
+  &__libraries-widget__icon {
+    .icon-el-libraries();
+  }
+  .active > &__libraries-widget__icon {
+    .icon-libraries_hover;
+  }
+
+  &__jobs__icon-cdh {
+    .icon-el-oozie-jobs-cdh();
+  }
+  .active > &__jobs__icon-cdh {
+    .icon-oozie-jobs-cdh_active;
+  }
+
+
+  &__jobs__icon-coordinator-cdh {
+    .icon-el-oozie-jobs-coordinator-cdh();
+  }
+  .active > &__jobs__icon-coordinator-cdh {
+    .icon-oozie-jobs-coordinator-cdh_active;
+  }
+
+  &__jobs__icon-hdp {
+    .icon-el-oozie-jobs-hdp();
+  }
+  .active > &__jobs__icon {
+    .icon-oozie-jobs-cdh_active;
+  }
+
+  &__jobs__icon-coordinator-hdp {
+    .icon-el-oozie-jobs-coordinator-hdp();
+  }
+  .active > &__jobs__icon {
+    .icon-oozie-jobs-coordinator-cdh_active;
+  }
+
+}
+
+.b-oozie-plugin__download-file-container {
+  position   : absolute;
+  width      : 1px;
+  height     : 1px;
+  visibility : hidden;
+}

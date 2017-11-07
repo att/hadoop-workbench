@@ -1,0 +1,70 @@
+<div ng-show="selectedNodeContainer.node || selectedConnection">
+    <div oozie-options-editor
+         oe-node-model="selectedNodeContainer.node"
+         oe-connection-model="selectedConnection"
+         oe-file-browser-source="source"
+         readonly="readonly"
+         style="height: 100%;">
+    </div>
+    <div ng-repeat="config in propertyFiles"
+         class="b-oozie-plugin__pipeline-properties-linked-container">
+        <dap-widget ng-if="config.propertyFile.loadedFile" name="'config-properties-editor'" params="config">
+        </dap-widget>
+        <div style="padding:8px" ng-if="config.propertyFile.isLoading">
+            <span class="b-config-properties-editor__title">{{config.params.title}}</span>
+            <span class="b-editor__requesting-spinner">
+                <span class="b-editor__requesting-spinner__bounce1"></span>
+                <span class="b-editor__requesting-spinner__bounce2"></span>
+                <span class="b-editor__requesting-spinner__bounce3"></span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div ng-hide="selectedNodeContainer.node || selectedConnection" class="b-oozie-plugin__pipeline-properties">
+    <h1 class="b-oozie-plugin__pipeline-properties__title">Workflow properties</h1>
+
+    <div class="b-oozie-plugin__pipeline-properties__table">
+        <div class="b-oozie-plugin__pipeline-properties__table__tr">
+            <div class="b-oozie-plugin__pipeline-properties__table__tr__td b-oozie-plugin__pipeline-properties__table__tr__td_key">
+                <span class="b-oozie-plugin__pipeline-properties__table__tr__td__content">Name</span>
+            </div>
+            <div class="b-oozie-plugin__pipeline-properties__table__tr__td b-oozie-plugin__pipeline-properties__table__tr__td_value">
+                    <span class="b-oozie-plugin__pipeline-properties__table__tr__td__content"
+                          contenteditable="true"
+                          contenteditable-discard-changes-on-esc="true"
+                          placeholder-text="No value"
+                          ng-model="module.name">
+                    </span>
+            </div>
+        </div>
+        <div class="b-oozie-plugin__pipeline-properties__table__tr">
+            <div class="b-oozie-plugin__pipeline-properties__table__tr__td b-oozie-plugin__pipeline-properties__table__tr__td_key">
+                <span class="b-oozie-plugin__pipeline-properties__table__tr__td__content">Schema Version</span>
+            </div>
+            <div class="b-oozie-plugin__pipeline-properties__table__tr__td b-oozie-plugin__pipeline-properties__table__tr__td_value">
+                    <span class="b-oozie-plugin__pipeline-properties__table__tr__td__content"
+                          contenteditable="false"
+                          contenteditable-discard-changes-on-esc="true"
+                          placeholder-text="No value"
+                          ng-model="module.version">
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="!selectedNodeContainer.node && !selectedConnection">
+    <div ng-repeat="loader in modulePropertyFilesLoaders">
+        <dap-widget ng-if="loader.propertyFile.loadedFile" name="'config-properties-editor'" params="loader">
+        </dap-widget>
+        <div style="padding:8px" ng-if="loader.propertyFile.loading">
+            <span class="b-config-properties-editor__title">{{loader.params.title}}</span>
+            <span class="b-editor__requesting-spinner">
+                <span class="b-editor__requesting-spinner__bounce1"></span>
+                <span class="b-editor__requesting-spinner__bounce2"></span>
+                <span class="b-editor__requesting-spinner__bounce3"></span>
+            </span>
+        </div>
+    </div>
+</div>

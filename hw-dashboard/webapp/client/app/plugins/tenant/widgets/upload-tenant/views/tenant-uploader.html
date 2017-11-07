@@ -1,0 +1,25 @@
+<div class="b-tenant-uploader">
+    <div class="b-tenant-uploader__title">Upload new components</div>
+    <div class="b-tenant-uploader__drop-zone" nv-file-drop uploader="uploader">
+        <div class="b-tenant-uploader__drop-zone__title">Drop your tenant BZip2 file here</div>
+
+    </div>
+    <input class="b-tenant-uploader__file-input" type="file" nv-file-select uploader="uploader"/>
+    <ul class="b-tenant-uploader__list">
+        <li class="b-tenant-uploader__list__item" ng-repeat="item in uploader.queue">
+            Name: <span ng-bind="item.file.name"></span><br/>
+            <button ng-click="item.upload()" ng-disabled="item.uploadDisabled"
+                    ng-class="{'b-tenant-uploader__list__item__button-disabled': item.uploadDisabled}">upload</button>
+            <button ng-click="item.remove()" ng-disabled="item.removeDisabled"
+                    ng-class="{'b-tenant-uploader__list__item__button-disabled': item.removeDisabled}" >remove</button>
+            <span ng-show="item.isUploading">{{item.progress}}%</span>
+            <span class="b-tenant-uploader__requesting-spinner"
+                  ng-show="uploadInProgress.indexOf(item) !== -1">
+                <span class="b-tenant-uploader__requesting-spinner__bounce1"></span>
+                <span class="b-tenant-uploader__requesting-spinner__bounce2"></span>
+                <span class="b-tenant-uploader__requesting-spinner__bounce3"></span>
+            </span>
+            <span ng-show="item.isSuccess">Uploaded</span>
+        </li>
+    </ul>
+</div>

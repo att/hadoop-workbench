@@ -1,0 +1,48 @@
+<div ng-show="selectedNodeContainer.node || selectedConnection" flume-options-editor
+     oe-selected-node="selectedNodeContainer.node"
+     oe-selected-connection="selectedConnection"
+     oe-nodes-metadata="nodesMetadata">
+</div>
+
+<div ng-hide="selectedNodeContainer.node || selectedConnection || !module" class="b-flume-plugin__pipeline-properties">
+    <h1 class="b-flume-plugin__pipeline-properties__title">Pipeline properties</h1>
+
+    <div class="b-flume-plugin__pipeline-properties__table">
+        <div class="b-flume-plugin__pipeline-properties__table__tr">
+            <div class="b-flume-plugin__pipeline-properties__table__tr__td b-flume-plugin__pipeline-properties__table__tr__td_key">
+                <span class="b-flume-plugin__pipeline-properties__table__tr__td__content">Agent name</span>
+            </div>
+            <div class="b-flume-plugin__pipeline-properties__table__tr__td b-flume-plugin__pipeline-properties__table__tr__td_value">
+                    <span class="b-flume-plugin__pipeline-properties__table__tr__td__content"
+                          contenteditable="{{!readonly}}"
+                          contenteditable-discard-changes-on-esc="true"
+                          placeholder-text="No value"
+                          ng-model="module.agentName">
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-hide="selectedNodeContainer.node || selectedConnection || !agent" class="b-flume-plugin__pipeline-properties">
+    <h1 class="b-flume-plugin__pipeline-properties__title">Environment properties</h1>
+
+    <div class="b-flume-plugin__pipeline-properties__table">
+        <div class="b-flume-plugin__pipeline-properties__table__tr">
+            <div class="b-flume-plugin__pipeline-properties__table__tr__td b-flume-plugin__pipeline-properties__table__tr__td_key">
+                <span class="b-flume-plugin__pipeline-properties__table__tr__td__content">Plugin directory</span>
+            </div>
+            <div class="b-flume-plugin__pipeline-properties__table__tr__td b-flume-plugin__pipeline-properties__table__tr__td_value"
+                 ng-click="(isPluginDirReadonly ? showWarning() : '')"
+            >
+                    <span class="b-flume-plugin__pipeline-properties__table__tr__td__content"
+                          contenteditable="{{!readonly && !isPluginDirReadonly}}"
+                          ng-click="(isPluginDirReadonly ? showWarning() : '')"
+                          contenteditable-discard-changes-on-esc="true"
+                          placeholder-text="No value"
+                          ng-model="agent.pluginDir">
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>

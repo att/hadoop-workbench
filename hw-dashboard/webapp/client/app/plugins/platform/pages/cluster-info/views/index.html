@@ -1,0 +1,27 @@
+<div class="b-page-cluster-info">
+
+    <div ng-if="cluster">
+        <object-properties
+                ng-repeat="key in propertyJsonSchemaOrderedKeyArray"
+                data="propertiesJsonSchema[key]"
+                readonly="isReadonly"
+        ></object-properties>
+<!--
+        <object-properties
+                ng-repeat="schemaProperty in propertiesJsonSchema "
+                data="schemaProperty"
+                readonly="isReadonly"
+        ></object-properties>
+-->
+    </div>
+
+    <div class="b-page-cluster-info__no-cluster-label" ng-if="!cluster">
+        No selected cluster
+    </div>
+</div>
+<div class="b_platforms-clusters-widget__backdrop ng-hide" ng-show="requesting">
+    <div class="b_platforms-clusters-widget__backdrop__spinner">
+        <div class="b_platforms-clusters-widget__backdrop__spinner__top"></div>
+        <div class="b_platforms-clusters-widget__backdrop__spinner__bottom"></div>
+    </div>
+</div>

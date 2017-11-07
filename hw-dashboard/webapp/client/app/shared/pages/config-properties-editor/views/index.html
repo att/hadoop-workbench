@@ -1,0 +1,126 @@
+<section
+        ng-repeat="section in configItemsSection"
+        class="b-config-properties-editor"
+        ng-class="{'b-config-properties-editor_no-description-on-view': noDescriptionOnView}">
+
+    <h1 class="b-config-properties-editor__title">
+
+        <a class="b-config-properties-editor__title__collapse-icon"
+           ng-class="{ 'b-config-properties-editor__title__collapse-icon_collapsed': folded[section.id] }"
+           ng-click="toggleFold(section.id)"
+        ></a>
+        <span ng-class="{ 'b-config-properties-editor__title__error': isConfigDefaultError }">
+            {{ section.title }}
+        </span>
+        <span class="b-config-properties-editor__add-property">
+        <a ng-if="!readonly && !isConfigDefaultError" ng-click="addNewBtnClicked(section.options, section.id)"
+           ng-hide="folded[section.id]" class="b-config-properties-editor__add-property__link" title="Add property">
+            Add property
+        </a>
+        </span>
+
+    </h1>
+
+    <div class="b-config-properties-editor__table yes-select" ng-hide="folded[section.id]">
+        <div ng-repeat="item in configItems | filter: section.filter track by ( $index + section.id )"
+             class="b-config-properties-editor__table__tr">
+
+            <div class="b-config-properties-editor__table__tr__td b-config-properties-editor__table__tr__td_key">
+                <span class="b-config-properties-editor__table__tr__td__content">
+                    {{item.key}}
+                    <tooltip-icon data="{{item.description}}" />
+                </span>
+            </div>
+            <div class="b-config-properties-editor__table__tr__td b-config-properties-editor__table__tr__td_value">
+
+                <span class="b-config-properties-editor__table__tr__td__content"
+                      contenteditable="{{::!readonly}}"
+                      contenteditable-discard-changes-on-esc="true"
+                      placeholder-text="No value"
+                      ng-model="item.value"
+
+                      ng-focus="setActiveSectionAndIndex(section.id, $index)"
+
+                      input-autocomplete
+                      input-autocomplete-floating-on-choose="selectExistingItemValue"
+                      input-autocomplete-floating-data="niAutocompleteDataFiltered"
+                      input-autocomplete-floating-enabled="autocompleteChannelExistingItem && autocompleteChannelExistingItem.isActive && activeSectionId == section.id && activeIndex == $index"
+
+                      autocompletable-part-of-input
+                      ac-model="item.value"
+                      ac-apply-autocompletable-value-cb="autocompleteChannelExistingItem.applyAutocompletableValueCb"
+                      ac-substitute-with="autocompleteChannelExistingItem.substituteValue"
+                      ac-is-enabled="activeSectionId == section.id && activeIndex == $index"
+                      ac-pattern-config="autocompleteConfig"
+                ></span>
+
+            </div>
+            <div class="b-config-properties-editor__table__tr__td b-config-properties-editor__table__tr__td_description"
+                 ng-if="!noDescriptionOnView">
+                <span class="b-config-properties-editor__table__tr__td__content"
+                      contenteditable="{{::!readonly}}"
+                      contenteditable-discard-changes-on-esc="true"
+                      placeholder-text="No description"
+                      ng-model="item.description"></span>
+            </div>
+            <div ng-if="!readonly"
+                 class="b-config-properties-editor__table__tr__td b-config-properties-editor__table__tr__td_action">
+                <a class="b-config-properties-editor__remove-link" ng-click="removeProperty(item)"
+                   title="Remove"></a>
+            </div>
+        </div>
+        <div ng-if="newItem && section.id === newItemSectionId"
+             class="b-config-properties-editor__table__tr b-config-properties-editor__table__tr">
+            <div class="b-config-properties-editor__table__tr__td b-config-properties-editor__table__tr__td_new-item b-config-properties-editor__new-item">
+                <form novalidate name="newItemFormContainer.newConfigItemForm">
+                    <div class="b-config-properties-editor__new-item__key">
+                        <input type="text" name="key" ng-model="newItem.key" placeholder="Key..."
+                               class="b-config-properties-editor__new-item__input" focus-it="true" required
+                               unique="configItemsKeys"/>
+
+                        <div ng-if="isNewConfigItemFormFieldKeyErrorVisible">
+                            <span style="color:red;">*</span> Key is required field. Key should be unique
+                        </div>
+                    </div>
+
+                    <div class="b-config-properties-editor__new-item__value">
+                        <input type="text" name="value" ng-model="newItem.value" placeholder="Value..."
+                               class="b-config-properties-editor__new-item__input"
+
+                               input-autocomplete
+                               input-autocomplete-floating-on-choose="selectNewItemValue"
+                               input-autocomplete-floating-data="niAutocompleteDataFiltered"
+                               input-autocomplete-floating-enabled="autocompleteChannelNewItem && autocompleteChannelNewItem.isActive"
+
+                               autocompletable-part-of-input
+                               ac-model="newItem.value"
+                               ac-apply-autocompletable-value-cb="autocompleteChannelNewItem.applyAutocompletableValueCb"
+                               ac-substitute-with="autocompleteChannelNewItem.substituteValue"
+                               ac-is-enabled="true"
+                               ac-pattern-config="autocompleteConfig"
+
+                               autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="b-config-properties-editor__new-item__description"
+                         ng-if="!noDescriptionOnCreate">
+                        <input type="text" name="description" ng-model="newItem.description"
+                               placeholder="Description..." class="b-config-properties-editor__new-item__input"/>
+                    </div>
+                    <div class="b-config-properties-editor__new-item__buttons">
+                        <button class="btn btn-md btn-default" ng-click="addProperty()" type="submit"
+                                ng-disabled="newConfigItemForm.$invalid">Add Property
+                        </button>
+                        <button class="btn btn-md btn-secondary" ng-click="cancelBtnClicked()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div ng-if="isConfigDefaultError && $index == 0">
+            <div class="b-config-properties-editor__load-error">
+                Config cannot be displayed.<br>See <a ng-click="goToConfigText()">text</a> version.
+            </div>
+        </div>
+    </div>
+</section>

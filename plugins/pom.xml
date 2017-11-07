@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.directv.hw</groupId>
+        <artifactId>hw</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>plugins</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <plugin.id/>
+        <plugin.class/>
+        <plugin.provider/>
+        <plugin.dependencies />
+        <plugin.version>${project.version}</plugin.version>
+    </properties>
+
+    <modules>
+        <module>hw-flume-web</module>
+        <module>hw-cdh4-service</module>
+        <module>hw-hdfs-web</module>
+        <module>hw-oozie-web</module>
+        <module>hw-platform-web</module>
+        <module>hw-tenant-web</module>
+        <module>hw-ssh-service</module>
+        <module>hw-admin-web</module>
+        <module>hw-provision-web</module>
+        <module>hw-oozie-service</module>
+        <module>hw-aws-service</module>
+    </modules>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.directv.hw</groupId>
+            <artifactId>hw-api</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.directv.hw</groupId>
+            <artifactId>hw-common</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ro.fortsoft.pf4j</groupId>
+            <artifactId>pf4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>plugin-packaging</id>
+            <activation>
+                <file>
+                    <missing>nobuild</missing>
+                </file>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>unzip jar file</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <target>
+                                        <unzip src="target/${project.artifactId}-${project.version}.${project.packaging}" dest="target/plugin-classes" />
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.3</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>
+                                    src/main/assembly/assembly.xml
+                                </descriptor>
+                            </descriptors>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attached</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <Plugin-Id>${plugin.id}</Plugin-Id>
+                                    <Plugin-Class>${plugin.class}</Plugin-Class>
+                                    <Plugin-Version>${plugin.version}</Plugin-Version>
+                                    <Plugin-Provider>${plugin.provider}</Plugin-Provider>
+                                    <Plugin-Dependencies>${plugin.dependencies}</Plugin-Dependencies>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.10</version>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/lib</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>false</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                    <includeScope>runtime</includeScope>
+                                    <excludeScope>provided</excludeScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
+
+
+</project>

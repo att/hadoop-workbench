@@ -1,0 +1,40 @@
+.json-schema-number {
+  border-bottom : 1px solid #dde6f0;
+  line-height   : 25px;
+
+  &__value {
+    color          : #333;
+    font-size      : 13px;
+    font-weight    : 400;
+    text-align     : left;
+    float          : left;
+    width          : 60%;
+    outline        : 0 solid transparent;
+    border         : none;
+    padding-top    : 5px;
+    padding-bottom : 5px;
+    background  : transparent;
+
+    &:focus {
+      box-shadow: 0px -1px 0px #137fea inset;
+    }
+
+    &&_enum {
+      box-shadow: none;
+    }
+
+    &_with-remove {
+      padding-right : 24px;
+    }
+
+    &[disabled],
+    &_disabled {
+      background-color : inherit;
+      color            : #777;
+    }
+  }
+
+  &:hover {
+    background : #eef0f2;
+  }
+}

@@ -1,0 +1,25 @@
+<div class="b-info-viewer">
+    <div class="b-info-viewer__controls">
+        <a class="b-info-viewer__control b-info-viewer__control_edit"
+           ng-click="switchToEditMode()" ng-show="!editMode && editable"></a>
+
+        <a class="b-info-viewer__control b-info-viewer__control_hide"
+           ng-click="hideInfoViewer()">
+            <i class="b-info-viewer__hide-icon"></i>
+        </a>
+    </div>
+
+    <div ng-if="!editMode">
+        <object-properties ng-repeat="schema in sections" data="schema" readonly="true"></object-properties>
+    </div>
+
+    <div class="b-info-viewer__edit" ng-if="editMode">
+
+        <object-properties ng-repeat="schema in editSections" data="schema" readonly="false"></object-properties>
+
+        <div class="b-info-viewer__edit__buttons">
+            <button class="btn btn-md btn-default" ng-click="update(editSections)">Update</button>
+            <button class="btn btn-md btn-secondary" ng-click="cancelEditMode()">Cancel</button>
+        </div>
+    </div>
+</div>

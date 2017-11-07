@@ -1,0 +1,48 @@
+<div class="b-create-service-wizard">
+    <div class="b-create-service-wizard__steps" ng-if="currentStep">
+        <dap-widget class="b-create-service-wizard__steps__include-container" name="currentStep.widgetName"
+                    params="{data: sharedData, stepNumber: currentStepNumber, showValidationErrors: showValidationErrors}"></dap-widget>
+        <div class="b-create-service-wizard__steps__buttons">
+            <button class="btn btn-secondary btn-lg" ng-click="prevStep()" ng-disabled="currentStepNumber === 1">
+                Prev Step
+            </button>
+            <button class="btn btn-default btn-lg"
+                    ng-click="nextStep()"
+                    ng-hide="currentStep.isLastStep"
+                    ng-disabled="!currentStep.isCompleted()"
+            >
+                Next Step
+            </button>
+            <button class="btn btn-default btn-lg" ng-click="save()" ng-show="currentStep.isLastStep">
+                Provision Platform
+            </button>
+        </div>
+    </div>
+
+    <div class="b-create-service-wizard__status-panel">
+        <span class="">{{key($index)}}</span>
+        <ul class="list-unstyled b-create-service-wizard__status-list"
+            ng-repeat="s in steps"
+            ng-show="steps.indexOf(currentStep) >= $index">
+            <li ng-repeat="property in $parent.sharedData.schemaInstanceSteps[s.stepIndex].instance.properties"
+                ng-class="{'b-create-service-wizard__status-panel__status-line_completed': property.getValue()}"
+                class="b-create-service-wizard__status-panel__status-line"
+                ng-if="property.instance.schema.type !== 'object'"
+            >
+                <span class="b-create-service-wizard__status-panel__status-line__key">{{property.getPropertyInfo().title}}:</span>
+                <span class="b-create-service-wizard__status-panel__status-line__value">{{property.getViewValue()}}</span>
+            </li>
+        </ul>
+
+        <div class="b-create-service-wizard__status-panel__buttons">
+            <button class="btn btn-secondary btn-lg" ng-click="cancelCreateNew()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="b-oozie-plugin-widget-backdrop" ng-show="isLoading">
+        <div class="b-oozie-plugin-widget-backdrop__spinner">
+            <div class="b-oozie-plugin-widget-backdrop__spinner__top"></div>
+            <div class="b-oozie-plugin-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

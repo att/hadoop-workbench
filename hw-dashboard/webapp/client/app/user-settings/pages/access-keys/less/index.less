@@ -1,0 +1,215 @@
+@list-item-action-width : 32px;
+@ssh-key-label-width : 35px;
+/* for some reason select and span can't fit together, so I added 5px as a hack*/
+@ssh-key-select-width-offset : @ssh-key-label-width + 5px;
+
+.b-user-settings__access-keys {
+  height : 100%;
+
+  &__title {
+    border-bottom    : 3px solid #dde6f0;
+    font-size        : 14px;
+    background-color : #e6ecf2;
+    color            : #333333;
+    line-height      : 24px;
+    padding          : 0 5px;
+    word-wrap        : break-word;
+    font-weight      : 700;
+  }
+
+  &__create-key-btn {
+    display      : inline-block;
+    float        : right;
+    padding-left : 20px;
+    line-height  : 26px;
+    font-size    : 14px;
+    font-weight  : 400;
+    background   : transparent url('../../../../../resources/img/new_widget_hover.png') no-repeat left center;
+    color        : #137fea;
+  }
+
+  &__content {
+    height   : ~'calc(100% - 28px)';
+    overflow : auto;
+  }
+
+  &__keys-list {
+    width      : 100%;
+    margin-top : 0;
+  }
+
+  &__keys-list-item {
+    .clearfix();
+    border-bottom : 1px solid #dde6f0;
+
+    &__key,
+    &__value,
+    &__action {
+      padding        : 4px;
+      vertical-align : top;
+      float          : left;
+      word-wrap      : break-word;
+    }
+
+    &__key {
+      width        : ~"calc(100% - @{list-item-action-width})";
+      padding-left : 8px;
+    }
+
+    &__value {
+      width : 0;
+    }
+
+    &__content {
+      color       : #494a4d;
+      font-size   : 12px;
+      font-weight : 400;
+      line-height : 16px;
+      text-align  : left;
+      width       : 100%;
+      display     : inline-block;
+      outline     : transparent;
+    }
+
+    &__action {
+      width          : @list-item-action-width;
+      vertical-align : middle;
+    }
+
+    &__edit-link,
+    &__remove-link {
+      display    : block;
+      height     : 16px;
+      width      : 16px;
+      background : url('../../../../../resources/img/flowchart-widget-delete-module-icon_hover.png') no-repeat center center;
+    }
+
+    &__edit-link {
+      background : url('../../../../../resources/img/options-editor-widget-icon_hover.png') no-repeat center center;
+    }
+  }
+
+  &__new-item {
+    border-top : 1px solid #D6DBE0;
+    background : #F3F5F8;
+
+    &__fields {
+      .clearfix();
+    }
+
+    &__name,
+    &__title,
+    &__home-path {
+      vertical-align : top;
+      float          : left;
+      word-wrap      : break-word;
+      width          : 100%;
+    }
+
+    &__input {
+      border              : 0 solid #cdd3d9;
+      border-bottom-width : 1px;
+      background          : transparent;
+      color               : #494a4d;
+      font-size           : 14px;
+      font-weight         : 400;
+      padding             : 0 0 8px 0;
+      width               : 100%;
+      outline             : transparent;
+      margin-bottom       : 8px;
+    }
+
+    &__ssh-key {
+      margin : 5px 0 12px;
+
+      &-label {
+        display     : inline-block;
+        color       : #494a4d;
+        font-size   : 14px;
+        font-weight : 700;
+        width       : @ssh-key-label-width;
+      }
+
+      &-select {
+        width         : ~"calc(100% - @{ssh-key-select-width-offset})";
+        height        : 25px;
+        padding-left  : 3px;
+        border        : 1px solid #c7d0d9;
+        border-radius : 3px;
+        box-shadow    : 0 1px 2px 0 rgba(0, 0, 1, 0.1);
+      }
+    }
+
+    &__buttons {
+      clear      : both;
+      margin-top : 8px;
+      text-align : right;
+    }
+  }
+
+  &__new-item-form {
+    width   : 100%;
+    padding : 8px;
+
+    &__input-error {
+      color         : red;
+      display       : inline-block;
+      margin-bottom : 20px;
+    }
+  }
+
+  &__upload-files {
+    text-align : center;
+    color      : #333333;
+    border-top : 1px solid #e3e7ec;
+    font-size  : 0;
+    position   : absolute;
+    left       : 0;
+    bottom     : 0;
+    right      : 0;
+    height     : 34px;
+
+    &__icon {
+      .icon-el-upload;
+    }
+
+    &__text {
+      font-size      : 16px;
+      line-height    : 33px;
+      display        : inline-block;
+      vertical-align : middle;
+      padding-left   : 4px;
+    }
+
+    &__file-input {
+      position : absolute;
+      top      : 0;
+      left     : 0;
+      bottom   : 0;
+      right    : 0;
+      opacity  : 0;
+      width    : 100%;
+      cursor   : pointer;
+    }
+  }
+
+  &-widget__icon {
+    display    : inline-block;
+    width      : 24px;
+    height     : 24px;
+    background : url("../../../../../resources/img/ic-platforms-access-keys.png") no-repeat center;
+
+    &:hover {
+      background : url("../../../../../resources/img/ic-platforms-access-keys_hover.png") no-repeat center;
+    }
+
+    .active > & {
+      background : url("../../../../../resources/img/ic-platforms-access-keys_pressed.png") no-repeat center;
+    }
+  }
+
+  &__icon-save-invisible {
+    .icon-el-save();
+    visibility: hidden;
+  }
+}

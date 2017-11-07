@@ -1,0 +1,888 @@
+.icon-deployment {
+  background      : transparent url("../../../../resources/img/nav-icon-tenant.png") no-repeat center center;
+  background-size : 22px;
+}
+
+.b_deployment-widget__backdrop {
+  position   : absolute;
+  display    : block;
+  top        : 0;
+  left       : 0;
+  right      : 0;
+  bottom     : 0;
+  background : rgba(255, 255, 255, 0.7);
+  z-index    : 1;
+
+  &__spinner {
+    position  : absolute;
+    height    : 84px;
+    width     : 84px;
+    top       : 50%;
+    left      : 50%;
+    transform : translate(-50%, -50%);
+
+    &__top {
+      display    : block;
+      height     : 100%;
+      width      : 100%;
+      background : url("../../../../resources/img/logo_dap.png") no-repeat center center;
+      animation  : dap 1s infinite;
+    }
+
+    &__bottom {
+      display          : block;
+      position         : relative;
+      top              : -30px;
+      left             : 18px;
+      height           : 12px;
+      width            : 50%;
+      background-color : #000;
+      border-radius    : 50%;
+      animation        : shadow 1s infinite;
+    }
+  }
+}
+
+// mixin:
+.right_panel_no_info_label(@textWidth: 200px) {
+  display: block;
+  margin: 0 auto;
+  width: @textWidth;
+  font-size: 18px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #A0A0A0;
+}
+
+
+
+@b-deployment__breadcrumb-height : 44px;
+@b-deployment__right-widget-width : 300px;
+
+@b-deployment__files-list__item-property-col-width-type-size: 50px;
+@b-deployment__files-list__item-property-col-width-quick-delete-size: 100px;
+
+@b-deployment__breadcrumb__actions-width: 400px;
+@b-deployment__breadcrumb__icons-width: 65px; /* width of the 'home' and 'edit' icons */
+
+.b-deployment {
+  height : 100%;
+
+  &__left-side-widgets,
+  &__right-side-widgets {
+    position : relative;
+    height   : 100%;
+    float    : left;
+    overflow : auto;
+  }
+
+  &__left-side-widgets {
+    width : 100%;
+
+    &_split {
+      width : ~"calc(100% - @{b-deployment__right-widget-width})";
+    }
+  }
+
+  &__right-side-widgets {
+    border-left : 1px solid #c7d0d9;
+    width       : 0;
+    display     : none;
+
+    &_split {
+      display : block;
+      width   : @b-deployment__right-widget-width;
+    }
+
+    &__buttons {
+      position : absolute;
+      bottom   : 10px;
+    }
+
+    .btn + .btn {
+      margin-left : 10px;
+    }
+
+    &__cancel-action-btn,
+    &__confirm-action-btn {
+      padding     : 5px 25px;
+      font-weight : normal;
+    }
+
+    &__requesting-spinner {
+      display     : inline-block;
+      margin-left : 10px;
+
+      &__bounce1,
+      &__bounce2,
+      &__bounce3 {
+        width               : 8px;
+        height              : 8px;
+        background-color    : #137fea;
+        border-radius       : 100%;
+        display             : inline-block;
+        animation           : bouncedelay 1.4s infinite ease-in-out;
+        animation-fill-mode : both;
+      }
+
+      &__bounce1 {
+        animation-delay : -0.32s;
+      }
+
+      &__bounce2 {
+        animation-delay : -0.16s;
+      }
+    }
+  }
+
+  &__breadcrumb {
+    border-bottom : 1px solid #c7d0d9;
+    position      : relative;
+    height        : 43px;
+
+    &__quick-create-widget {
+      padding-right : 5px;
+      background    : white;
+      border-bottom : 1px solid #c7d0d9;
+      height        : 43px;
+    }
+
+    &__full-path {
+      width: ~"calc(100% - @{b-deployment__breadcrumb__actions-width})";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left : 10px;
+      overflow: hidden;
+    }
+
+    &__current-folder-only {
+      line-height  : 43px;
+      padding-left : 5px;
+      font-size    : 15px;
+      font-weight  : bold;
+    }
+
+    &__path-home {
+      display        : inline-block;
+      width          : 20px;
+      height         : 20px;
+      vertical-align : middle;
+      position       : relative;
+      top            : 13px;
+      background     : url(../../../../resources/img/ic-hdfs-breadcrumb-path-home.png);
+      float: left;
+    }
+
+    &__path-link {
+      color     : #494a4c;
+      font-size : 14px;
+    }
+
+    &__path-separator {
+      display        : inline-block;
+      width          : 20px;
+      height         : 20px;
+      vertical-align : middle;
+      background     : url(../../../../resources/img/ic-hdfs-breadcrumb-path-separator.png);
+    }
+
+    &__current-path {
+      padding     : 15px 0 10px;
+      display     : inline-block;
+      margin-left : 15px;
+      float: left;
+      max-width: ~"calc(100% - @{b-deployment__breadcrumb__icons-width})";
+      white-space: nowrap;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &__path-item {
+        display: inline-block;
+      }
+    }
+
+    &__path-editor {
+      display  : inline-block;
+      position : relative;
+      float: left;
+      .yes-select;
+
+      &__edit-path-link {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        position: relative;
+        top: 13px;
+        left: -5px;
+        margin-left: 10px;
+        background     : url("../../../../resources/img/ic-hdfs-breadcrumb-edit-path.png");
+      }
+
+      &__input {
+        display   : inline-block;
+        min-width : 150px;
+        padding   : 3px 10px;
+        margin    : 10px 0;
+      }
+
+    }
+
+    &__filter-fixes.b-menu-search-items__list-container__filter.filter-style-inline {
+      position: relative;
+      top: 0;
+    }
+
+    &__actions {
+      //position : absolute;
+      top      : 0;
+      bottom   : 0;
+      right    : 0;
+      overflow : hidden; // input[type=file] doesn't respect `width` attribute and overflow occurs, so we hide it
+      max-width    : @b-deployment__breadcrumb__actions-width;
+
+      &__backdrop {
+        position   : absolute;
+        top        : 0;
+        left       : 0;
+        right      : 0;
+        bottom     : 0;
+        z-index    : 1;
+        background : #fff;
+        opacity    : 0.6;
+      }
+    }
+
+    &__action {
+      position    : relative;
+      float       : left;
+      padding     : 0 13px 0 20px;
+      height      : 100%;
+      background  : no-repeat right center, no-repeat left center;
+
+      &-create {
+        background-image : url(../../../../resources/img/ic-hdfs-arrow-dropdown.png), url(../../../../resources/img/ic-hdfs-actions-new-item.png);
+      }
+
+      &-upload {
+        background : url(../../../../resources/img/ic-hdfs-actions-upload.png) no-repeat left center;
+      }
+
+      &__upload-input {
+        position : absolute;
+        right    : 0;
+        left     : 0;
+        top      : 0;
+        bottom   : 0;
+        opacity  : 0;
+        z-index  : 1;
+      }
+
+      &__link {
+        display        : inline-block;
+        line-height    : @b-deployment__breadcrumb-height;
+        color          : #494a4c;
+        vertical-align : top;
+        font-size      : 15px;
+        width          : 100%;
+
+        &:hover {
+          text-decoration : none;
+        }
+      }
+
+      &-search-input {
+        border       : none;
+        background   : url("../../../../resources/img/ic-hdfs-actions-search-item.png") no-repeat 15px center;
+        padding-left : 40px;
+        font-size    : 15px;
+        line-height  : @b-deployment__breadcrumb-height;
+
+        .placeholder(#959699);
+
+        &:focus {
+          outline : none;
+          box-shadow: 0px -1px 0px #137fea inset;
+        }
+      }
+
+      &__menu-options {
+        position   : absolute;
+        background : white;
+        z-index    : 1;
+        right      : 0;
+        width      : 150px;
+        border     : 1px solid #c7d0d9;
+        box-shadow : 0 0 1px #ccc;
+      }
+
+      &__menu-option {
+        position      : relative;
+        width         : 100%;
+        border-bottom : 1px solid #c7d0d9;
+
+        &-link {
+          display         : inline-block;
+          width           : 100%;
+          color           : #000000;
+          text-decoration : none;
+          padding-left    : 8px;
+          font-size       : 14px;
+          line-height     : 36px;
+        }
+      }
+
+      &__btn-open-hdfs-browser,
+      &__btn-show-quick-create-folder,
+      &__btn-show-quick-create-file,
+      &__btn-quick-upload-file {
+        display        : inline-block;
+        width          : 34px;
+        height         : 43px;
+        vertical-align : middle;
+        background     : url("../../../../resources/img/ic-hdfs-add-folder.png") no-repeat center;
+
+        &:hover {
+          background-image : url("../../../../resources/img/ic-hdfs-add-folder_hover.png");
+        }
+
+        &:active {
+          background-image : url("../../../../resources/img/ic-hdfs-add-folder_active.png");
+        }
+      }
+
+      &__btn-open-hdfs-browser {
+        background-image : url("../../../../resources/img/ic-hdfs-open-browser.png");
+
+        &:hover {
+          background-image : url("../../../../resources/img/ic-hdfs-open-browser_hover.png");
+        }
+
+        &:active {
+          background-image : url("../../../../resources/img/ic-hdfs-open-browser_active.png");
+        }
+      }
+
+      &__btn-show-quick-create-file {
+        background-image : url("../../../../resources/img/ic-hdfs-add-file.png");
+
+        &:hover {
+          background-image : url("../../../../resources/img/ic-hdfs-add-file_hover.png");
+        }
+
+        &:active {
+          background-image : url("../../../../resources/img/ic-hdfs-add-file_active.png");
+        }
+      }
+
+      &__btn-quick-upload-file {
+        position         : relative;
+        background-image : url("../../../../resources/img/ic-hdfs-upload-file.png");
+
+        &:hover {
+          background-image : url("../../../../resources/img/ic-hdfs-upload-file_hover.png");
+        }
+
+        &:active {
+          background-image : url("../../../../resources/img/ic-hdfs-upload-file_active.png");
+        }
+      }
+
+      &__quick-create-item {
+        display: inline-block;
+        margin-right: 15px;
+        float: right;
+
+        .btn-md {
+          padding : 4px 10px;
+        }
+
+        &__input {
+          height         : 24px;
+          width          : 150px;
+          vertical-align : middle;
+          margin-right   : 5px;
+          font-size      : 12px;
+          line-height    : 24px;
+
+          &:focus {
+            border-color: #137fea;
+          }
+        }
+
+        &__btn-create-action {
+          display         : inline-block;
+          vertical-align  : middle;
+          width           : 24px;
+          height          : 43px;
+          background      : transparent url('../../../../resources/img/ic-file-browser_add-item_button-save.png') no-repeat center center;
+          background-size : auto;
+        }
+
+        &__btn-cancel-action {
+          display         : inline-block;
+          vertical-align  : middle;
+          width           : 24px;
+          height          : 43px;
+          background      : transparent url('../../../../resources/img/ic-file-browser_add-item_button-cancel.png') no-repeat center center;
+          background-size : auto;
+        }
+      }
+    }
+  }
+
+  &__files-list {
+    width    : 100%;
+    height   : ~"calc(100% - @{b-deployment__breadcrumb-height})";
+    overflow : auto;
+
+    table {
+      width : 100%;
+    }
+
+    td {
+      white-space : nowrap;
+    }
+
+    td:last-child {
+      padding-right : 10px;
+    }
+
+    .b-deployment__files-list__item-property-col-width {
+      &-selected {
+        width     : 5%;
+        min-width : 50px;
+      }
+      &-type {
+        width     : 5%;
+        min-width : 50px;
+      }
+      &-name {
+        width     : 20%;
+        /*
+         *  In the short config mode "type: name: quick-delete" only visible,  so min-width should be:
+         *  [ currently its: 300px - 50px - 100px ]
+         */
+        min-width : calc( 100% - @b-deployment__files-list__item-property-col-width-type-size - @b-deployment__files-list__item-property-col-width-quick-delete-size );
+      }
+      &-size {
+        width     : 10%;
+        min-width : 100px;
+      }
+      &-user {
+        width     : 10%;
+        min-width : 150px;
+      }
+      &-group {
+        width     : 10%;
+        min-width : 150px;
+      }
+      &-permissions {
+        width     : 10%;
+        min-width : 150px;
+      }
+      &-date {
+        width     : 25%;
+        min-width : 150px;
+      }
+      &-quick-delete {
+        width     : 10%;
+        min-width : 100px;
+      }
+    }
+
+    &__header {
+      text-align    : left;
+      height        : 32px;
+      border-bottom : 1px solid #c7d0d9;
+
+      &__column-name {
+        color       : #364044;
+        white-space : nowrap;
+
+        &:hover {
+          color           : #364044;
+          text-decoration : none;
+        }
+      }
+
+      &__sort-column,
+      &__sort-column-reverse {
+        position     : relative;
+        bottom       : 1px;
+        display      : inline-block;
+        width        : 10px;
+        height       : 5px;
+        margin-right : 5px;
+        background   : url("../../../../resources/img/ic-hdfs-sort-column.png") no-repeat center;
+      }
+
+      &__sort-column-reverse {
+        background : url("../../../../resources/img/ic-hdfs-sort-column-reverse.png") no-repeat center;
+      }
+    }
+
+    &__item {
+      line-height   : 32px;
+      cursor        : pointer;
+      border-bottom : 1px solid #c7d0d9;
+
+      &:hover {
+        background-color : #E8F1FB;
+      }
+
+      &.selected {
+        background-color : #CBD3DC;
+      }
+
+      &_highlighted {
+        background-color : #137fea;
+      }
+
+      &_highlighted.selected {
+        background-color : #5782ea;
+      }
+    }
+
+    &__item-container {
+      padding-left: 45px;
+    }
+
+    &__item-property {
+      color : #494a4c;
+
+      &__ic-back {
+        display        : inline-block;
+        width          : 15px;
+        height         : 15px;
+        background     : url(../../../../resources/img/ic-hdfs-items-back.png) no-repeat center center;
+        vertical-align : middle;
+      }
+
+      &__selected {
+        display        : inline-block;
+        height         : 100%;
+        width          : 100%;
+        cursor         : default;
+        position       : relative;
+        vertical-align : middle;
+
+        input {
+          position  : absolute;
+          top       : 50%;
+          left      : 50%;
+          transform : translate(-50%, -50%);
+        }
+
+        // Note: firefox restriction (force standard behaviour)
+        // ::after  selector could be applied only to container element (input is not a container element)
+        &::after {
+          content          : '';
+          position  : absolute;
+          top: calc(50% - 1px);
+          left: calc( 50% - 1px);
+          transform : translate(-50%, -50%);
+          .icon-base(13px, 13px, '../../resources/img/ic-hdfs-items-list-checkbox.png');
+          background-color : #fff;
+        }
+
+        &.checked::after {
+          content          : '';
+          position  : absolute;
+          top: calc(50% - 1px);
+          left: calc( 50% - 1px);
+          transform : translate(-50%, -50%);
+          .icon-base(13px, 13px, '../../resources/img/ic-hdfs-items-list-checkbox-checked.png');
+          background-color : #fff;
+        }
+
+        &[disabled=disabled]::after {
+          content          : '';
+          position  : absolute;
+          top: calc(50% - 1px);
+          left: calc( 50% - 1px);
+          transform : translate(-50%, -50%);
+          .icon-base(13px, 13px, '../../resources/img/ic-hdfs-items-list-checkbox_disabled.png');
+          background-color : #fff;
+        }
+
+        &.checked[disabled=disabled]::after {
+          content          : '';
+          position         : absolute;
+          top: calc(50% - 1px);
+          left: calc( 50% - 1px);
+          transform : translate(-50%, -50%);
+          .icon-base(13px, 13px, '../../resources/img/ic-hdfs-items-list-checkbox_checked_disabled.png');
+          background-color : #fff;
+        }
+      }
+
+      &__name {
+        font-weight : bold;
+        max-width: 365px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        float: left;
+      }
+
+      &__type {
+        display        : inline-block;
+        width          : 20%;
+        height         : 100%;
+        vertical-align : middle;
+        background     : no-repeat 10px center;
+        text-align     : center;
+
+        &-dir {
+          background-image : url(../../../../resources/img/icon-folder.png);
+        }
+        &-file {
+          background-image : url(../../../../resources/img/icon-file.png);
+        }
+      }
+
+      &__item-quick-delete {
+        display        : none;
+        width          : 100%;
+        height         : 100%;
+        vertical-align : middle;
+        background     : url(../../../../resources/img/flowchart-widget-delete-module-icon.png) no-repeat 10px center;
+      }
+    }
+
+    &__item:hover &__item-property__item-quick-delete {
+      display : inline-block;
+    }
+  }
+
+  &__file-editor {
+    width    : 100%;
+    height   : ~"calc(100% - @{b-deployment__breadcrumb-height})";
+    overflow : auto;
+  }
+
+  &__actions {
+    position   : absolute;
+    bottom     : 0;
+    width      : 100%;
+    padding    : 5px 0 5px 25px;
+    background : #f3f6f9;
+
+    &__action {
+      position   : relative;
+      display    : inline-block;
+      cursor     : pointer;
+      padding    : 2px 12px 0 35px;
+      background : no-repeat 12px center;
+
+      &:hover:not(.disabled) {
+        background-color : #cfdce8;
+        text-decoration  : none;
+        border-radius    : 3px;
+      }
+
+      &-rename {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-rename.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-rename_disabled.png);
+        }
+      }
+
+      &-move {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-move.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-move_disabled.png);
+        }
+      }
+
+      &-paste {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-paste.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-paste_disabled.png);
+        }
+      }
+
+      &-exit-paste {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-cancel-paste.png);
+      }
+
+      &-copy {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-copy.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-copy_disabled.png);
+        }
+      }
+
+      &-chmod-chown {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-chmod-chown.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-chmod-chown_disabled.png);
+        }
+      }
+
+      &-download {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-download.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-download_disabled.png);
+        }
+      }
+
+      &-move-to-trash {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-move-to-trash.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-move-to-trash_disabled.png);
+        }
+      }
+
+      &-exit-file-editor {
+        background-image : url(../../../../resources/img/ic-hdfs-actions-exit-file-editor.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/ic-hdfs-actions-exit-file-editor_disabled.png);
+        }
+      }
+
+      &-save-file {
+        background-position : 5px;
+        background-image    : url(../../../../resources/img/flowchart-widget-save-module-icon.png);
+        &.disabled {
+          background-image : url(../../../../resources/img/flowchart-widget-save-module-icon_disabled.png);
+        }
+      }
+
+      &-link {
+        line-height : 28px;
+        color       : #494a4c;
+
+        &:hover {
+          text-decoration : none;
+        }
+      }
+
+      &.disabled &-link {
+        color : #B7B7B7;
+      }
+
+      &.disabled &__dropdown-icon {
+        background : url(../../../../resources/img/ic-hdfs-arrow-dropdown_disabled.png) no-repeat center center;
+      }
+
+      &__dropdown-icon {
+        display        : inline-block;
+        height         : 25px;
+        width          : 12px;
+        vertical-align : middle;
+        background     : url(../../../../resources/img/ic-hdfs-arrow-dropdown.png) no-repeat center center;
+      }
+
+      &__menu-options {
+        position   : absolute;
+        background : white;
+        z-index    : 1;
+        bottom     : 100%;
+        right      : 0;
+        width      : 150px;
+        border     : 1px solid #c7d0d9;
+        box-shadow : 0 0 1px #ccc;
+      }
+
+      &__menu-option {
+        width         : 100%;
+        border-bottom : 1px solid #c7d0d9;
+
+        &-link {
+          display         : inline-block;
+          width           : 100%;
+          color           : #000000;
+          text-decoration : none;
+          padding-left    : 8px;
+          font-size       : 14px;
+          line-height     : 36px;
+
+          &.disabled {
+            color  : #B7B7B7;
+            cursor : not-allowed;
+          }
+
+          &:hover,
+          &:focus,
+          &:active {
+            color           : #fff;
+            background      : #137fea;
+            text-decoration : none;
+          }
+        }
+      }
+    }
+  }
+
+  &__backdrop {
+    position   : absolute;
+    display    : block;
+    top        : 0;
+    left       : 0;
+    right      : 0;
+    bottom     : 0;
+    background : rgba(255, 255, 255, 0.7);
+    z-index    : 1;
+
+    &__spinner {
+      position  : absolute;
+      height    : 84px;
+      width     : 84px;
+      top       : 50%;
+      left      : 50%;
+      transform : translate(-50%, -50%);
+
+      &__top {
+        display    : block;
+        height     : 100%;
+        width      : 100%;
+        background : url("../../../../resources/img/logo_dap.png") no-repeat center center;
+        animation  : dap 1s infinite;
+      }
+
+      &__bottom {
+        display          : block;
+        position         : relative;
+        top              : -30px;
+        left             : 18px;
+        height           : 12px;
+        width            : 50%;
+        background-color : #000;
+        border-radius    : 50%;
+        animation        : shadow 1s infinite;
+      }
+    }
+  }
+
+  &__download-file-container {
+    width      : 1px;
+    height     : 1px;
+    visibility : hidden;
+  }
+
+  &__error-container {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    height          : ~"calc(100% - @{b-deployment__breadcrumb-height})";
+
+    &__error-description {
+      width      : 500px;
+      text-align : center;
+      font-size  : 23px;
+    }
+  }
+
+}
+
+.b-file-selector__files-list__item-property {
+  color       : #757A80;
+  font-size   : 12px;
+  font-weight : normal;
+}

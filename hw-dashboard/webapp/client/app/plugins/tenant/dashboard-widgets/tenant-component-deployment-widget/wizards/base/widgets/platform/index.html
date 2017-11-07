@@ -1,0 +1,28 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectPlatform">
+    <h2 class="b-create-service-wizard-step__title">{{ title() }}</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a platform name..."
+           ng-model="searchString"
+           focus-it="true"
+           navigable-list-input/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options"
+        navigable-list-items="platformsFiltered">
+
+        <li ng-repeat="p in platformsFiltered"
+            ng-class="{chosen: data.platform.id === p.id}">
+            <a class="b-create-service-wizard-step__options-item"
+               ng-click="selectPlatform(p)">
+                <i class="b-dashboard-platform-{{::p.type.toLowerCase()}}-icon"></i>
+                {{p.title}}
+            </a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="showValidationErrors">No platform is selected</span>
+    <div ng-if="platformsFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

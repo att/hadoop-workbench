@@ -1,0 +1,107 @@
+.alert-message {
+  border-radius : 3px;
+  border        : 1px solid #5e768e;
+  box-shadow    : 0 1px 3px 0 rgba(0, 0, 1, 0.15);
+  max-width     : 400px;
+  .clearfix
+}
+
+@close-icon-width : 20px;
+
+.alert-message {
+  &__header {
+    padding                 : 8px;
+    border-bottom           : 1px solid #b7c1ce;
+    border-top-left-radius  : 3px;
+    border-top-right-radius : 3px;
+
+    &__title {
+      color         : #333333;
+      font-size     : 13px;
+      font-weight   : 700;
+      // 28px estimated width of count badge
+      width         : ~"calc(100% - 28px - @{close-icon-width})";
+      white-space   : nowrap;
+      overflow      : hidden;
+      text-overflow : ellipsis;
+      cursor        : default;
+    }
+
+    &__count {
+      display: inline-block;
+      min-width: 10px;
+      padding: 3px 7px 2px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      font-style: normal;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      background-color: #777;
+      border-radius: 10px;
+      float: right;
+    }
+
+    &__close-icon {
+      .icon-base(16px, 16px, '../../resources/img/alert-close.png');
+      float  : right;
+      cursor : pointer;
+    }
+  }
+
+  &.confirm &__header {
+    background-color : #93c3f3;
+  }
+
+  &.success &__header {
+    background-color : #93c3f3;
+  }
+
+  &.warning &__header {
+    background-color : #fbe47b;
+  }
+
+  &.error &__header {
+    background-color : #fb967b;
+  }
+
+}
+
+.alert-message__content {
+  .clearfix;
+  padding          : 8px;
+  font-size        : 13px;
+  font-weight      : 400;
+  position         : relative;
+  background-color : #fff;
+  color            : #343434;
+  word-break       : break-all;
+
+  &.with-action {
+    padding-right : 32px
+  }
+
+  .alert-message__text-action-icon {
+    .icon-arrow-right();
+
+    position   : absolute;
+    right      : 8px;
+    top        : 50%;
+    margin-top : -8px;
+    cursor     : pointer;
+  }
+}
+
+.alert-message__buttons {
+  margin-top : 8px;
+
+  .btn {
+    min-width : 60px;
+
+    + .btn {
+      margin-left : 8px;
+    }
+  }
+}

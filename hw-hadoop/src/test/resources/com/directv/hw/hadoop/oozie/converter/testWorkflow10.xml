@@ -1,0 +1,150 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="UDC-NFL-UDM-Transform: ${nfl_table_name}">
+
+    <!--  Kerberos credentials  -->
+    <credentials>
+        <credential name='hive_cred' type='hive_cred'>
+            <property>
+                <name>hcat.metastore.uri</name>
+                <value>thrift://hdpgtwdv-msdc01.ds.dtveng.net:9083</value>
+            </property>
+            <property>
+                <name>hcat.metastore.principal</name>
+                <value>hive/_HOST@DS.DTVENG.NET</value>
+            </property>
+        </credential>
+    </credentials>
+
+    <!--  Start  -->
+    <start to="fork-get-datetime-criteria"/>
+
+    <!--  Fork to get load parameters: DATE_FROM, DATE_TO -->
+    <fork name="fork-get-datetime-criteria">
+        <path start="job-get-datetime-from"/>
+        <path start="job-get-datetime-to"/>
+    </fork>
+
+    <!--  Get param from status.file: DATE_FROM  -->
+    <action name="job-get-datetime-from">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>status-file.py</exec>
+            <argument>--file=${wf:conf("oozie.wf.application.path")}/conf/status.file</argument>
+            <argument>--action=GET</argument>
+            <argument>--parameter=nfl.udm.${nfl_table_name}.date.from</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/status-file.py#status-file.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="join-get-datetime-criteria"/>
+        <error to="job-failure-auditlog-record"/>
+    </action>
+
+    <!--  Calculate param: DATE_TO  -->
+    <action name="job-get-datetime-to">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>attribute.py</exec>
+            <argument>--attr</argument>
+            <argument>nfl.udm.${nfl_table_name}.date.to|trunc(now(), '%Y%m%d%H')|%Y-%m-%d-%H</argument>
+            <argument>--attr</argument>
+            <argument>unix_timestamp|now()|%s</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/attribute.py#attribute.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="join-get-datetime-criteria"/>
+        <error to="job-failure-auditlog-record"/>
+    </action>
+
+    <!--  Join from get parameters: DATE_FROM and DATE_TO  -->
+    <join name="join-get-datetime-criteria" to="job-run-udm-transformation" />
+
+    <!--  Run hive  -->
+    <action name="job-run-udm-transformation"  cred="hive_cred">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>hive-site.xml</job-xml>
+
+            <script>scripts/${nfl_table_name}-transformation.hql</script>
+            <param>DATABASE_NAME=${wf:conf("nfl.database.name")}</param>
+            <param>USERNAME=${wf:conf('user.name')}</param>
+
+            <param>SOURCE_BUSSINESS_UNIT=${wf:conf('nfl.udm.source.business.unit')}</param>
+            <param>DATA_PRODUCER=${wf:conf('nfl.udm.data.producer')}</param>
+            <param>EVENT_DATE=${wf:actionData('job-get-datetime-to')['unix_timestamp']}</param>
+            <param>DELIVERY_SCHEMA=${wf:conf("nfl.udm.delivery.schema")}</param>
+
+            <param>DATE_FROM=${wf:actionData('job-get-datetime-from')[concat('nfl.udm.', concat(wf:conf('nfl_table_name'), '.date.from'))]}</param>
+            <param>DATE_TO=${wf:actionData('job-get-datetime-to')[concat('nfl.udm.', concat(wf:conf('nfl_table_name'), '.date.to'))]}</param>
+        </hive>
+        <ok to="job-set-datetime-from"/>
+        <error to="job-failure-auditlog-record"/>
+    </action>
+
+    <!--  Set param in status.file: DATE_FROM  -->
+    <action name="job-set-datetime-from">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>status-file.py</exec>
+            <argument>--file=${wf:conf("oozie.wf.application.path")}/conf/status.file</argument>
+            <argument>--action=PUT</argument>
+            <argument>--parameter</argument>
+            <argument>nfl.udm.${wf:conf("nfl_table_name")}.date.from=${wf:actionData('job-get-datetime-to')[concat('nfl.udm.', concat(wf:conf('nfl_table_name'), '.date.to'))]}</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/status-file.py#status-file.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="end"/>
+        <error to="job-failure-auditlog-record"/>
+    </action>
+
+    <!--  End audit job: FAIL  -->
+    <action name="job-failure-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg> <arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>UDC_NFL_UDM_TR_04</arg>
+            <arg>-msg</arg><arg>${wf:name()} Workflow failed for table ${wf:conf("nfl_table_name")}, error message[${wf:errorMessage(wf:lastErrorNode())}]</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <kill name="fail">
+        <message>${wf:name()} workflow failed for table ${wf:conf("nfl_table_name")}, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+
+    <end name="end"/>
+
+</workflow-app>
+

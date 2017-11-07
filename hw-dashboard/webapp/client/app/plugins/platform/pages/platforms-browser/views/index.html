@@ -1,0 +1,151 @@
+<div class="b-platforms-browser">
+    <div ng-if="pageErrorMessage" class="b-platforms-browser__error">
+        <div class="b-platforms-browser__error__text">
+            {{pageErrorMessage}}
+        </div>
+    </div>
+    <div class="b-platforms-browser__left_widget">
+        <ul class="b-platforms-browser__left_widget__list" ng-show="!loading">
+            <li class="b-platforms-browser__left_widget__list__item" ng-repeat="p in platforms"
+            >
+                <div class="b-platforms-browser__left_widget__list__item__link" ng-click="selectPlatform(p)"
+                     ng-class="{'selected': selectedItem.id === p.id}">
+                    <span class="b-platforms-browser__left_widget__list__item__link__icon"
+                          ng-class="'icon-platform-' + p.type.toLowerCase()"></span>
+                    <span class="b-platforms-browser__left_widget__list__item__link__title">
+
+                        <a ng-if="p.api && p.api.host && p.api.protocol"
+                           class="b-platforms-browser__left_widget__list__item__link__title__link"
+                           ng-href="{{p.api.protocol + '://' + p.api.host + ':' + p.api.port}}"
+                           target="_blank"
+                        >{{p.title}}</a>
+
+                        <span ng-if="!(p.api && p.api.host && p.api.protocol)">{{p.title}}</span>
+
+                    </span>
+
+                    <span class="b-platforms-browser__left_widget__list__item__platform-status"
+                          ng-show="!p.isError"
+                    >
+                        <i class="b-platforms-browser__left_widget__list__item__platform-status_online"
+                           ng-show="p.isOnline"></i>
+
+                        <i class="b-platforms-browser__left_widget__list__item__platform-status_offline"
+                           ng-show="p.isOffline || (!p.isOnline && !p.isError && !p.isProvisioning && !p.isDestroying)"></i>
+
+                        <i class="b-platforms-browser__left_widget__list__item__platform-status_provisioning"
+                           ng-show="p.isProvisioning"></i>
+                        <span class="b-platforms-browser__left_widget__list__item__platform-status_provisioning-text"
+                              ng-show="p.isProvisioning"
+                              title="Provisioning ... {{p.statusProvisioningProgress}}%"
+                            >...{{p.statusProvisioningProgress}}%</span>
+
+                        <i class="b-platforms-browser__left_widget__list__item__platform-status_destroying"
+                           ng-show="p.isDestroying"></i>
+                        <span class="b-platforms-browser__left_widget__list__item__platform-status_destroying-text"
+                              ng-show="p.isDestroying"
+                              title="Destroying Platform"
+                        >Destroying ...</span>
+                        <span class="b-platforms-browser__left_widget__list__item__platform-status_destroying-text"
+                              ng-show="p.isDestroyed"
+                              title="Platform has been destroyed"
+                        >Destroyed</span>
+
+                    </span>
+
+                    <span ng-if="p.isError">
+                        <tooltip-icon ng-if="p.isError"
+                                      data="{{p.statusErrorMessage}}"
+                                      tooltip-class="b-platforms-browser__left_widget__list__item__platform-status_error"
+                        ></tooltip-icon>
+                    </span>
+
+
+                    <div class="clearfix"></div>
+                     <span class="b-platforms-browser__left_widget__list__item__platform-location" ng-show="p.location">
+                         <i ng-class="'b-platforms-browser__left_widget__list__item__platform-location__' + p.locationFiltered"></i>
+                         <span class="b-platforms-browser__left_widget__list__item__platform-location__text">{{p.location}}</span>
+
+                     </span>
+                    <!-- <a class="b-platforms-browser__left_widget__list__item__link__delete"
+                       ng-if="!p.installationId"
+                       ng-click="deletePlatformRecord(p)"
+                       title="Remove this record from hadoop workbench. Actual cluster will stay in cloud"
+                    ></a> -->
+                    <a class="b-platforms-browser__left_widget__list__item__link__delete"
+                       ng-show="platformWriteAccess"
+                       ng-click="deletePlatformRecord(p)"
+                       title="Remove this record from hadoop workbench. Actual cluster will stay in cloud"
+                    ></a>
+                    <ul class="b-platforms-browser__left_widget__list__item__link__property-list">
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Id</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{p.id}}</span>
+                        </li>
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Version</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{p.version}}</span>
+                        </li>
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Host</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{p.api.host}}</span>
+                        </li>
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Port</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{p.api.port}}</span>
+                        </li>
+                    </ul>
+                    <div class="b-platforms-browser__left_widget__list__item__link__buttons"
+                         ng-show="!p.isDestroyed"
+                    >
+                        <button class="btn btn-sm btn-default"
+                                ng-click="openClusters(p)"
+                                ng-disabled="p.isProvisioning || p.isDestroying"
+                                ng-show="isPlatformClustersCouldBeOpened(p)"
+                        >Open</button>
+                        <!-- should be disabled. -->
+<!--
+                        <button class="btn btn-sm btn-warning"
+                                ng-if="p.installationId"
+                                ng-disabled="p.isDestroying"
+                                ng-click="destroyPlatform(p)"
+                                title="Remove instance from the cloud"
+                        >Destroy</button>
+-->
+                        <!--<button class="btn btn-sm btn-default" ng-click="testConnectionApi(p)">Test API</button>-->
+                    </div>
+                </div>
+            </li>
+            <li class="b-platforms-browser__left_widget__list__item b-platforms-browser__left_widget__list__item_unsaved"
+                ng-if="newPlatform">
+                <div class="b-platforms-browser__left_widget__list__item__link"
+                     ng-click="selectPlatform(newPlatform)"
+                     ng-class="{'selected': selectedItem === newPlatform}">
+                    <span class="b-platforms-browser__left_widget__list__item__link__icon" ng-class="newPlatform.icon"></span>
+                    <span class="b-platforms-browser__left_widget__list__item__link__title">{{newPlatform.title}}</span>
+                    <a class="b-platforms-browser__left_widget__list__item__link__delete" ng-click="cancelNewPlatform()"></a>
+                    <ul class="b-platforms-browser__left_widget__list__item__link__property-list">
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Version</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{newPlatform.version}}</span>
+                        </li>
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Host</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{newPlatform.api.host}}</span>
+                        </li>
+                        <li class="b-platforms-browser__left_widget__list__item__link__property-list__item">
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__key">Port</span>
+                            <span class="b-platforms-browser__left_widget__list__item__link__property-list__item__value">{{newPlatform.api.port}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="b-oozie-plugin-widget-backdrop ng-hide" ng-show="loading">
+        <div class="b-oozie-plugin-widget-backdrop__spinner">
+            <div class="b-oozie-plugin-widget-backdrop__spinner__top"></div>
+            <div class="b-oozie-plugin-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

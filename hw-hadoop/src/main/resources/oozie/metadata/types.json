@@ -1,0 +1,87 @@
+{
+  "connectionWarnings": [
+    {
+      "name": "minOccurs",
+      "value": 1,
+      "from": "workflow-control",
+      "type": "out",
+      "connector": "out"
+    },
+    {
+      "name": "minOccurs",
+      "value": 1,
+      "to": "action",
+      "type": "in",
+      "connector": "in"
+    },
+    {
+      "name": "minOccurs",
+      "value": 1,
+      "from": "action",
+      "type": "out",
+      "connector": "ok"
+    },
+    {
+      "name": "minOccurs",
+      "value": 1,
+      "from": "action",
+      "type": "out",
+      "connector": "error"
+    }
+  ],
+  "typeWarnings": [],
+  "typeRestrictions": [
+    {
+      "name": "pattern",
+      "field": "id",
+      "value": "^[a-zA-Z_][a-zA-Z0-9_-]*$"
+    }
+  ],
+  "connectionRestrictions": [
+    {
+      "name": "maxOccurs",
+      "value": 1,
+      "from": "action",
+      "type": "out",
+      "connector": "ok"
+    },
+    {
+      "name": "maxOccurs",
+      "value": 1,
+      "from": "action",
+      "type": "out",
+      "connector": "error"
+    }
+  ],
+  "types": [
+    {
+      "name": "workflow-control",
+      "restrictions": [],
+      "warnings": [
+        {
+          "name": "MinOccurs",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "action",
+      "restrictions": [],
+      "warnings": [
+        {
+          "name": "MinOccurs",
+          "value": 0
+        }
+      ],
+      "connectors": {
+        "incoming": [
+          "in"
+        ],
+        "outgoing": [
+          "ok",
+          "error"
+        ]
+      }
+    }
+  ]
+}

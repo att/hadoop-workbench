@@ -1,0 +1,52 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+  <id>docker</id>
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <dependencySets>
+      <dependencySet>
+          <includes>
+              <include>com.directv.hw:hw-web:war</include>
+          </includes>
+          <outputDirectory>.</outputDirectory>
+          <outputFileNameMapping>hw.war</outputFileNameMapping>
+      </dependencySet>
+      <dependencySet>
+          <includes>
+              <include>com.directv.hw:hw-flume-web:zip</include>
+              <include>com.directv.hw:hw-cdh4-service:zip</include>
+              <include>com.directv.hw:hw-hdfs-web:zip</include>
+              <include>com.directv.hw:hw-oozie-web:zip</include>
+              <include>com.directv.hw:hw-oozie-service:zip</include>
+              <include>com.directv.hw:hw-platform-web:zip</include>
+              <include>com.directv.hw:hw-tenant-web:zip</include>
+              <include>com.directv.hw:hw-ssh-service:zip</include>
+              <include>com.directv.hw:hw-admin-web:zip</include>
+              <include>com.directv.hw:hw-provision-web:zip</include>
+              <include>com.directv.hw:hw-aws-service:zip</include>
+          </includes>
+          <outputDirectory>plugins</outputDirectory>
+      </dependencySet>
+  </dependencySets>
+
+  <fileSets>
+        <fileSet>
+            <directory>../hw-persistence/</directory>
+            <outputDirectory>scripts</outputDirectory>
+            <includes>
+                <include>create-test-hw.sql</include>
+                <include>create-db-hw.sql</include>
+            </includes>
+        </fileSet>
+      <fileSet>
+          <directory>../hw-persistence/src/main/scripts</directory>
+          <outputDirectory>scripts/flyway</outputDirectory>
+          <includes>
+              <include>*.sql</include>
+          </includes>
+      </fileSet>
+  </fileSets>
+</assembly>
+

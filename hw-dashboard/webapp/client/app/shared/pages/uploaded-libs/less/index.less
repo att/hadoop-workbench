@@ -1,0 +1,185 @@
+@buttons-height: 34px;
+.b-uploaded-libs {
+  position : relative;
+  height   : 100%;
+
+  &__header {
+    color         : #333333;
+    font-size     : 16px;
+    font-weight   : bold;
+    line-height   : 33px;
+    border-bottom : 1px solid #e3e7ec;
+    padding-left  : 10px;
+    height        : 34px;
+  }
+
+  &__content {
+    height   : ~'calc(100% - 67px)';
+    overflow : auto;
+  }
+
+  &__content-total {
+    overflow: hidden;
+    height: auto;
+    position: absolute;
+    bottom: @buttons-height;
+    width: 100%;
+    background-color: #F3F5F8;
+  }
+
+  &__list {
+    .list-unstyled;
+    margin  : 0;
+    padding : 0;
+
+    &__item {
+      .clearfix;
+      padding     : 5px 10px;
+      color       : #464646;
+      cursor      : default;
+      line-height : 24px;
+      position: relative;
+
+      &:hover,
+      &:active {
+        background : #137fea;
+        color      : #fff;
+        cursor     : pointer;
+      }
+
+      &:hover > &__delete-link {
+        display : inline-block;
+      }
+
+      &__text {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: top;
+        /**
+         * total 80px
+         * 56px - max width of file size ,
+         * 24 px - max width of delete icon
+         */
+        width: ~"calc(100% - 80px)";
+      }
+
+      &__size {
+        float:right;
+        padding-right: 10px;
+      }
+
+      &__delete-link {
+        .icon-delete-white;
+        margin-top : 4px;
+        display    : none;
+        float      : right;
+      }
+    }
+  }
+
+  &&_file-over {
+    &::after {
+      content          : 'Drop file here...';
+      position         : absolute;
+      top              : 0;
+      left             : 0;
+      right            : 0;
+      bottom           : 0;
+      background-color : rgba(251, 251, 251, 0.67);
+      z-index          : 10;
+      color            : rgb(72, 72, 72);
+      font-size        : 29px;
+      padding          : 50px;
+      font-weight      : 500;
+    }
+  }
+
+  &__buttons {
+    text-align : center;
+    color      : #333333;
+    border-top : 1px solid #e3e7ec;
+    font-size  : 0;
+    position   : absolute;
+    left       : 0;
+    bottom     : 0;
+    right      : 0;
+    height     : @buttons-height;
+
+    &__button-single {
+      width : 100%;
+    }
+
+    &__button {
+      display       : inline-block;
+      padding-right : 10px;
+
+      &:hover {
+        color  : #0A94EE;
+        cursor : pointer;
+      }
+
+      &:hover &__icon-push {
+        .icon-push_hover;
+      }
+
+      &:hover &__icon-pull {
+        .icon-pull_hover;
+      }
+
+      &:last-child {
+        padding-right : 0px;
+      }
+
+      &__icon-push {
+        .icon-el-push;
+      }
+
+      &__icon-pull {
+        .icon-el-pull;
+      }
+
+      &__text {
+        .text-after-icon;
+      }
+
+      &__upload-files {
+        position : relative;
+
+        &__icon-upload {
+          .icon-el-upload;
+        }
+
+        &:hover &__icon-upload {
+          .icon-upload_hover;
+        }
+
+        &__text {
+          .text-after-icon;
+        }
+
+        &__file-input {
+          position : absolute;
+          top      : 0;
+          left     : 0;
+          bottom   : 0;
+          right    : 0;
+          opacity  : 0;
+          width    : 100%;
+          cursor   : pointer;
+        }
+      }
+    }
+
+  }
+}
+
+.text-after-icon {
+  font-size      : 14px;
+  line-height    : 33px;
+  display        : inline-block;
+  vertical-align : middle;
+  padding-left   : 4px;
+  padding-right  : 4px;
+}

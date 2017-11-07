@@ -1,0 +1,65 @@
+<!--
+<div class="b-deployment__breadcrumb">
+    <div class="b-deployment__breadcrumb__actions" ng-show="true || !isFileEditorModeEnabled">
+        <div class="b-deployment__breadcrumb__quick-create-widget">
+            <div ng-show="true || config.quickCreateWidget.search && !displayQuickCreateItemWidget" class="b-deployment__breadcrumb__action">
+                <input class="b-deployment__breadcrumb__action-search-input" type="text" title="Search items"
+                       placeholder="Search "
+                       ng-model="$parent.searchStr"
+
+                />
+                &lt;!&ndash;ng-model="itemsFilter.searchString"&ndash;&gt;
+
+            </div>
+            <a ng-show="config.quickCreateWidget.openFileBrowser" ng-click="openHdfsBrowserWidget()"
+               class="b-deployment__breadcrumb__action__btn-open-hdfs-browser"></a>
+            <a ng-show="config.quickCreateWidget.folder && !displayQuickCreateItemWidget"
+               ng-click="showQuickCreateItemWidget('DIR')"
+               class="b-deployment__breadcrumb__action__btn-show-quick-create-folder"></a>
+            <a ng-show="config.quickCreateWidget.file && !displayQuickCreateItemWidget"
+               ng-click="showQuickCreateItemWidget('FILE')"
+               class="b-deployment__breadcrumb__action__btn-show-quick-create-file"></a>
+
+            <div ng-show="config.quickCreateWidget.upload && !displayQuickCreateItemWidget"
+                 class="b-deployment__breadcrumb__action__btn-quick-upload-file">
+                <input type="file" nv-file-select uploader="fileUploader"
+                       class="b-deployment__breadcrumb__action__upload-input">
+            </div>
+            <ul ng-if="true || showSearchFilter && availFilters" class="b-menu-search-items__list-container__filter"
+                ng-class="{'filter-style-inline': true || isSearchFilterStyleInline}"
+            >
+                <li ng-repeat="f in availFilters" ng-click="toggleFilter(f)"
+                    class="b-menu-search-items__list-container__filter__item"
+                    ng-class="{
+                               'b-menu-search-items__list-container__filter__item-active': f.isActive,
+                               'filter-style-inline': true || isSearchFilterStyleInline
+                               }"
+                >
+                    <a ng-if="::f.isTemplate"
+                    >
+                        <i class="icon-{{:: f.type.toLowerCase()}}-tenant"></i>
+                    </a>
+                    <a ng-if="::f.isDeployedComponent"
+                       class="b-menu-search-items__list-container__filter__item"
+                    >
+                        <i class="icon-{{::f.type.toLowerCase()}}-{{::f.platformType.toLowerCase()}}"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <div ng-show="displayQuickCreateItemWidget" class="b-deployment__breadcrumb__action__quick-create-item">
+                <input type="text" ng-model="tempItem.path" placeholder="Item name..."
+                       class="input b-deployment__breadcrumb__action__quick-create-item__input"
+                       focus-it="displayQuickCreateItemWidget"
+                       focus-it-delay="true"
+                       on-key-enter-callback="createItem()"
+                       on-key-escape-callback="hideQuickCreateItemWidget()"
+                />
+                <a ng-click="createItem()" class="b-deployment__breadcrumb__action__quick-create-item__btn-create-action"></a>
+                <a ng-click="hideQuickCreateItemWidget()"
+                   class="b-deployment__breadcrumb__action__quick-create-item__btn-cancel-action"></a>
+            </div>
+        </div>
+        <div class="b-deployment__breadcrumb__actions__backdrop" ng-show="error"></div>
+    </div>
+</div>-->

@@ -1,0 +1,56 @@
+.b-info-viewer {
+  height : 100%;
+  &__hide-icon {
+    .icon-base(24px, 24px, '../../resources/img/icon_hide_lpanel.png');
+
+    &:hover {
+      .icon-base(24px, 24px, '../../resources/img/icon_hide_lpanel_hover.png');
+    }
+  }
+
+  &__controls {
+    height        : 25px;
+    border-bottom : 1px solid #E3E7EC;
+    padding       : 0 3px;
+  }
+  &__content {
+    height : ~'calc(100% - 40px)';
+  }
+
+  &__control {
+    &&_hide {
+      float   : right;
+      display : block;
+    }
+    &&_edit {
+      float       : left;
+      display     : inline-block;
+      line-height : 24px;
+      font-weight : bold;
+      .icon-el-options-editor-widget();
+    }
+  }
+
+  &__node {
+    padding-left : 10px;
+  }
+  &__title {
+    font-weight : bold;
+  }
+
+  &__edit {
+    &__buttons {
+      padding     : 5px;
+      text-align : right;
+    }
+  }
+}
+
+.b-info-viewer__property:before, .b-info-viewer__property:after {
+  content : " ";
+  display : table;
+}
+
+.b-info-viewer__property:after {
+  clear : both;
+}

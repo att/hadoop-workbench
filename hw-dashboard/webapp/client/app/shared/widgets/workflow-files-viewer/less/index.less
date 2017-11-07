@@ -1,0 +1,116 @@
+.b-files-viewer {
+  padding : 8px;
+  .clearfix;
+
+  &__section {
+    width : 50%;
+    float : left;
+
+    &&_left {
+      padding-right : 8px;
+    }
+
+    &__title {
+      font-weight    : 700;
+      font-size      : 16px;
+      line-height    : 16px;
+      padding-bottom : 8px;
+    }
+
+    &__subtitle {
+      color       : #757a80;
+      font-size   : 14px;
+      font-weight : 400;
+    }
+
+    &__content {
+      border  : 1px solid #C7CFD8;
+      padding : 8px;
+    }
+  }
+
+  &__expandable-list {
+    &__header {
+      padding-left  : 30px;
+      position      : relative;
+      color         : #545a60;
+      font-size     : 14px;
+      font-weight   : bold;
+      border        : 1px solid #c7d0d9;
+      border-radius : 3px;
+      box-shadow    : 0 1px 2px 0 rgba(0, 0, 1, 0.1);
+      line-height   : 30px;
+      display       : block;
+      cursor        : pointer;
+      background    : linear-gradient(0deg, #e6ecf2 0%, #fafafa 100%);
+
+      &_disabled:after {
+        content    : "";
+        display    : block;
+        position   : absolute;
+        top        : 1px;
+        bottom     : 1px;
+        left       : 1px;
+        right      : 1px;
+        background : #fff;
+        opacity    : 0.5;
+      }
+
+      &__icon {
+        background-repeat   : no-repeat;
+        background-position : center center;
+        width               : 16px;
+        height              : 16px;
+        position            : absolute;
+        top                 : 50%;
+        left                : 6px;
+        margin-top          : -8px;
+      }
+
+      &__text::after {
+        content       : "";
+        position      : absolute;
+        top           : 10px;
+        right         : 8px;
+        display       : block;
+        border-left   : 5px solid #616366;
+        border-top    : 5px solid transparent;
+        border-bottom : 5px solid transparent;
+      }
+    }
+
+    &__content {
+      display : none;
+      padding : 0 4px;
+      .yes-select;
+    }
+
+    &_expanded > &__content {
+      display : block;
+    }
+
+    &_expanded > &__header {
+      background : #f6f8fa;
+    }
+
+    &_expanded > &__header > &__header__text::after {
+      top          : 13px;
+      border-top   : 5px solid #616366;
+      border-left  : 5px solid transparent;
+      border-right : 5px solid transparent;
+    }
+
+    &__item {
+      color       : #494a4d;
+      font-size   : 14px;
+      font-weight : 400;
+      line-height : 24px;
+      text-align  : left;
+      word-break  : break-all;
+    }
+  }
+
+  &__expandable-list + &__expandable-list > {
+    margin-top : 4px;
+  }
+}

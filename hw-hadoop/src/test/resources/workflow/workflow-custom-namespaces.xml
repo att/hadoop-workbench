@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow_0.5:workflow-app xmlns:ssh_0.2="uri:oozie:ssh-action:0.2" xmlns:ssh_0.1="uri:oozie:ssh-action:0.1" xmlns:hive_0.2="uri:oozie:hive-action:0.2" xmlns:hive_0.3="uri:oozie:hive-action:0.3" xmlns:hive_0.4="uri:oozie:hive-action:0.4" xmlns:shell_0.3="uri:oozie:shell-action:0.3" xmlns:sla="uri:oozie:sla:0.1 uri:oozie:sla:0.2" xmlns:email_0.2="uri:oozie:email-action:0.2" xmlns:distcp_0.2="uri:oozie:distcp-action:0.2" xmlns:hive_0.5="uri:oozie:hive-action:0.5" xmlns:sqoop_0.2="uri:oozie:sqoop-action:0.2" xmlns:distcp_0.1="uri:oozie:distcp-action:0.1" xmlns:sqoop_0.4="uri:oozie:sqoop-action:0.4" xmlns:sqoop_0.3="uri:oozie:sqoop-action:0.3" xmlns:workflow_0.5="uri:oozie:workflow:0.5" xmlns:shell_0.1="uri:oozie:shell-action:0.1" xmlns:shell_0.2="uri:oozie:shell-action:0.2" xmlns:ns18="uri:oozie:email-action:0.1" name="test">
+    <workflow_0.5:parameters/>
+    <workflow_0.5:global>
+        <workflow_0.5:job-tracker></workflow_0.5:job-tracker>
+        <workflow_0.5:name-node></workflow_0.5:name-node>
+        <workflow_0.5:configuration/>
+    </workflow_0.5:global>
+    <workflow_0.5:credentials/>
+    <workflow_0.5:start to="end_1"/>
+    <workflow_0.5:end name="end_1"/>
+</workflow_0.5:workflow-app>

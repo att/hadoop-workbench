@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.directv.hw</groupId>
+        <artifactId>hw</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>hw-web</artifactId>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <artifactId>hw-core</artifactId>
+            <groupId>com.directv.hw</groupId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>../hw-dashboard/target/webapp</directory>
+                        </resource>
+                    </webResources>
+                    <webappDirectory>target/webapp</webappDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.0.M0</version>
+
+                <configuration>
+                    <waitForChild>true</waitForChild>
+
+                    <!--jvm args for the forked process -->
+                    <jvmArgs>
+                        -Xmx1024m -Dpf4j.mode=development
+                        -Xdebug -Xrunjdwp:transport=dt_socket,address=9999,server=y,suspend=n
+                        <!-- -javaagent:.m2/repository/org/aspectj/aspectjweaver/1.8.9/aspectjweaver-1.8.9.jar-->
+                    </jvmArgs>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>pf4j.mode</name>
+                            <value>development</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>logback.configurationFile</name>
+                            <value>${env.HW_HOME}/conf/logback.xml</value>
+                        </systemProperty>
+                    </systemProperties>
+                    <webApp>
+                        <resourceBases>
+                            <dir>../hw-dashboard/target/webapp</dir>
+                        </resourceBases>
+                        <contextPath>/hw</contextPath>
+                    </webApp>
+                    <stopPort>9966</stopPort>
+                    <stopKey>stop</stopKey>
+                    <stopWait>10</stopWait>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

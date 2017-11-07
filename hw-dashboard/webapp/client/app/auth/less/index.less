@@ -1,0 +1,115 @@
+@width_fields: 260px;
+
+.b-auth-sign-in {
+  width         : calc( 90px + @width_fields);
+  background    : #fff;
+  border        : 1px solid #BCC4CC;
+  border-radius : 2px;
+  margin        : (@grid-margin * 2) auto 0 auto;
+  padding       : @grid-margin * 2;
+}
+
+.b-auth-sign-in_title {
+  margin       : 0 0 23px 0;
+  padding-left : 64px;
+  font-size    : 18px;
+  position     : relative;
+  line-height  : 45px;
+  text-align   : center;
+
+  .b-auth-sign-in_title__logo {
+    width      : 35px;
+    height     : 36px;
+    background : transparent url('../../../resources/img/logo.png') no-repeat;
+    display    : inline-block;
+    position   : absolute;
+    top        : 10px;
+    left       : 0;
+  }
+
+  .b-auth-sign-in_title__text {
+    padding-right : 50px;
+  }
+}
+
+.b-auth-sign-in_sign-in-btn {
+  padding : 5px 31px 5px 31px;
+}
+
+.b-auth-sign-in_btn-block {
+  margin-top : 18px;
+}
+
+.b-auth-sign-in_error {
+  color         : red;
+  border-radius : 3px;
+  border        : 1px solid red;
+  padding       : 10px;
+  margin-bottom : 15px;
+}
+
+.b-auth-sign-in_login {
+  position      : relative;
+  margin-bottom : @grid-margin;
+  display       : block;
+
+  .input-icon('../../../resources/img/icon_login.png');
+
+  &__input {
+    &:extend(.input);
+    width: 100%;
+  }
+}
+
+.form-input-validation-message {
+  margin : 5px 0 -10px;
+}
+
+.b-auth-sign-in_password {
+  position      : relative;
+  margin-bottom : @grid-margin;
+  display       : block;
+
+  .input-icon('../../../resources/img/icon_pass.png');
+
+  &__input {
+    &:extend(.input);
+    width: 100%;
+  }
+}
+
+.b-auth-sign-in_use-realm {
+  &-label {
+    display:inline-block;
+    vertical-align: top;
+    width: calc(@width_fields - 30px); /* live space for checkbox */
+    margin-left: 10px;
+    font-size: 14px;
+  }
+
+  &-checkbox {
+    position : relative;
+    top      : 2px;
+  }
+}
+
+.input-icon(@iconUrl) {
+  input {
+    padding-left : 32px;
+  }
+
+  &:after {
+    display    : block;
+    position   : absolute;
+    width      : 18px;
+    height     : 17px;
+    background : transparent url(@iconUrl);
+    top        : 7px;
+    left       : 9px;
+    content    : '';
+  }
+}
+
+.text-center {
+  text-align : center;
+}

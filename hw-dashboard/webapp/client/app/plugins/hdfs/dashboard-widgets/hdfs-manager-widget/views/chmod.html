@@ -1,0 +1,56 @@
+<div class="b-hdfs__widgets_chmod">
+    <h3 class="b-hdfs__widgets_chmod__title">Change permissions</h3>
+
+    <div>
+        <label class="b-hdfs__widgets_chmod__label">
+            Type
+            <select name="type" ng-model="selectedPermsOptionType" class="b-hdfs__widgets_chown__select">
+                <option value="owner">owner</option>
+                <option value="group">group</option>
+                <option value="others">others</option>
+            </select>
+        </label>
+    </div>
+
+    <ul class="list-unstyled b-hdfs__widgets_chmod__perms-types">
+        <li ng-repeat="(type, flag) in tempItem.permissions[selectedPermsOptionType]">
+            <label class="b-hdfs__widgets_chmod__checkbox-label">
+                {{type}}
+                <input type="checkbox" ng-model="tempItem.permissions[selectedPermsOptionType][type]" class="b-hdfs__widgets_chmod__checkbox"
+                       ng-class="{'checked': tempItem.permissions[selectedPermsOptionType][type]}"/>
+            </label>
+        </li>
+    </ul>
+
+    <div>
+        <label class="b-hdfs__widgets_chmod__checkbox-label">
+            Sticky
+            <input type="checkbox" ng-model="tempItem.permissions['sticky']" class="b-hdfs__widgets_chmod__checkbox"
+                   ng-class="{'checked': tempItem.permissions['sticky']}"/>
+        </label>
+    </div>
+    <div>
+        <label class="b-hdfs__widgets_chmod__checkbox-label">
+            Recursive
+            <input type="checkbox" ng-model="tempItem.recursive" class="b-hdfs__widgets_chmod__checkbox"
+                   ng-class="{'checked': tempItem.recursive}"/>
+        </label>
+    </div>
+
+    <div class="b-hdfs__right-side-widgets__buttons">
+        <button class="b-hdfs__right-side-widgets__cancel-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && hideWidgets()">
+            Cancel
+        </button>
+        <button class="b-hdfs__right-side-widgets__confirm-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && updateItems()">
+            Change
+        </button>
+
+        <span class="b-hdfs__right-side-widgets__requesting-spinner" ng-show="isRequesting">
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce1"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce2"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce3"></span>
+        </span>
+    </div>
+</div>

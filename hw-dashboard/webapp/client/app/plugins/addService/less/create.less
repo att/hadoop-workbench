@@ -1,0 +1,97 @@
+.b-create-service-wizard {
+  position : relative;
+  height   : 100%;
+  .clearfix;
+
+  &__loading {
+
+  }
+
+  .b-create-service-wizard__no-matches {
+    padding : 0 10px;
+  }
+}
+
+.b-create-service-wizard__steps {
+  position : relative;
+  height   : 100%;
+  width    : ~"calc(100% - @{dashboard-widget-right-section-width})";
+  float    : left;
+  padding  : 10px 25px 80px 13px;
+}
+
+.b-create-service-wizard__steps__buttons {
+  position : absolute;
+  bottom   : 25px;
+
+  & > .btn {
+    min-width : 112px;
+
+    + .btn {
+      margin-left : 5px;
+    }
+  }
+}
+
+.b-create-service-wizard__steps__validation-error {
+  display  : block;
+  bottom   : 10px;
+  position : absolute;
+  color    : #ff0000;
+}
+
+.b-create-service-wizard__steps__include-container {
+  height   : 100%;
+  position : relative;
+}
+
+.b-create-service-wizard__status-panel {
+  height      : 100%;
+  width       : @dashboard-widget-right-section-width;
+  float       : left;
+  position    : relative;
+  padding-top : 25px;
+  border-left : 1px solid #c7d0d9;
+}
+
+.b-create-service-wizard__status-list {
+  margin : 0 16px;
+}
+
+.b-create-service-wizard__status-panel__buttons {
+  position    : absolute;
+  text-align  : left;
+  width       : 100%;
+  bottom      : 25px;
+  margin-left : 20px;
+
+  & > .btn {
+    min-width : 112px;
+
+    + .btn {
+      margin-left : 5px;
+    }
+  }
+}
+
+.b-create-service-wizard__status-panel__status-line {
+  font-size : 14px;
+  color     : #333333;
+
+  &.b-create-service-wizard__status-panel__status-line_completed {
+    color : #757a80;
+  }
+}
+
+.b-create-tenant-wizard-label {
+  width       : 80px;
+  display     : inline-block;
+  font-size   : 16px;
+  color       : #545a60;
+  line-height : 32px;
+}
+
+.b-create-tenant-wizard-text {
+  margin-bottom : 5px;
+}
+

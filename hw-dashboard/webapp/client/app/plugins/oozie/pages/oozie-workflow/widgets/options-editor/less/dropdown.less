@@ -1,0 +1,80 @@
+@dropdown-item-line-height: 24px;
+@lines-per-dropdown: 8;
+
+.wrap-dd-select {
+  position            : relative;
+  width               : 100%;
+
+  // TODO(maximk): remove prefixes when autoprefixer will be added
+  -webkit-user-select : none;
+  -moz-user-select    : none;
+  user-select         : none;
+
+  cursor              : pointer;
+  outline             : none;
+
+  &:after {
+    content      : "";
+    position     : absolute;
+    top          : 10px;
+    right        : 7px;
+    display      : block;
+    border-top   : 4px solid #bcc4cc;
+    border-left  : 4px solid transparent;
+    border-right : 4px solid transparent;
+  }
+
+  &.active .dropdown {
+    display : block;
+  }
+
+  .dropdown-placeholder {
+    color      : #dde6f0;
+    font-style : italic;
+  }
+
+  .dropdown {
+    display    : none;
+
+    position   : absolute;
+    top        : 100%;
+    list-style : none;
+    padding    : 0;
+    width      : 100%;
+
+    max-height : @dropdown-item-line-height * @lines-per-dropdown;
+    overflow-x : hidden;
+    overflow-y : auto;
+
+    background : #fff;
+    border     : 1px solid rgba(0, 0, 0, 0.17);
+    box-shadow : 0 0 5px rgba(0, 0, 0, 0.1);
+
+    .dropdown-item {
+      > a {
+        display      : block;
+        color        : #3e4145;
+        padding-left : 7px;
+        font-size    : 14px;
+        line-height  : @dropdown-item-line-height;
+
+        &.is-selected {
+          color : #137fea;
+        }
+
+        &:hover {
+          color           : #fff;
+          background      : #137fea;
+          text-decoration : none;
+        }
+      }
+    }
+  }
+}
+
+// placeholder
+.wrap-dd-select > span.selected:empty:not(:focus):before {
+  content    : attr(placeholder-text);
+  color      : #dde6f0;
+  font-style : italic;
+}

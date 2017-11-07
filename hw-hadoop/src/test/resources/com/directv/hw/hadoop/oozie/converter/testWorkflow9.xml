@@ -1,0 +1,449 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="DMS-Broadband-Connected-Job">
+
+    <!-- Kerberos credentials -->
+    <credentials>
+        <credential name='hive_cred' type='hcat'>
+            <property>
+                <name>hcat.metastore.uri</name>
+                <value>thrift://hdpgtwdv-msdc01.ds.dtveng.net:9083</value>
+            </property>
+            <property>
+                <name>hcat.metastore.principal</name>
+                <value>hive/_HOST@DS.DTVENG.NET</value>
+            </property>
+        </credential>
+    </credentials>
+
+    <start to="job-start-auditlog-record"/>
+
+    <action name="job-start-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_BCJ_01</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job started</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+        </java>
+        <ok to="job-lock"/>
+        <error to="job-lock"/>
+    </action>
+
+    <!-- Lock the current WF instance -->
+    <action name="job-lock">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>lock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="fork-get-datetime-criteria"/>
+        <error to="auditlog-workflow-still-running"/>
+    </action>
+
+    <!--  Fork to get load parameters -->
+    <fork name="fork-get-datetime-criteria">
+        <path start="job-get-datetime-from-file"/>
+        <path start="job-get-datetime-calculated"/>
+    </fork>
+
+    <!--  Get param from status.file: DATE_FROM  -->
+    <action name="job-get-datetime-from-file">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>status-file.py</exec>
+            <argument>--file=${wf:conf("oozie.wf.application.path")}/conf/status.file</argument>
+            <argument>--action=GET</argument>
+            <argument>--parameter=dms.amslogevent.date.from</argument>
+            <argument>--parameter=dms.master.partition</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/status-file.py#status-file.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="join-get-datetime-criteria"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  Prepare bbv-callback/amslogevent data - get parameters  -->
+    <action name="job-get-datetime-calculated">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>attribute.py</exec>
+            <argument>--attr</argument>
+            <argument>dms.amslogevent.date.to|trunc(now(), '%Y%m%d%H')|%Y-%m-%d-%H</argument>
+            <argument>--attr</argument>
+            <argument>dms.delta.partition|now()|batch_date=%Y%m%d%H%M%S</argument>
+            <argument>--attr</argument>
+            <argument>dms.bbv-callback.stb.headers.date.from|trunc(now()-day(${wf:conf("dms.bbv-callback.config.total_day")}), '%Y%m%d')|%Y-%m-%d</argument>
+            <argument>--attr</argument>
+            <argument>dms.bbv-callback.stb.headers.date.to|trunc(now(), '%Y%m%d')|%Y-%m-%d</argument>
+            <argument>--attr</argument>
+            <argument>dms.bbv-callback.thresh_1|now()-day(${wf:conf("dms.bbv-callback.config.thresh_1")})|%s</argument>
+            <argument>--attr</argument>
+            <argument>dms.bbv-callback.thresh_2|now()-day(${wf:conf("dms.bbv-callback.config.thresh_2")})|%s</argument>
+            <argument>--attr</argument>
+            <argument>dms.bbv-callback.thresh_3|now()-day(${wf:conf("dms.bbv-callback.config.thresh_3")})|%s</argument>
+            <argument>--attr</argument>
+            <argument>dms.bbv-callback.current.timestamp|now()|%s</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/attribute.py#attribute.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="join-get-datetime-criteria"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  Join from get parameters: DATE_FROM and DATE_TO  -->
+    <join name="join-get-datetime-criteria" to="fork-load-staging-tables" />
+
+    <!--  Fork to get load parameters -->
+    <fork name="fork-load-staging-tables">
+        <path start="job-load-bbv-callback"/>
+        <path start="decision-load-ams"/>
+    </fork>
+
+    <!-- Load bbv-callback data - delta -->
+    <action name="job-load-bbv-callback" cred="hive_cred">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                <delete path="${nameNode}/${wf:conf('dms.bbv-callback.delta.path')}" />
+                <mkdir path="${nameNode}/${wf:conf('dms.bbv-callback.delta.path')}" />
+            </prepare>
+
+            <job-xml>hive-site.xml</job-xml>
+            <script>scripts/load-bbv-callback.hql</script>
+            <param>USERNAME=${wf:conf("user.name")}</param>
+            <param>DATABASE_NAME=${wf:conf("dms.database.name")}</param>
+
+            <param>TIER1WT=${wf:conf("dms.bbv-callback.config.tier_1_wt")}</param>
+            <param>TIER2WT=${wf:conf("dms.bbv-callback.config.tier_2_wt")}</param>
+            <param>TIER3WT=${wf:conf("dms.bbv-callback.config.tier_3_wt")}</param>
+            <param>CONNTHRESHWT=${wf:conf("dms.bbv-callback.config.conn_thresh_wt")}</param>
+
+            <param>THRESH_1=${wf:actionData('job-get-datetime-calculated')['dms.bbv-callback.thresh_1']}</param>
+            <param>THRESH_2=${wf:actionData('job-get-datetime-calculated')['dms.bbv-callback.thresh_2']}</param>
+            <param>THRESH_3=${wf:actionData('job-get-datetime-calculated')['dms.bbv-callback.thresh_3']}</param>
+
+            <param>CURRENT_TIMESTAMP=${wf:actionData('job-get-datetime-calculated')['dms.bbv-callback.current.timestamp']}</param>
+            <param>DATE_FROM=${wf:actionData('job-get-datetime-calculated')['dms.bbv-callback.stb.headers.date.from']}</param>
+            <param>DATE_TO=${wf:actionData('job-get-datetime-calculated')['dms.bbv-callback.stb.headers.date.to']}</param>
+        </hive>
+        <ok to="join-load-staging-tables"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!-- Decision: load AMS or clean staging -->
+    <decision name="decision-load-ams">
+        <switch>
+            <case to="job-load-amslogevent">
+                ${wf:conf("dms.load.amslogevent") eq "true"}
+            </case>
+            <case to="job-clean-amslogevent">
+                ${wf:conf("dms.load.amslogevent") eq "false"}
+            </case>
+            <default to="auditlog-job-failed"/>
+        </switch>
+    </decision>
+
+    <!-- Load amslogevent data - delta -->
+    <action name="job-load-amslogevent" cred="hive_cred">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+
+            <job-xml>hive-site.xml</job-xml>
+            <script>scripts/load-amslogevent.hql</script>
+            <param>USERNAME=${wf:conf("user.name")}</param>
+            <param>DATABASE_NAME=${wf:conf("dms.database.name")}</param>
+
+            <param>AMSLOGEVENT_DATABASE_NAME=${wf:conf("dms.amslogevent.database.name")}</param>
+            <param>AMSLOGEVENT_TABLENAME=${wf:conf("dms.amslogevent.table.name")}</param>
+            <param>AMSLOGEVENT_DELTA_PATH=${wf:conf("dms.amslogevent.delta.path")}</param>
+
+            <param>DATE_FROM=${wf:actionData('job-get-datetime-from-file')['dms.amslogevent.date.from']}</param>
+            <param>DATE_TO=${wf:actionData('job-get-datetime-calculated')['dms.amslogevent.date.to']}</param>
+        </hive>
+        <ok to="join-load-staging-tables"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!-- Clean amslogevent delta data -->
+    <action name="job-clean-amslogevent">
+        <fs>
+            <delete path="${nameNode}/${wf:conf('dms.amslogevent.delta.path')}"/>
+            <mkdir path="${nameNode}/${wf:conf('dms.amslogevent.delta.path')}"/>
+        </fs>
+        <ok to="join-load-staging-tables"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!-- All staging tables loaded -->
+    <join name="join-load-staging-tables" to="job-broadband-connected-mr" />
+
+    <action name="job-broadband-connected-mr">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                <delete path="${nameNode}/${wf:conf('dms.delta.staging.path')}_default" />
+            </prepare>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapred.input.dir</name>
+                    <value>${nameNode}/${wf:conf('dms.master.path')}/${wf:actionData('job-get-datetime-from-file')['dms.master.partition']},${nameNode}/${wf:conf('dms.amslogevent.delta.path')},${nameNode}/${wf:conf('dms.bbv-callback.delta.path')}</value>
+                </property>
+                <property>
+                    <name>mapred.output.dir</name>
+                    <value>${nameNode}/${wf:conf('dms.delta.staging.path')}_default</value>
+                </property>
+                <property>
+                    <name>mapred.mapper.class</name>
+                    <value>com.directv.dms.lib.BroadbandConnectedJob$Map</value>
+                </property>
+                <property>
+                    <name>mapred.reducer.class</name>
+                    <value>com.directv.dms.lib.BroadbandConnectedJob$Reduce</value>
+                </property>
+                <property>
+                    <name>mapred.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapred.output.value.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapred.output.format.class</name>
+                    <value>com.directv.dms.lib.BroadbandConnectedJob$MultiFileOutput</value>
+                </property>
+
+                <property>
+                    <name>dms.master.path</name>
+                    <value>${wf:conf('dms.master.path')}</value>
+                </property>
+                <property>
+                    <name>dms.delta.staging.path</name>
+                    <value>${wf:conf('dms.delta.staging.path')}</value>
+                </property>
+                <property>
+                    <name>dms.delta.partition</name>
+                    <value>${wf:actionData('job-get-datetime-calculated')['dms.delta.partition']}</value>
+                </property>
+            </configuration>
+        </map-reduce>
+        <ok to="fork-master-delta-post-processing"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  Fork to master/delta post processing -->
+    <fork name="fork-master-delta-post-processing">
+        <path start="job-delta-post-processing"/>
+        <path start="job-master-post-processing"/>
+    </fork>
+
+    <!-- Process delta files and send via SFTP -->
+    <action name="job-delta-post-processing">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>delta-post-processing.sh</exec>
+            <argument>${wf:conf('dms.delta.staging.path')}</argument>
+            <argument>${wf:conf('dms.sftp.export.path')}</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/delta-post-processing.sh#delta-post-processing.sh</file>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/sftp-client-1.0.0#sftp-client-1.0.0</file>
+        </shell>
+        <ok to="join-master-delta-post-processing"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!-- Process master files and check master history. Set param in status.file -->
+    <action name="job-master-post-processing">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>master-post-processing.sh</exec>
+            <argument>${wf:conf('dms.master.path')}</argument>
+            <argument>${wf:conf('dms.master.history.limit')}</argument>
+
+            <argument>${wf:conf("dms.load.amslogevent")}</argument>
+            <argument>${wf:conf("oozie.wf.application.path")}/conf/status.file</argument>
+            <argument>dms.amslogevent.date.from=${wf:actionData('job-get-datetime-from-file')['dms.amslogevent.date.from']}</argument>
+            <argument>dms.amslogevent.date.to=${wf:actionData('job-get-datetime-calculated')['dms.amslogevent.date.to']}</argument>
+
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/master-post-processing.sh#master-post-processing.sh</file>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/status-file.py#status-file.py</file>
+        </shell>
+        <ok to="join-master-delta-post-processing"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!-- End of processing -->
+    <join name="join-master-delta-post-processing" to="auditlog-job-completed" />
+
+    <!--  AuditLog message: Workflow is still running  -->
+    <action name="auditlog-workflow-still-running">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_BCJ_04</arg>
+            <arg>-msg</arg><arg>${wf:name()} Workflow is still running</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <!--  AuditLog message: Job comleted  -->
+    <action name="auditlog-job-completed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_BCJ_02</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job completed</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+        </java>
+        <ok to="job-unlock-completed"/>
+        <error to="job-unlock-completed"/>
+    </action>
+
+    <!-- Completed(ok): unlock the current WF instance -->
+    <action name="job-unlock-completed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>unlock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="end"/>
+        <error to="end"/>
+    </action>
+
+    <!--  AuditLog message: Job failed with error  -->
+    <action name="auditlog-job-failed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg> <arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_BCJ_03</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="job-unlock-failed"/>
+        <error to="job-unlock-failed"/>
+    </action>
+
+    <!-- Failed(fail): unlock the current WF instance -->
+    <action name="job-unlock-failed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>unlock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <kill name="fail">
+        <message>${wf:name()} job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+
+    <end name="end"/>
+
+</workflow-app>
+

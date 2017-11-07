@@ -1,0 +1,215 @@
+<div class="b-oozie-jobs yes-select">
+    <div class="b-oozie-jobs__controls">
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_execute pull-left"
+           ng-click="openFormCreateNewJob()" title="Create new job"></a>
+
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_refresh pull-left"
+           ng-click="refreshJobs()"></a>
+
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_hide b-info-viewer__hide-icon pull-right"
+           ng-click="hide()">
+        </a>
+
+        <label class="b-oozie-jobs__control b-oozie-jobs__control_auto-refresh  pull-right">
+            <input type="checkbox" ng-model="isAutoRefresh" class="checkbox" ng-class="{'checked': isAutoRefresh}"/>
+            Auto refresh
+        </label>
+
+    </div>
+    <div ng-show="error && !newJobFormVisible" class="b-oozie-jobs__error-message-container" ng-attr-title="{{error.message}}">
+        {{error.message}}
+    </div>
+    <div class="b-oozie-jobs__content"
+         ng-class="{
+                    'b-oozie-jobs__content_overlay': error && !newJobFormVisible,
+                    'b-oozie-jobs__content_with-top-message': error && !newJobFormVisible
+                }">
+
+        <ul class="b-oozie-jobs__list"
+            ng-show="!newJobFormVisible">
+            <li class="b-oozie-jobs__list__item"
+                ng-repeat="job in jobs track by job.id"
+                ng-class="{
+                    'active':selectedJob.id === job.id
+                }">
+                <div class="b-oozie-jobs__list__item__content" ng-click="selectJob(job, true)"
+                     context-menu=""
+                     data-target="menu-{{job.id}}"
+                     ng-attr-title="{{job.id}} : {{job.status}}">
+                    <!--only created jobs (with ID) can be expanded-->
+                    <span class="b-oozie-jobs__list__item__content__expand"
+                          title="Show more info"
+                          ng-click="toggleExpandJob($event, job)"
+                          ng-class="{
+                                'b-oozie-jobs__list__item__content__expand_inactive': !job.id
+                            }">
+                        <span class="b-oozie-jobs__list__item__content__expand__icon"
+                              ng-class="{
+                                    'b-oozie-jobs__list__item__content__expand__icon_expanded': expandedJobs[job.id]
+                                }">
+                        </span>
+                    </span>
+                    <span class="b-oozie-jobs__list__item__content__text">
+                        {{job.createdTime.toLocaleString() || 'Creating...'}}</span>
+
+                    <span class="b-oozie-jobs__list__item__content__icons">
+
+                        <span class="b-oozie-jobs__list__item__content__icons__icon"
+                              ng-class="{
+                                'b-oozie-jobs__list__item__content__icons__icon_success': isSucceeded(job),
+                                'b-oozie-jobs__list__item__content__icons__icon_running': isRunning(job),
+                                'b-oozie-jobs__list__item__content__icons__icon_error':isFailed(job),
+                                'b-oozie-jobs__list__item__content__icons__icon_suspended':isSuspended(job),
+                                'b-oozie-jobs__list__item__content__icons__icon_unknown':!isSucceeded(job) && !isFailed(job) && !isRunning(job)
+                              }"></span>
+
+                    </span>
+                </div>
+                <div class="b-oozie-jobs__list__item__full-content" ng-show="expandedJobs[job.id]">
+                    <div class="b-oozie-jobs__list__item__full-content__line">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">ID</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">{{job.id}}</div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Status</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">{{job.status}}</div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">User</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">{{job.user}}</div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Created at</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">
+                            {{job.createdTime.toLocaleString()}}
+                        </div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Started at</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">
+                            {{job.startTime.toLocaleString()}}
+                        </div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Finished at</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">
+                            {{job.endTime === null ? "" : job.endTime.toLocaleString()}}
+                        </div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line" ng-hide="job.isCoordinator">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Execution time</div>
+                        <div ng-if="job.runningTimeSeconds != null" class="b-oozie-jobs__list__item__full-content__line__value">
+                            {{ job.runningTimeSeconds | secondsToDateTime | date:'HH:mm:ss' }}
+                        </div>
+                        <div ng-if="job.runningTimeSeconds == null" class="b-oozie-jobs__list__item__full-content__line__value">
+                        </div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line" ng-show="job.isCoordinator && job.nextMaterializedTime">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Next Materialized</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">
+                            {{job.nextMaterializedTime.toLocaleString()}}
+                        </div>
+                    </div>
+                    <div class="b-oozie-jobs__list__item__full-content__line" ng-show="job.isCoordinator && job.lastAction">
+                        <div class="b-oozie-jobs__list__item__full-content__line__key no-select">Last Action</div>
+                        <div class="b-oozie-jobs__list__item__full-content__line__value">
+                            {{job.lastAction.toLocaleString()}}
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="b-dropdown-menu" role="menu" id="menu-{{job.id}}">
+                    <li ng-hide="!job || job.state !== states.CREATED">
+                        <a tabindex="1"
+                           ng-click="runJobAction(job, 'start')">Start</a>
+                    </li>
+                    <li>
+                        <a tabindex="2"
+                           ng-click="runJobAction(job, 'suspend')">Suspend</a>
+                    </li>
+                    <li>
+                        <a tabindex="3"
+                           ng-click="runJobAction(job, 'resume')">Resume</a>
+                    </li>
+                    <li>
+                        <a tabindex="4"
+                           ng-click="runJobAction(job, 'kill')">Kill</a>
+                    </li>
+<!--
+                    <li>
+                        <a tabindex="5"
+                           ng-click="runJobAction(job, 'rerun')">Rerun</a>
+                    </li>
+-->
+                    <!--
+                                        <li>
+                                            <a tabindex="6"
+                                               ng-click="runJobAction(job, 'dryrun')">Dryrun</a>
+                                        </li>
+                                        <li>
+                                            <a tabindex="7"
+                                               ng-click="runJobAction(job, 'change')">Change</a>
+                                        </li>
+                    -->
+                </ul>
+            </li>
+        </ul>
+
+        <div class="b-oozie-jobs__new-job"
+             ng-show="newJobFormVisible">
+            <div class="b-oozie-jobs__new-job__message">
+                Are you sure you want to execute workflow "{{workflow.info.renderedName}}"?
+            </div>
+            <div class="b-oozie-jobs__new-job__buttons">
+                <button ng-show="isJobTypeWorkflow"
+                        type="submit"
+                        class="btn btn-default btn-md b-oozie-jobs__new-job__buttons__button"
+                        ng-click="createNewWorkflowJob()">Execute Workflow</button>
+                <button ng-show="isJobTypeCoordinator && isCoordinatorPossible"
+                        type="submit"
+                        class="btn btn-default btn-md b-oozie-jobs__new-job__buttons__button"
+                        ng-click="createNewCoordinatorJob()">Execute Coordinator</button>
+                <button class="btn btn-secondary btn-md b-oozie-jobs__new-job__buttons__button"
+                        ng-click="cancelCreateNewJob()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="b-oozie-jobs__bottom-controls">
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_start"
+           ng-click="runJobAction(selectedJob, 'start')"
+           title="start"
+           ng-disabled="!selectedJob || selectedJob.state !== states.CREATED"></a>
+
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_suspend"
+           ng-click="runJobAction(selectedJob, 'suspend')"
+           title="suspend"
+           ng-disabled="!selectedJob || selectedJob.state === states.STARTED"></a>
+
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_resume"
+           ng-click="runJobAction(selectedJob, 'resume')"
+           title="resume"
+           ng-disabled="!selectedJob || selectedJob.state === states.STOPPED"></a>
+
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_kill"
+           ng-click="runJobAction(selectedJob, 'kill')"
+           title="kill"
+           ng-disabled="!selectedJob"></a>
+
+<!--
+        <a class="b-oozie-jobs__control b-oozie-jobs__control_rerun"
+           ng-click="runJobAction(selectedJob, 'rerun')"
+           title="rerun"
+           ng-disabled="!selectedJob"></a>
+-->
+    </div>
+
+    <div class="b-widget-backdrop"
+         style="top: 25px;"
+         ng-show="requesting">
+        <div class="b-widget-backdrop__spinner">
+            <div class="b-widget-backdrop__spinner__top"></div>
+            <div class="b-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

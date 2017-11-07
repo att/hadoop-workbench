@@ -1,0 +1,69 @@
+<div class="b-user-settings__access-keys">
+    <h1 class="b-user-settings__access-keys__title">
+        Access keys
+        <a ng-click="showAddKeyForm()" class="b-user-settings__access-keys__create-key-btn" ng-show="!showAddKeyFormFlag">
+            Add key
+        </a>
+    </h1>
+
+    <div>
+        <div ng-show="showAddKeyFormFlag" class="b-user-settings__access-keys__new-item">
+            <div class="b-user-settings__access-keys__new-item-form">
+                <form novalidate name="newItemForm">
+                    <div class="b-user-settings__access-keys__new-item__fields">
+                        <div class="b-user-settings__access-keys__new-item__principal">
+                            <input type="text" name="principal" ng-model="key.principal" placeholder="Principal..."
+                                   class="b-config-properties-editor__new-item__input"
+                                   required rpattern="/^(\w+\.){0,}(\w+\/)?(\w+\.){0,}\w+@\w+(\.\w+){0,}$/" maxlength="255">
+                        </div>
+                        <span class="b-user-settings__access-keys__new-item-form__input-error"
+                              ng-show="newItemForm.principal.$error.required && (newItemForm.principal.$touched || showValidationErrors)">required</span>
+                        <span class="b-user-settings__access-keys__new-item-form__input-error"
+                              ng-show="newItemForm.principal.$error.pattern && !newItemForm.principal.$error.required (newItemForm.principal.$touched || showValidationErrors)">
+                              Kerberos principal is invalid
+                        </span>
+                        <div class="b-user-settings__access-keys__new-item__principal">
+                            <input type="password" name="password" ng-model="key.password" placeholder="Password..."
+                                   class="b-config-properties-editor__new-item__input" required>
+                            <span class="b-user-settings__access-keys__new-item-form__input-error"
+                                  ng-show="newItemForm.password.$error.required && (newItemForm.password.$touched || showValidationErrors)">required</span>
+                        </div>
+                    </div>
+                    <div class="b-user-settings__access-keys__new-item__buttons">
+                        <button class="btn btn-md btn-default" ng-click="saveKey()" type="submit">Add</button>
+                        <button class="btn btn-md btn-secondary" ng-click="hideAddKeyForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div ng-show="!showAddKeyFormFlag" class="b-user-settings__access-keys__content">
+            <ul class="b-user-settings__access-keys__keys-list list-unstyled">
+                <li class="b-user-settings__access-keys__keys-list-item" ng-repeat="key in keys">
+                    <div class="b-user-settings__access-keys__keys-list-item__key">
+                        <span class="b-user-settings__access-keys__keys-list-item__content">{{key.name}}</span>
+                    </div>
+                    <div class="b-user-settings__access-keys__keys-list-item__action">
+                        <a class="b-user-settings__access-keys__keys-list-item__remove-link"
+                           ng-click="removeKey(key)"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="b-user-settings__access-keys__upload-files">
+            <i class="b-user-settings__access-keys__upload-files__icon"></i>
+
+            <div class="b-access-keys__upload-files__text">Upload files</div>
+            <input class="b-access-keys__upload-files__file-input" type="file" uploader="fileUploader"
+                   nv-file-select="">
+        </div>
+    </div>
+
+    <div class="b-user-settings-widget__backdrop ng-hide" ng-show="requesting">
+        <div class="b-user-settings-widget__backdrop__spinner">
+            <div class="b-user-settings-widget__backdrop__spinner__top"></div>
+            <div class="b-user-settings-widget__backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

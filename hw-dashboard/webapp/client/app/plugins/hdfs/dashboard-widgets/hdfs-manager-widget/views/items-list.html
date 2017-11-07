@@ -1,0 +1,199 @@
+<div class="b-hdfs__files-list" ng-show="!isFileEditorModeEnabled && !isRequesting" scroll-top-on-change="files"
+     scroll-to="{{ focusedRowIndex - focusedRowHeaderIndexConst }}" st-selector="tr" scroll-to-padding="1"
+     in-view-container
+     infinite-scroll
+     infinite-scroll-callback="loadMoreFilteredItems()"
+     infinite-scroll-distance="2"
+
+     pause-watchers-in-list
+     pause-watchers-in-list-pause-condition-callback="pauseConditionCallback"
+     pause-watchers-in-list-when="{{ inViewCheckPassed * renderFinished * ((files.length > defaultitemsListLimit) ? 1 : 0) }}"
+
+>
+
+    <table>
+        <colgroup>
+            <col span="1" class="b-hdfs__files-list__item-property-col-width-selected" ng-if="config.actions">
+            <col ng-show="::config.columns.indexOf('type') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-type">
+            <col ng-show="::config.columns.indexOf('name') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-name">
+            <col ng-show="::config.columns.indexOf('size') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-size">
+            <col ng-show="::config.columns.indexOf('user') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-user">
+            <col ng-show="::config.columns.indexOf('group') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-group">
+            <col ng-show="::config.columns.indexOf('permissions') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-permissions">
+            <col ng-show="::config.columns.indexOf('date') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-date">
+            <col ng-show="::config.columns.indexOf('quickDelete') !== -1" span="1"
+                 class="b-hdfs__files-list__item-property-col-width-quick-delete">
+        </colgroup>
+        <thead>
+        <tr class="b-hdfs__files-list__header"
+            ng-class="{
+                'b-hdfs__files-list__item_highlighted': isHeaderRowSelected($index)
+                }"
+        >
+            <th ng-show="::config.actions">
+                <label class="b-hdfs__files-list__item-property__selected" ng-click="$event.stopPropagation()" ng-class="{'checked':allItemsSelected}">
+                    <input ng-disabled="isMoveModeEnabled" type="checkbox" ng-click="toggleSelectEveryItem()">
+                </label>
+            </th>
+            <th ng-show="::config.columns.indexOf('type') !== -1">
+                <a ng-click="sortType = 'type'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    Type
+                    <i ng-show="sortType == 'type' && !sortReverse" class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'type' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('name') !== -1">
+                <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    Name
+                    <i ng-show="sortType == 'label' && !sortReverse"
+                       class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'label' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('size') !== -1">
+                <a ng-click="sortType = 'bytes'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    Size
+                    <i ng-show="sortType == 'bytes' && !sortReverse"
+                       class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'bytes' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('user') !== -1">
+                <a ng-click="sortType = 'owner'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    User
+                    <i ng-show="sortType == 'owner' && !sortReverse"
+                       class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'owner' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('group') !== -1">
+                <a ng-click="sortType = 'group'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    Group
+                    <i ng-show="sortType == 'group' && !sortReverse"
+                       class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'group' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('permissions') !== -1">
+                <a ng-click="sortType = 'permissions.toOctal()'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    Permissions
+                    <i ng-show="sortType == 'permissions.toOctal()' && !sortReverse"
+                       class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'permissions.toOctal()' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('date') !== -1">
+                <a ng-click="sortType = 'date'; sortReverse = !sortReverse"
+                   class="b-hdfs__files-list__header__column-name">
+                    Date
+                    <i ng-show="sortType == 'date' && !sortReverse" class="b-hdfs__files-list__header__sort-column"></i>
+                    <i ng-show="sortType == 'date' && sortReverse"
+                       class="b-hdfs__files-list__header__sort-column-reverse"></i>
+                </a>
+            </th>
+            <th ng-show="::config.columns.indexOf('quickDelete') !== -1">
+                <label></label>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="isDirUpRowVisible()" class="b-hdfs__files-list__item"
+            ng-class="{
+                'b-hdfs__files-list__item_highlighted': isDirUpRowSelected()
+                }"
+            ng-click="upDir()">
+            <td ng-show="::config.actions"></td>
+            <td>
+                <div class="b-hdfs__files-list__item-property__type b-hdfs__files-list__item-property__type-dir"></div>
+            </td>
+            <td colspan="7"><a class="b-hdfs__files-list__item-property b-hdfs__files-list__item-property__name">
+                <i class="b-hdfs__files-list__item-property__ic-back"></i>
+            </a></td>
+        </tr>
+        <tr ng-repeat="
+                    item in $parent.$parent.filesFilteredReference = (files
+                                            | orderBy:sortType:sortReverse
+                                            | filter:{label: itemsFilter.searchString}
+                                            | hdfsFoldersOnlyFilter:config.foldersOnly
+                                            | limitTo: itemsListLimit)
+                    track by fileTrackByItemExpression($index, item)"
+            ng-show="!requesting"
+            in-view="containerLineInView($index, $inview, $inviewpart, item, $isLastCheckedItem)"
+            class="b-hdfs__files-list__item"
+            ng-class="{
+                'selected':selectedItems.indexOf(item) !== -1,
+                'b-hdfs__files-list__item_highlighted': isFileRowSelected($index)
+                }"
+            on-finish-render="fireUpOnFinishRenderFileList"
+            focus-it="isFileRowSelected($index) && !requesting" focus-it-delay="true"
+            ng-click="itemClicked(item)">
+
+            <td ng-show="::config.actions">
+                <label class="b-hdfs__files-list__item-property__selected" ng-click="$event.stopPropagation()"
+                       ng-class="{'checked':selectedItems.indexOf(item) !== -1}">
+                    <input ng-disabled="isMoveModeEnabled" type="checkbox" ng-click="toggleSelect($event, item)"
+                           title="selected item">
+                </label>
+            </td>
+            <td ng-show="::config.columns.indexOf('type') !== -1">
+                <span class="b-hdfs__files-list__item-property b-hdfs__files-list__item-property__type"
+                      ng-class="'b-hdfs__files-list__item-property__type-' + item.type.toLowerCase()"
+                      title="{{::item.type}}">&nbsp;</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('name') !== -1">
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-hdfs__files-list__item-property b-hdfs__files-list__item-property__name"
+                      title="{{::item.label}}">{{::item.label}}</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('size') !== -1">
+                <span class="b-hdfs__files-list__item-property"
+                      ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      title="{{::item.size}}">{{::item.size}}</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('user') !== -1">
+                <span class="b-hdfs__files-list__item-property"
+                      ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      title="{{::item.owner}}">{{::item.owner}}</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('group') !== -1">
+                <span class="b-hdfs__files-list__item-property"
+                      ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      title="{{::item.group}}">{{::item.group}}</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('permissions') !== -1">
+                <span class="b-hdfs__files-list__item-property"
+                      ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      title="{{item.permissions.toCode()}}">{{item.permissions.toCode()}}</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('date') !== -1">
+                <span class="b-hdfs__files-list__item-property"
+                      ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      title="{{::item.date.toString('MMMM dd, yyyy hh:mm:ss TT')}}">{{::item.date.toString("MMMM dd, yyyy hh:mm:ss TT")}}</span>
+            </td>
+            <td ng-show="::config.columns.indexOf('quickDelete') !== -1">
+                <a class="b-hdfs__files-list__item-property b-hdfs__files-list__item-property__item-quick-delete"
+                   ng-click="quickDeleteItem($event, item)"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

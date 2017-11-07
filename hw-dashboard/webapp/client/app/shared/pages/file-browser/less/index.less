@@ -1,0 +1,150 @@
+.b-file-browser {
+  height : 100%;
+
+  &__controls {
+    height  : 30px;
+    border-bottom : 1px solid #E3E7EC;
+    padding : 3px 3px 0;
+  }
+  &__content {
+    height : ~'calc(100% - 30px)';
+    overflow : auto;
+    width    : 100%;
+    padding  : 4px 0;
+  }
+
+  &__control {
+    &&_hide {
+      float   : right;
+      display : block;
+    }
+
+    &_add-item {
+      float         : left;
+      display       : block;
+      border-radius : 3px;
+      border        : none;
+      width         : ~'calc(100% - 48px)';
+      outline       : none;
+      padding-left : 5px;
+
+      &_input {
+        width          : ~'calc(100% - 65px)';
+        height         : 21px;
+        vertical-align : middle;
+        line-height    : 20px;
+        font-size      : 13px;
+      }
+
+      &_button-save {
+        &:hover {
+          text-decoration : none;
+        }
+        &-icon {
+          .icon-base(24px, 24px, '../../resources/img/ic-file-browser_add-item_button-save.png');
+
+          &:hover {
+            .icon-base(24px, 24px, '../../resources/img/ic-file-browser_add-item_button-save_hover.png');
+          }
+        }
+      }
+
+      &_button-cancel {
+        &:hover {
+          text-decoration : none;
+        }
+        &-icon {
+          .icon-base(24px, 24px, '../../resources/img/ic-file-browser_add-item_button-cancel.png');
+
+          &:hover {
+            .icon-base(24px, 24px, '../../resources/img/ic-file-browser_add-item_button-cancel_hover.png');
+          }
+        }
+      }
+    }
+
+    &&_add {
+      float    : left;
+      display  : block;
+      position : relative;
+    }
+
+    &_add_icon {
+      .icon-base(24px, 24px, '../../resources/img/add-icon_normal.png');
+
+      &:hover {
+        .icon-base(24px, 24px, '../../resources/img/add-icon_hover.png');
+      }
+      &:active {
+        .icon-base(24px, 24px, '../../resources/img/add-icon_press.png');
+      }
+    }
+
+    &.open > &_add_icon {
+      .icon-base(24px, 24px, '../../resources/img/add-icon_press.png');
+    }
+
+    &.open {
+      background-color : #e6ecf2;
+    }
+
+    &__dropdown-menu {
+      position : absolute;
+      top      : 100%;
+      left     : 0;
+      margin   : 0;
+    }
+
+    &_search_clean {
+      position   : absolute;
+      top        : 6px;
+      right      : 32px;
+      width      : 12px;
+      height     : 12px;
+      background : url("../../../../../resources/img/placeholder-tip-icon.png") no-repeat left top scroll;
+      cursor     : pointer;
+    }
+  }
+
+  &__tree {
+    & > &__children > &__children__node {
+      padding : 0 0 0 8px !important;
+    }
+    &__children {
+      &__node {
+        &&_selected {
+          background-color : #e6ecf2;
+        }
+
+        &__icon {
+          &&_folder-close {
+            padding    : 0 8px 0 9px !important;
+            background : url("../../../../../resources/img/icon-folder.png") no-repeat left center !important;
+          }
+
+          &&_folder-open {
+            padding    : 0 8px 0 9px !important;
+            background : url("../../../../../resources/img/icon-folder_open.png") no-repeat left center !important;
+          }
+
+          &&_file {
+            padding    : 0 8px 0 9px !important;
+            background : url("../../../../../resources/img/icon-file.png") no-repeat left center !important;
+          }
+        }
+
+        &__label {
+          font-family : Arial, serif;
+          color       : #494a4d;
+          font-size   : 13px;
+          font-weight : 400;
+
+          &&_selected {
+            background-color : transparent !important;
+            font-weight      : normal !important;
+          }
+        }
+      }
+    }
+  }
+}

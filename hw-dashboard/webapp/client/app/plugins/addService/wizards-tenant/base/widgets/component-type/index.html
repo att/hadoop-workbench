@@ -1,0 +1,26 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectComponentType">
+    <h2 class="b-create-service-wizard-step__title">Select component type</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a component type..."
+           ng-model="searchString"
+           navigable-list-input
+           focus-it="true"/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options" navigable-list-items="componentTypesFiltered">
+        <li ng-repeat="c in componentTypesFiltered"
+            ng-class="{chosen: data.componentType.id === c.id}">
+            <a class="b-create-service-wizard-step__options-item"
+               ng-click="selectComponentType(c)">
+                <i ng-class="c.id === 'OOZIE' ? 'icon-oozie' : ( c.id === 'FLUME' ? 'icon-flume' : '' )"></i>
+                <span>{{c.title}}</span>
+            </a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="showValidationErrors">No component type is selected</span>
+    <div ng-if="componentTypesFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="b-tab-pages">
+    <div class="b-tab-pages__tab-page" ng-repeat="tab in tabs" ng-show="tab.active" one-time-if="tab.active">
+        <pause-watches when="!tab.active">
+            <div class="b-tab-pages__tab-page__header">
+
+                <div class="b-tab-pages__tab-page__controls">
+                    <div ng-repeat="control in tab.page.controls" class="b-tab-pages__tab-page__control"
+                         ng-if="tab.active"
+                         ng-class="{
+                            'b-tab-pages__tab-page__control_tab' : control.styleAsTab !== false,
+                            'b-tab-pages__tab-page__control_button' : control.styleAsTab === false,
+                            'active' : control.active
+                        }">
+                        <a class="b-tab-pages__tab-page__control__link"
+                           ng-click="control.enable && control.action($event)" ng-disabled="!control.enable"
+                           title="{{ control.tooltip }}"
+                           ng-class="control.css">
+                            <i class="b-tab-pages__tab-page__control__icon" ng-if="control.icon"
+                               ng-class="control.icon"></i>
+                            {{control.label}}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="b-tab-pages__tab-page__controls b-tab-pages__tab-page__controls_left-tab-page"
+                     ng-repeat="rightTab in tab.page.leftTabs"
+                     ng-if="rightTab.active">
+
+                    <div ng-repeat="control in rightTab.page.controls" class="b-tab-pages__tab-page__control"
+                         ng-if="control.popup === false"
+                         ng-class="{
+                            'b-tab-pages__tab-page__control_tab' : control.styleAsTab !== false,
+                            'b-tab-pages__tab-page__control_button' : control.styleAsTab === false,
+                            'active' : control.active,
+                            'b-tab-pages__tab-page__control_hide-btn': control.hidden
+                        }">
+                        <a class="b-tab-pages__tab-page__control__link"
+                           ng-click="control.enable && control.action($event)" ng-disabled="!control.enable"
+                           title="{{ control.tooltip }}"
+                           ng-class="control.css">
+                            <i class="b-tab-pages__tab-page__control__icon" ng-if="control.icon"
+                               ng-class="control.icon"></i>
+                            {{control.label}}
+                        </a>
+                    </div>
+                    <div ng-repeat="control in rightTab.page.controls" class="b-tab-pages__tab-page__control"
+                         ng-if="control.popup !== false"
+                         ng-click="control.enable ? (control.popup.visible = true) : (control.popup.visible = false)"
+                         ng-mouseleave="control.popup.visible = false"
+                         ng-class="{
+                            'b-tab-pages__tab-page__control_tab' : control.styleAsTab !== false,
+                            'b-tab-pages__tab-page__control_button' : control.styleAsTab === false,
+                            'active' : control.active,
+                            'b-tab-pages__tab-page__control_hide-btn': control.hidden
+                        }">
+                        <a class="b-tab-pages__tab-page__control__link"
+                           ng-click="control.enable && control.action($event)" ng-disabled="!control.enable"
+                           title="{{ control.tooltip }}"
+                           ng-class="control.css">
+                            <i class="b-tab-pages__tab-page__control__icon" ng-if="control.icon"
+                               ng-class="control.icon"></i>
+                            {{control.label}}
+                        </a>
+                        <div class="b-tab-pages__tab-page__control__popup" ng-hide="!control.popup.visible">
+                            <ul class="b-tab-pages__tab-page__control__popup__popup-list" ng-if="control.popup.type == 'list'">
+                                <li class="b-tab-pages__tab-page__control__popup__popup-list__popup-list-item" ng-repeat="item in control.popup.items" ng-click="control.popup.action(item)">
+                                    <i ng-if="control.popup.icons" class="{{control.popup.icons[item.id]}}" ng-hide="!control.popup.icons"></i>
+                                    <span class="b-tab-pages__tab-page__control__popup__popup-list__popup-list-item__title">{{item.title}}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="b-tab-pages__tab-page__tabs"
+                     ng-if="tab.page.leftTabs.length > 0">
+                    <div ng-repeat="leftTab in tab.page.leftTabs"
+                         class="b-tab-pages__tab-page__control"
+                         ng-class="{
+                            'b-tab-pages__tab-page__control_tab' : leftTab.styleAsTab !== false,
+                            'b-tab-pages__tab-page__control_button' : leftTab.styleAsTab === false,
+                            'active' : leftTab.active
+                        }">
+                        <a class="b-tab-pages__tab-page__control__link"
+                           ng-click="leftTab.enable && leftTabClicked($event, $index, tab, leftTab)"
+                           ng-disabled="!leftTab.enable"
+                           title="{{ leftTab.tooltip }}"
+                           ng-class="leftTab.css">
+                            <i class="b-tab-pages__tab-page__control__icon"
+                               ng-if="leftTab.icon"
+                               ng-class="leftTab.icon"></i>
+                            {{leftTab.label}}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="b-tab-pages__tab-page__tabs b-tab-pages__tab-page__tabs_right"
+                     ng-repeat="leftTab in tab.page.leftTabs"
+                     ng-class="{
+                            'b-tab-pages__tab-page__tabs_expanded': leftTab.page.rightTabManager.getActive() > -1
+                        }"
+                     ng-if="leftTab.active && leftTab.page.rightTabs.length > 0">
+
+
+                    <div class="b-tab-pages__tab-page__page-controls" ng-repeat="rightTab in leftTab.page.rightTabs"
+                         ng-if="rightTab.active">
+                        <div ng-repeat="control in rightTab.page.controls" class="b-tab-pages__tab-page__control"
+                             ng-if="tab.active"
+                             ng-class="{
+                                'b-tab-pages__tab-page__control_tab' : control.styleAsTab !== false,
+                                'b-tab-pages__tab-page__control_button' : control.styleAsTab === false,
+                                'active' : control.active,
+                                'b-tab-pages__tab-page__control_hide-btn': control.hidden
+
+                            }">
+                            <a class="b-tab-pages__tab-page__control__link"
+                               ng-click="control.enable && control.action($event)" ng-disabled="!control.enable"
+                               title="{{ control.tooltip }}"
+                               ng-class="{
+                                'active': control.active
+                               }">
+                                <i class="b-tab-pages__tab-page__control__icon" ng-if="control.icon"
+                                   ng-class="control.icon"></i>
+                                {{control.label}}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="b-tab-pages__tab-page__control"
+                         ng-repeat="rightTab in leftTab.page.rightTabs"
+                         ng-class="{
+                            'b-tab-pages__tab-page__control_tab' : rightTab.styleAsTab !== false,
+                            'b-tab-pages__tab-page__control_button' : rightTab.styleAsTab === false,
+                            'active': rightTab.active
+                        }">
+                        <a class="b-tab-pages__tab-page__control__link"
+                           ng-click="rightTab.enable && rightTabClicked($event, $index, leftTab, rightTab)"
+                           ng-disabled="!rightTab.enable"
+                           title="{{ rightTab.tooltip }}"
+                           ng-class="{
+                            'active': rightTab.active
+                           }">
+                            <i class="b-tab-pages__tab-page__control__icon"
+                               ng-if="rightTab.icon"
+                               ng-class="rightTab.icon"></i>
+                            {{rightTab.label}}
+                        </a>
+                    </div>
+
+                    <a class="b-tab-pages__tab-page__control b-tab-pages__tab-page__control_hide-btn"
+                       title="Hide"
+                       ng-click="hideRightPanel(leftTab)">
+                        <i class="b-tab-pages__tab-page__control b-tab-pages__tab-page__control_hide-icon"></i>
+                    </a>
+                </div>
+            </div>
+
+            <dap-widget class="b-tab-pages__tab-page__widget" name="tab.page.name"
+                        params="{page:tab.page, params:tab.page.params}"
+                        reload="tab.page.reloadIndex"
+                        on-success="tab.page.onLoadSuccess"
+                        on-error="tab.page.onLoadError">
+
+                <div class="b-oozie-plugin-widget-backdrop">
+                    <div class="b-oozie-plugin-widget-backdrop__spinner">
+                        <div class="b-oozie-plugin-widget-backdrop__spinner__top"></div>
+                        <div class="b-oozie-plugin-widget-backdrop__spinner__bottom"></div>
+                    </div>
+                </div>
+
+            </dap-widget>
+        </pause-watches>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<span class="json-schema-item__title"
+      ng-if="!schemaItem.$meta.oneOf.length && schemaItem.instance.schema.title !== false"
+      ng-hide="needHide"
+      ng-class="{
+        'json-schema-item__title_header': level === 1,
+        'json-schema-item__title_header-subheader': schemaItem.instance.schema.subheader && (level !== 1),
+        'json-schema-item__title_value-type': !needFold,
+        'json-schema-item__title_linked-type': needFold,
+        'json-schema-item__title_required': schemaItem.instance.schema.required === true
+      }"
+    >
+    <json-schema-item-icon data="{{schemaItem.instance.schema.icon}}" />
+
+    <a class="json-schema-item__title__collapse-icon"
+       ng-class="{
+    'json-schema-item__title__collapse-icon_collapsed':folded
+   }"
+       ng-click="toggleFold()"
+       ng-show="needFold"></a>{{schemaItem.instance.schema.title}}
+            <tooltip-icon data="{{schemaItem.instance.schema.tooltip}}" />
+</span>
+
+<span class="json-schema-item__title-wrapper"
+      ng-if="schemaItem.$meta.oneOf.length"
+      ng-hide="needHide"
+      ng-class="{
+        'json-schema-item__title-wrapper_linked-type':needFold,
+        'json-schema-item__title-wrapper_collapsed':folded
+      }">
+    <a class="json-schema-item__collapse-icon"
+       ng-class="{
+        'json-schema-item__collapse-icon_collapsed':folded
+       }"
+       ng-click="toggleFold()"
+       ng-show="needFold && schemaItem.$meta.oneOf.length"
+       style="margin-top: 5px;"></a>
+
+    <select class="json-schema-item__title json-schema-item__title_oneOf"
+            ng-class="{
+            'json-schema-item__title_header': level === 1,
+            'json-schema-item__title_header-subheader': schemaItem.instance.schema.subheader && (level !== 1),
+            'json-schema-item__title_value-type': !needFold,
+            'json-schema-item__title_required': schemaItem.instance.schema.required === true
+        }"
+            ng-options="item as item.schema.title for item in schemaItem.$meta.oneOf"
+            ng-model="schemaItem.instance"></select>
+</span>
+
+<component-loader class="json-schema-item__value"
+                  name="valueComponentName"
+                  params="{
+                            instance: 'schemaItem.instance',
+                            level: '' + (level + 1),
+                            removable: 'removable',
+                            readonly: 'readonly',
+                            focus: 'focus',
+                            first: 'first',
+                            order: 'order'
+                          }"
+                  ng-if="schemaItem.instance && valueComponentName"
+                  ng-hide="(folded && needFold) || needHide"
+                  json-schema-hover="'json-schema-item__value_hover'"
+                  copy-attrs="['ngHide', 'class', 'jsonSchemaHover']"></component-loader>
+
+<a class="json-schema-item__remove-icon"
+   ng-if="removable && !instance.schema.readonly && !readonly"
+   ng-hide="needHide"
+   ng-click="onRemove()"></a>
+

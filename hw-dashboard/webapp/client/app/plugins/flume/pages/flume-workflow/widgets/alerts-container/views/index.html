@@ -1,0 +1,22 @@
+<div class="b-alerts-container-widget">
+    <div class="b-alerts-container-widget__header-no-alerts" ng-if="messages.length === 0">
+        <span>There are no alerts</span>
+    </div>
+    <div class="b-alerts-container-widget__header" ng-if="messages.length > 0">
+        <span>There {{messages.length === 1 ? 'is' : 'are'}}</span>
+        <span>{{messages.length}}</span>
+        <span>{{messages.length === 1 ? 'alert' : 'alerts'}}</span>
+    </div>
+    <ul class="b-alerts-container-widget__messages-list">
+        <li ng-repeat="message in messages" class="b-alerts-container-widget__message-item"
+            ng-class="{'b-alerts-container-widget__message-item_clickable':message.action}"
+            ng-click="message.action()">
+            <span class="b-alerts-container-widget__message-item__index">{{$index+1}}</span>
+                <span class="b-alerts-container-widget__message-item__type b-alerts-container-widget__message-item__type_{{message.type}}">
+                    {{message.type}}:
+                </span>
+            <span class="b-alerts-container-widget__message-item__text yes-select">{{message.text}}</span>
+            <i class="b-alerts-container-widget__message-item__close" ng-click="removeAlert($event, $index)"></i>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,18 @@
+<div class="b-page-platform-info">
+    <div ng-show="platform">
+        <object-properties
+                ng-repeat="schemaProperty in propertiesJsonSchema"
+                data="schemaProperty"
+                readonly="isReadonly"
+        ></object-properties>
+    </div>
+    <div class="b-page-platform-info__no-platform-label" ng-show="!platform">
+        No selected platform
+    </div>
+</div>
+<div class="b_platforms-clusters-widget__backdrop ng-hide" ng-show="requesting">
+    <div class="b_platforms-clusters-widget__backdrop__spinner">
+        <div class="b_platforms-clusters-widget__backdrop__spinner__top"></div>
+        <div class="b_platforms-clusters-widget__backdrop__spinner__bottom"></div>
+    </div>
+</div>

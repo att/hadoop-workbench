@@ -1,0 +1,24 @@
+.b-info-viewer {
+  height : 100%;
+
+  &__hide-icon {
+    .icon-base(24px, 24px, '../../resources/img/icon_hide_lpanel.png');
+
+    &:hover {
+      .icon-base(24px, 24px, '../../resources/img/icon_hide_lpanel_hover.png');
+    }
+  }
+
+  &__controls {
+    height        : 25px;
+    border-bottom : 1px solid #E3E7EC;
+    padding       : 0 3px;
+  }
+
+  &__control {
+    &&_hide {
+      float   : right;
+      display : block;
+    }
+  }
+}

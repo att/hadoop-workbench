@@ -1,0 +1,39 @@
+<div class="b-create-service-wizard">
+    <div class="b-create-service-wizard__steps">
+        <form name="tenantForm" novalidate>
+            <div class="b-create-tenant-wizard-text">
+                <span class="b-create-tenant-wizard-label">Name*</span>
+            </div>
+            <div class="b-create-tenant-wizard-text">
+                <input type="text" class="input" placeholder="Enter name" ng-model="tenantName" name="name"
+                       ng-class="{'b-create-service-wizard-step__input-required': tenantForm.name.$error.required && (tenantForm.name.$touched || showValidationErrors)}"
+                       required focus-it="true"
+                       on-key-enter-callback="save()"
+                />
+                <span class="b-create-service-wizard-step__input-error"
+                      ng-show="tenantForm.name.$error.required && (tenantForm.name.$touched || showValidationErrors)">required</span>
+            </div>
+
+            <div class="b-create-tenant-wizard-text">
+                <span class="b-create-tenant-wizard-label">Description</span>
+            </div>
+            <div class="b-create-tenant-wizard-text">
+                <input type="text" class="input" placeholder="Enter description" ng-model="description"/>
+            </div>
+
+            <div class="b-create-tenant-wizard-text">
+                <span class="b-create-tenant-wizard-label">Version*</span>
+            </div>
+            <div class="b-create-tenant-wizard-text">
+                <input type="text" class="input" placeholder="Enter version" ng-model="version" required name="version"
+                       ng-class="{'b-create-service-wizard-step__input-required': tenantForm.version.$error.required && (tenantForm.version.$touched || showValidationErrors)}"/>
+                <span class="b-create-service-wizard-step__input-error"
+                      ng-show="tenantForm.version.$error.required && (tenantForm.version.$touched || showValidationErrors)">required</span>
+            </div>
+        </form>
+
+        <div class="b-create-service-wizard__steps__buttons">
+            <button class="btn btn-default btn-lg" ng-click="save()">Create</button>
+        </div>
+    </div>
+</div>

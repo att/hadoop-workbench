@@ -1,0 +1,76 @@
+// Floats
+// -------------------------
+
+.clearfix {
+  &:before,
+  &:after {
+    content : " "; // 1
+    display : table; // 2
+  }
+  &:after {
+    clear : both;
+  }
+}
+
+.center-block {
+  display      : block;
+  margin-left  : auto;
+  margin-right : auto;
+}
+
+.pull-right {
+  float : right !important;
+}
+
+.pull-left {
+  float : left !important;
+}
+
+.truncate(@width) {
+  width         : @width;
+  white-space   : nowrap;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+}
+
+.no-select {
+  -webkit-touch-callout : none;
+  -webkit-user-select   : none;
+  -moz-user-select      : none;
+  -ms-user-select       : none;
+  user-select           : none;
+}
+
+.yes-select {
+  -webkit-touch-callout : initial;
+  -webkit-user-select   : initial;
+  -moz-user-select      : initial;
+  -ms-user-select       : initial;
+  user-select           : initial;
+  -moz-user-select: text;
+}
+
+.no-select [contentEditable="true"] {
+  -moz-user-select: text;
+}
+
+.placeholder(@color) {
+  &::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color : @color;
+  }
+  &:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color   : @color;
+    opacity : 1;
+  }
+  &::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color   : @color;
+    opacity : 1;
+  }
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color : @color;
+  }
+}

@@ -1,0 +1,96 @@
+<div class="b-clusters-browser">
+    <div ng-if="pageErrorMessage" class="b-clusters-browser__error">
+        <div class="b-clusters-browser__error__text">
+            {{pageErrorMessage}}
+        </div>
+    </div>
+    <ul class="b-clusters-browser__list">
+        <li class="b-clusters-browser__list__item"
+            ng-repeat="c in clusters">
+            <div class="b-clusters-browser__list__item__link"
+                 ng-click="selectCluster(c)"
+                 ng-class="{'selected': selectedItem.id === c.id}">
+                <span class="b-clusters-browser__list__item__link__icon icon-cluster-{{::c.platformType.toLowerCase()}}"></span>
+                <span class="b-clusters-browser__list__item__link__title">{{c[c.titlePath.section][c.titlePath.property]}}</span>
+                <span class="b-clusters-browser__list__item__cluster-status">
+                    <i class="b-clusters-browser__list__item__cluster-status_online" ng-show="c.isOnline"></i>
+                    <i class="b-clusters-browser__list__item__cluster-status_offline ng-hide" ng-show="!c.isOnline"></i>
+                </span>
+
+                <span ng-class="isClusterBusy(c)? 'gear-rotate': 'gear'"
+                      ng-click="openClusterConfigurationFiles(c)"
+                      title="Open cluster configuration files">
+                </span>
+
+
+                <ul class="b-clusters-browser__list__item__link__property-list">
+                    <li class="b-clusters-browser__list__item__link__property-list__item"
+                        ng-repeat="cAccessPath in c.listPath">
+                        <span class="b-clusters-browser__list__item__link__property-list__item__key">{{cAccessPath.title}}</span>
+                        <span class="b-clusters-browser__list__item__link__property-list__item__value">{{c[cAccessPath.section][cAccessPath.fields[0]]}} : {{c[cAccessPath.section][cAccessPath.fields[1]]}}</span>
+                    </li>
+                </ul>
+                <div class="b-clusters-browser__list__item__link__buttons">
+                    <div ng-repeat="typeContainer in indexationTypes"
+                         class="b-clusters-browser__list__item__link__buttons-line">
+                        <span class="b-clusters-browser__list__item__cluster-status">
+                            <i class="b-clusters-browser__list__item__task-status_running" ng-show="!isClusterIndexationStopped(typeContainer.type, c)"></i>
+                            <i class="b-clusters-browser__list__item__task-status_not_running ng-hide" ng-show="isClusterIndexationStopped(typeContainer.type, c)"></i>
+                        </span>
+                        <button ng-show="isClusterIndexationStopped(typeContainer.type, c) || isClusterIndexationStarting(typeContainer.type, c)"
+                                ng-disabled="isClusterIndexationStarting(typeContainer.type, c)"
+                                class="btn btn-sm btn-default b-clusters-browser__list__item__link__buttons-line-button" ng-click="typeContainer.startFunc(c)"
+                                title="{{::typeContainer.indexDescription}}">
+                            {{::typeContainer.startBtnTitle}}
+                        </button>
+                        <button ng-show="typeContainer.stopFunc && (isClusterIndexationRunning(typeContainer.type, c) || isClusterIndexationStopping(typeContainer.type, c))"
+                                ng-disabled="isClusterIndexationStopping(typeContainer.type, c)"
+                                class="btn btn-sm btn-default b-clusters-browser__list__item__link__buttons-line-cancel-button" ng-click="typeContainer.stopFunc(c)"
+                                title="{{::typeContainer.stopBtnTitle}}">
+                            {{::typeContainer.stopBtnTitle}}
+                        </button>
+
+
+<!--
+                        <span ng-if="c.indexation[typeContainer.type].lastUpdate"
+                              class="b-clusters-browser__list__item__link__buttons__last-update">
+                            Last Update:
+                            <span class="b-clusters-browser__list__item__link__buttons__last-update__time">
+                                {{ c.indexation[typeContainer.type].lastUpdate | secondsToDateTime | date:'MMM dd yyyy HH:mm:ss' }}
+                            </span>
+                        </span>
+-->
+
+                    </div>
+                    <!--<button class="btn btn-sm btn-default" ng-click="testConnectionHdfs(c)">Test</button>-->
+                    <div class="b-clusters-browser__list__item__link__buttons-line">
+                        <span class="b-clusters-browser__list__item__cluster-status">
+                            <i class="b-clusters-browser__list__item__task-status_running" ng-show="isPullConfigRequestRunning(c)"></i>
+                            <i class="b-clusters-browser__list__item__task-status_not_running ng-hide" ng-show="!isPullConfigRequestRunning(c)"></i>
+                        </span>
+                        <button
+                                class="btn btn-sm btn-default b-clusters-browser__list__item__link__buttons-line-button"
+                                ng-click="pullConfig(c)"
+                                ng-disabled="isPullConfigRequestRunning(c)"
+                                title="Pull configuration">
+                            Pull configuration
+                        </button>
+                    </div>
+                    <div class="b-clusters-browser__list__item__link__buttons-line">
+                        <span class="b-clusters-browser__list__item__cluster-status">
+                            <i class="b-clusters-browser__list__item__task-status_running" ng-show="isPushConfigRequestRunning(c)"></i>
+                            <i class="b-clusters-browser__list__item__task-status_not_running ng-hide" ng-show="!isPushConfigRequestRunning(c)"></i>
+                        </span>
+                        <button
+                                class="btn btn-sm btn-default b-clusters-browser__list__item__link__buttons-line-button"
+                                ng-click="pushConfig(c)"
+                                ng-disabled="isPushConfigRequestRunning(c)"
+                                title="Push configuration">
+                            Push configuration
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

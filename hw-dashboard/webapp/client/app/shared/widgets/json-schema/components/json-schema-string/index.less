@@ -1,0 +1,156 @@
+.json-schema-string {
+  border-bottom : 1px solid #dde6f0;
+  line-height   : 25px;
+  position      : relative;
+
+  &__value {
+    color         : #333333;
+    font-size     : 13px;
+    font-weight   : 400;
+    text-align    : left;
+    float         : left;
+    width         : 60%;
+    outline       : 0 solid transparent;
+    background    : transparent;
+    position      : relative;
+    text-overflow : ellipsis;
+    overflow      : hidden;
+
+    &.error {
+      box-shadow: 0px -1px 0px #ff0000 inset;
+    }
+
+    &:focus .error {
+      box-shadow: 0px -1px 0px #ff0000 inset;
+    }
+
+    &.error-message {
+      color: #ff0000;
+      float: right;
+    }
+
+    &:focus {
+      box-shadow: 0px -1px 0px #137fea inset;
+    }
+
+    &&_enum {
+      padding-top    : 4px;
+      padding-bottom : 2px;
+      border         : none;
+      box-shadow     : none;
+    }
+
+    &-password {
+      padding-right : 24px;
+      min-height: 1px;
+
+      &__button {
+        position: relative;
+        float: right;
+      }
+    }
+
+    &&_with-remove {
+      padding-right : 24px;
+    }
+
+    &&_file-ref {
+      padding-right : 48px;
+    }
+
+    &&_with-remove&_file-ref {
+      padding-right : 72px;
+    }
+
+    &&_with-remove&_file-ref > &__clean-up {
+      right : 24px;
+    }
+
+    &&_with-remove&_file-ref > &__edit-path-link {
+      right : 48px;
+    }
+
+    &[disabled],
+    &_disabled {
+      background-color : inherit;
+      color            : #777;
+    }
+
+    &__link {
+    }
+
+    &__select-file {
+      color       : #4899ea;
+      cursor      : pointer;
+      float       : left;
+      font-weight : bold;
+      font-size   : 13px;
+      line-height : 25px;
+    }
+
+    &__edit-path-link {
+      position      : absolute;
+      top             : 1px;
+      right           : 24px;
+      display        : inline-block;
+      vertical-align : middle;
+      width          : 24px;
+      height         : 24px;
+      background: url("../../../../../../resources/img/ic-hdfs-breadcrumb-edit-path.png");
+    }
+
+    &__input {
+      display: inline-block;
+      min-width: 150px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__clean-up {
+      position       : absolute;
+      top            : 0;
+      right          : 0;
+      display        : inline-block;
+      vertical-align : middle;
+      width          : 24px;
+      height         : 24px;
+      background     : transparent url('../../../../../../resources/img/ic-file-browser_add-item_button-cancel.png') no-repeat center center;
+    }
+  }
+
+  &__reveal-icon {
+    .icon-el-reveal;
+    position : absolute;
+    top      : 0;
+    right    : 0;
+    content  : '';
+
+    &&_active {
+      filter         : invert(100%);
+      -webkit-filter : invert(100%);
+      .icon-reveal_active;
+    }
+
+    &:hover {
+      cursor : pointer;
+    }
+  }
+
+  &:hover {
+    background : #eef0f2;
+  }
+}
+
+
+
+.json-schema-array {
+  .json-schema-item[item-type='string'] {
+    .json-schema-string {
+      &__value {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<div class="b-settings-nodes">
+    <ul class="b-settings-nodes__list">
+        <li class="b-settings-nodes__list__item"
+            ng-repeat="n in nodes">
+            <div class="b-settings-nodes__list__item__link"
+                 ng-click="selectNode(n)"
+                 ng-class="{'selected': n.selected}">
+
+                <i class="b-settings-nodes__list__item__link__icon" ng-class="n.icon"></i>
+
+                <div class="b-settings-nodes__list__item__link__title">{{n.title}}</div>
+            </div>
+        </li>
+    </ul>
+</div>

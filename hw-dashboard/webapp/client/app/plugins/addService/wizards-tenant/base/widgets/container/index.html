@@ -1,0 +1,26 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectContainer">
+    <h2 class="b-create-service-wizard-step__title">Select container</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a container name..."
+           ng-model="searchString"
+           navigable-list-input
+           focus-it="true"/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options" navigable-list-items="containersFiltered">
+        <li ng-repeat="c in containersFiltered"
+            ng-class="{chosen: data.container.id === c.id}">
+            <a class="b-create-service-wizard-step__options-item"
+               ng-click="selectContainer(c)">
+                <i ng-class="'icon-tenant-browser'"></i>
+                {{c.name}}:{{c.version}}
+            </a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="showValidationErrors">No container is selected</span>
+    <div ng-if="containersFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

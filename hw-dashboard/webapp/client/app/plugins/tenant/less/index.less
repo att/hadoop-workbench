@@ -1,0 +1,121 @@
+@import "browser";
+@import "templates";
+@import "../widgets/upload-tenant/less/index";
+@import "../widgets/edit-tenant/less/index";
+@import "../dashboard-widgets/tenant-component-deployment-widget/wizards/oozie/widgets/path/index";
+@import "../dashboard-widgets/tenant-component-deployment-widget/wizards/flume/widgets/plugin-dirs/index";
+
+.b-tenant-archive-icon {
+  .icon-base(14px, 15px, '../../resources/img/tenant-archive-icon.png');
+}
+
+.b-tenant-upload-icon {
+  .icon-el-upload();
+}
+
+.active > .b-tenant-upload-icon {
+  .icon-el-upload();
+  .icon-upload_hover;
+}
+
+.b-tenant-options-icon {
+  .icon-el-options-editor-widget();
+}
+
+.active > .b-tenant-options-icon {
+  .icon-el-options-editor-widget();
+  .icon-options-editor-widget_hover;
+}
+
+.b-tenant-save-icon {
+  .icon-el-save-editor-widget();
+}
+
+.b-tenant-delete-icon {
+  .icon-delete-white;
+}
+
+a:active > .b-tenant-delete-icon {
+  .icon-delete_active();
+}
+
+a[disabled]:active > .b-tenant-delete-icon {
+  .icon-delete();
+}
+
+.b-tenant-upload-tab {
+  font-weight : 600;
+  color       : #137fea;
+}
+
+.b-template-icon {
+  &_flume {
+    .icon-flume-tenant;
+  }
+  &_oozie {
+    .icon-oozie-tenant;
+  }
+  &_start {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-start-node-icon.png") no-repeat 0 center;
+  }
+  &_fork {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-fork-icon.png") no-repeat 0 center;
+  }
+  &_join {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-join-icon.png") no-repeat 0 center;
+  }
+  &_end {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-end-node-icon.png") no-repeat 0 center;
+  }
+  &_map-reduce {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-map-reduce-node-icon.png") no-repeat 0 center;
+  }
+  &_map-reduce2 {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-map-reduce2-node-icon.png") no-repeat 0 center;
+  }
+  &_fs {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-fs-node-icon.png") no-repeat 0 center;
+  }
+  &_java {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-java-node-icon.png") no-repeat 0 center;
+  }
+  &_pig {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-pig-node-icon.png") no-repeat 0 center;
+  }
+  &_hive {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-hive-node-icon.png") no-repeat 0 center;
+  }
+  &_decision {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-decision-node-icon.png") no-repeat 0 center;
+  }
+  &_distcp {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-distcp-node-icon.png") no-repeat 0 center;
+  }
+  &_kill {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-kill-node-icon.png") no-repeat 0 center;
+  }
+  &_email {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-mail-node-icon.png") no-repeat 0 center;
+  }
+  &_shell {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-shell-node-icon.png") no-repeat 0 center;
+  }
+  &_sqoop {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-sqoop-node-icon.png") no-repeat 0 center;
+  }
+  &_ssh {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-ssh-node-icon.png") no-repeat 0 center;
+  }
+  &_sub-workflow {
+    background : url("../../../../resources/img/oozie-plugin-flowchart-widget-subworkflow-node-icon.png") no-repeat 0 center;
+  }
+}
+
+.b-oozie-tenant__download-file-container,
+.b-flume-tenant__download-file-container {
+  position   : absolute;
+  width      : 1px;
+  height     : 1px;
+  visibility : hidden;
+}
+

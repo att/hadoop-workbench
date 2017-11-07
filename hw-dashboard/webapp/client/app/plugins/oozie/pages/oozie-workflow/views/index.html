@@ -1,0 +1,21 @@
+<div ng-if="loadDataError" class="b-oozie-plugin b-oozie-plugin_load-error">
+     <div class="b-oozie-plugin__load-error">Workflow cannot be displayed. See <a ng-click="goToTextTab()">text</a> version</div>
+</div>
+<div ng-if="!loadDataError" class="b-oozie-plugin"
+     uploader="fileUploader"
+     nv-file-drop
+     drag-file-class="b-oozie-plugin_file-over">
+    <div oozie-flowchart class="b-flowchart-widget"
+         connections="moduleConnections" nodes="selectedModule.getNodes()"
+         node-validator-cb="nodeValidatorCallback"
+         selected-node-container="selectedNodeContainer"
+         multiple-selected-node-container="multipleSelectedNodeContainer"
+         selected-connection="selectedConnection"
+         on-connection-created="addNewConnection"
+         after-node-removed-cb="removeNode" after-connection-removed-cb="removeConnection"
+         selected-module="selectedModule" alert-title="{{alertTitle}}"
+         dashboard-widget="dashboardWidgetContainer.dashboardWidget"
+         metrics="metrics"
+    >
+    </div>
+</div>

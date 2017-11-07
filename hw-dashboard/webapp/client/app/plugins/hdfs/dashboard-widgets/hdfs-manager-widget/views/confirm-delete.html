@@ -1,0 +1,31 @@
+<div class="b-hdfs__widgets__confirm-delete">
+    <h3 class="b-hdfs__widgets__confirm-delete__title">Confirm delete</h3>
+
+    <div class="b-hdfs__widgets__confirm-delete__label-container">
+        <i class="b-hdfs__widgets__confirm-delete__ic-warning"></i>
+        <span class="b-hdfs__widgets__confirm-delete__label">Are you sure you want to delete these items?</span>
+        <ul class="b-hdfs__widgets__confirm-delete__files-list">
+            <li ng-repeat="f in selectedItems | limitTo:3">{{f.name}}</li>
+            <li ng-show="selectedItems.length > 3">...</li>
+        </ul>
+    </div>
+
+    <div class="b-hdfs__right-side-widgets__buttons">
+        <button class="b-hdfs__right-side-widgets__confirm-action-btn btn btn-secondary btn-lg"
+                ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && deleteItems()">
+            Delete
+        </button>
+        <button class="b-hdfs__right-side-widgets__cancel-action-btn btn btn-secondary btn-lg"
+                ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && hideWidgets()">
+            Cancel
+        </button>
+
+        <span class="b-hdfs__right-side-widgets__requesting-spinner" ng-show="isRequesting">
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce1"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce2"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce3"></span>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="b-uploaded-libs"
+     uploader="fileUploader"
+     nv-file-drop
+     drag-file-class="b-uploaded-libs_file-over">
+    <div class="b-uploaded-libs__header">Libraries</div>
+    <div class="b-uploaded-libs__content">
+        <ul class="b-uploaded-libs__list">
+            <li class="b-uploaded-libs__list__item"
+                ng-repeat="f in files">
+                <div class="b-uploaded-libs__list__item__text">{{ f.name }}</div>
+                <a class="b-uploaded-libs__list__item__delete-link" ng-click="deleteFile(f)"></a>
+                <span class="b-uploaded-libs__list__item__size">{{ f.size | filesizeFilter }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="b-uploaded-libs__content b-uploaded-libs__content-total">
+        <ul class="b-uploaded-libs__list">
+            <li class="b-uploaded-libs__list__item " ng-if="files.length > 0">
+                <span class="b-uploaded-libs__list__item__text">Total size</span>
+                <span class="b-uploaded-libs__list__item__size">{{ filesTotalSize | filesizeFilter }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="b-widget-backdrop" ng-show="showLibraryPreloader">
+        <div class="b-widget-backdrop__spinner">
+            <div class="b-widget-backdrop__spinner__top"></div>
+            <div class="b-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+
+    <div class="b-uploaded-libs__buttons">
+        <div class="b-uploaded-libs__buttons__button"
+             ng-click="pull()" ng-if="showPushPullButtons">
+            <i class="b-uploaded-libs__buttons__button__icon-pull"></i>
+            <div class="b-uploaded-libs__buttons__button__text">
+                Pull
+            </div>
+        </div>
+
+        <div class="b-uploaded-libs__buttons__button"
+             ng-click="push()" ng-if="showPushPullButtons">
+            <i class="b-uploaded-libs__buttons__button__icon-push"></i>
+            <div class="b-uploaded-libs__buttons__button__text">
+                Push
+            </div>
+        </div>
+
+        <div class="b-uploaded-libs__buttons__button"
+             ng-class="!showPushPullButtons ? 'b-uploaded-libs__buttons__button-single' : ''">
+            <div class="b-uploaded-libs__buttons__button__upload-files">
+                <i class="b-uploaded-libs__buttons__button__upload-files__icon-upload"></i>
+                <div class="b-uploaded-libs__buttons__button__upload-files__text">
+                    Upload
+                </div>
+                <input class="b-uploaded-libs__buttons__button__upload-files__file-input" type="file" uploader="fileUploader"
+                       nv-file-select/>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,32 @@
+<div class="b-create-service-wizard-step">
+
+    <form name="wizardFormStepAccess" novalidate>
+
+        <h2 class="b-create-service-wizard-step__title">Ambari user*</h2>
+
+        <input type="text" class="input" name="managerUser" placeholder="Enter Ambari user..."
+               autocomplete="off"
+               ng-model="data['managerUser']"
+               required maxlength="500" ng-maxlength="500"
+               ng-class="{'b-create-service-wizard-step__input-required': (wizardFormStepAccess.managerUser.$error.required) && (wizardFormStepAccess.managerUser.$touched || showValidationErrors)}"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardFormStepAccess.managerUser.$error.required && (wizardFormStepAccess.managerUser.$touched || showValidationErrors)">required</span>
+
+
+        <h2 class="b-create-service-wizard-step__title">Ambari password*</h2>
+
+        <input type="password" class="input" name="password" placeholder="Enter Ambari password..."
+               autocomplete="off"
+               ng-model="data['managerPassword']"
+               ng-class="{'b-create-service-wizard-step__input-required': wizardFormStepAccess.password.$error.required && (wizardFormStepAccess.password.$touched || showValidationErrors)}"
+               required maxlength="500"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardFormStepAccess.password.$error.required && (wizardFormStepAccess.password.$touched || showValidationErrors)">required</span>
+
+    </form>
+
+</div>

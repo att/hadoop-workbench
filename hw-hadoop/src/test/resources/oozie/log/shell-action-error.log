@@ -1,0 +1,26 @@
+2016-03-29 10:09:45,873 INFO org.apache.oozie.command.wf.ActionStartXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@:start:] Start action [0000003-160328123234172-oozie-oozi-W@:start:] with user-retry state : userRetryCount [0], userRetryMax [0], userRetryInterval [10]
+2016-03-29 10:09:45,873 WARN org.apache.oozie.command.wf.ActionStartXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@:start:] [***0000003-160328123234172-oozie-oozi-W@:start:***]Action status=DONE
+2016-03-29 10:09:45,873 WARN org.apache.oozie.command.wf.ActionStartXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@:start:] [***0000003-160328123234172-oozie-oozi-W@:start:***]Action updated in DB!
+2016-03-29 10:09:45,974 INFO org.apache.oozie.command.wf.ActionStartXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@shell-action] Start action [0000003-160328123234172-oozie-oozi-W@shell-action] with user-retry state : userRetryCount [0], userRetryMax [0], userRetryInterval [10]
+2016-03-29 10:09:46,522 WARN org.apache.oozie.command.wf.ActionStartXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@shell-action] Error starting action [shell-action]. ErrorType [FAILED], ErrorCode [JA010], Message [JA010: Wrong ENV format [] in <env-var> , key=value format expected ]
+org.apache.oozie.action.ActionExecutorException: JA010: Wrong ENV format [] in <env-var> , key=value format expected
+	at org.apache.oozie.action.hadoop.ShellActionExecutor.checkPair(ShellActionExecutor.java:118)
+	at org.apache.oozie.action.hadoop.ShellActionExecutor.setListInConf(ShellActionExecutor.java:103)
+	at org.apache.oozie.action.hadoop.ShellActionExecutor.setupActionConf(ShellActionExecutor.java:73)
+	at org.apache.oozie.action.hadoop.JavaActionExecutor.submitLauncher(JavaActionExecutor.java:681)
+	at org.apache.oozie.action.hadoop.JavaActionExecutor.start(JavaActionExecutor.java:929)
+	at org.apache.oozie.command.wf.ActionStartXCommand.execute(ActionStartXCommand.java:211)
+	at org.apache.oozie.command.wf.ActionStartXCommand.execute(ActionStartXCommand.java:59)
+	at org.apache.oozie.command.XCommand.call(XCommand.java:277)
+	at org.apache.oozie.service.CallableQueueService$CompositeCallable.call(CallableQueueService.java:331)
+	at org.apache.oozie.service.CallableQueueService$CompositeCallable.call(CallableQueueService.java:260)
+	at org.apache.oozie.service.CallableQueueService$CallableWrapper.run(CallableQueueService.java:174)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+2016-03-29 10:09:46,541 WARN org.apache.oozie.command.wf.ActionStartXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@shell-action] Failing Job due to failed action [shell-action]
+2016-03-29 10:09:46,544 WARN org.apache.oozie.workflow.lite.LiteWorkflowInstance: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@shell-action] Workflow Failed. Failing node [shell-action]
+2016-03-29 10:09:47,555 WARN org.apache.oozie.command.coord.CoordActionUpdateXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[0000003-160328123234172-oozie-oozi-W@shell-action] E1100: Command precondition does not hold before execution, [, coord action is null], Error Code: E1100
+2016-03-29 10:09:47,722 INFO org.apache.oozie.command.wf.KillXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[-] STARTED WorkflowKillXCommand for jobId=0000003-160328123234172-oozie-oozi-W
+2016-03-29 10:09:47,737 WARN org.apache.oozie.command.coord.CoordActionUpdateXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[-] E1100: Command precondition does not hold before execution, [, coord action is null], Error Code: E1100
+2016-03-29 10:09:47,738 INFO org.apache.oozie.command.wf.KillXCommand: USER[oozie] GROUP[-] TOKEN[] APP[oozie-fs-action] JOB[0000003-160328123234172-oozie-oozi-W] ACTION[-] ENDED WorkflowKillXCommand for jobId=0000003-160328123234172-oozie-oozi-W

@@ -1,0 +1,165 @@
+{
+  "name": "sqoop",
+  "version": "0.2",
+  "canHaveTemplates": true,
+  "restrictions": [],
+  "warnings": [],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "sqoop_0_2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "job-tracker": {
+            "type": "string",
+            "default": "${jobTracker}"
+          },
+          "name-node": {
+            "type": "string",
+            "default": "${nameNode}"
+          },
+          "prepare": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "delete": {
+                "type": "array",
+                "title": "delete list",
+                "minItems": 0,
+                "uniqueItems": false,
+                "additionalItems": false,
+                "items": {
+                  "title": "delete",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ]
+                }
+              },
+              "mkdir": {
+                "type": "array",
+                "title": "mkdir list",
+                "minItems": 0,
+                "uniqueItems": false,
+                "additionalItems": false,
+                "items": {
+                  "title": "mkdir",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ]
+                }
+              }
+            }
+          },
+          "job-xml": {
+            "type": "string",
+            "isFileRef": true
+          },
+          "property": {
+            "type": "array",
+            "title": "properties",
+            "minItems": 1,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "title": "property",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "commandOrArg": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 1,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "title": "arg list",
+                  "properties": {
+                    "arg": {
+                      "type": "array",
+                      "title": "arg list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "arg",
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "title": "command",
+                  "properties": {
+                    "command": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "file": {
+            "type": "array",
+            "title": "file list",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "title": "file",
+              "type": "string",
+              "isFileRef": true
+            }
+          }
+        },
+        "required": [
+          "job-tracker",
+          "name-node"
+        ]
+      },
+      "cred": {
+        "type": "string"
+      },
+      "retry-max": {
+        "type": "string"
+      },
+      "retry-interval": {
+        "type": "string"
+      }
+    },
+    "required": [
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+<div class="b-ide-tab-pages"
+     ng-class="{
+        'b-ide-tab-pages_split': splitContainers
+     }"
+     resizable-width-container>
+    <div class="b-ide-tab-pages__left"
+         resizable="resizeConfig"
+         resizable-width
+         resizable-width-show-section="splitContainers">
+        <div class="b-ide-tab-pages__left__tab-page" ng-repeat="tab in leftTabs" one-time-if="tab.active"
+             ng-show="tab.active">
+            <dap-widget class="b-ide-tab-pages__left__tab-page__widget"
+                        name="tab.page.name"
+                        params="{page:tab.page, params:tab.page.params}" reload="tab.page.reloadIndex">
+                <div class="b-widget-backdrop">
+                    <div class="b-widget-backdrop__spinner">
+                        <div class="b-widget-backdrop__spinner__top"></div>
+                        <div class="b-widget-backdrop__spinner__bottom"></div>
+                    </div>
+                </div>
+
+            </dap-widget>
+        </div>
+    </div>
+    <div class="b-ide-tab-pages__right"
+         resizable-width-linked-section>
+        <dap-widget name="'tab-pages'" params="{widget: widget}">
+            <div class="b-widget-backdrop">
+                <div class="b-widget-backdrop__spinner">
+                    <div class="b-widget-backdrop__spinner__top"></div>
+                    <div class="b-widget-backdrop__spinner__bottom"></div>
+                </div>
+            </div>
+
+        </dap-widget>
+    </div>
+</div>

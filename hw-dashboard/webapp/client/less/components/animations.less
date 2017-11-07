@@ -1,0 +1,35 @@
+
+@keyframes blink_keyframes {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes blink_keyframes {
+  0% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+.animation-blink {
+  -moz-animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* Firefox */
+  -webkit-animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* Webkit */
+  -ms-animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* IE */
+  animation: blink_keyframes normal 1.5s infinite ease-in-out;
+  /* Opera */
+}

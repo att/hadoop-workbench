@@ -1,0 +1,123 @@
+@import "./search";
+@import "./create";
+
+.b-add-service {
+  position : relative;
+  height   : 100%;
+}
+
+.b-add-service__widget-container {
+  height : 100%;
+}
+
+.b-create-service-wizard {
+}
+
+.b-create-service-wizard-step {
+  font-size : 14px;
+  position : relative;
+  height   : 100%;
+  overflow-y: auto;
+
+  &__input {
+    width                      : 100%;
+    box-sizing                 : border-box !important;
+    border-bottom-left-radius  : 0;
+    border-bottom-right-radius : 0;
+    outline                    : none;
+    padding-left : 25px;
+    background   : url("../../../../resources/img/search.png") left center no-repeat;
+    &:focus,
+    &:active {
+      outline : none;
+    }
+  }
+}
+
+.b-create-service-wizard__loading,
+.b-create-service-wizard__no-matches {
+  color        : #545a60;
+  font-size    : 14px;
+  font-weight  : 400;
+  line-height  : 39px;
+  padding-left : 15px;
+}
+
+.b-create-service-wizard-step__title {
+  color       : #545a60;
+  line-height : 32px;
+  font-size   : 16px;
+}
+
+.b-create-service-wizard-step__input-required {
+  border : 1px solid red;
+}
+
+.b-create-service-wizard-step__input-error {
+  color       : red;
+  margin-left : 10px;
+}
+
+.b-create-service-wizard-step__select {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #C9D1DA;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 1, 0.1);
+  width: 276px;
+  color: #55595D;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 5px 6px;
+}
+
+.b-create-service-wizard-step__options {
+  position                   : absolute;
+  top                        : 64px;
+  left                       : 0;
+  right                      : 0;
+  bottom                     : 0;
+  border                     : 1px solid #c9d1da;
+  border-bottom-left-radius  : 5px;
+  border-bottom-right-radius : 5px;
+  border-top                 : none;
+  margin                     : 0;
+  overflow : auto;
+}
+
+.b-create-service-wizard-step__options-item {
+  display     : block;
+  line-height : 39px;
+  padding     : 0 10px;
+  color       : #545a60;
+
+  a&,
+  a&:hover,
+  a&:focus,
+  &:hover {
+    text-decoration : none;
+  }
+
+  .chosen > & {
+    background  : rgba(19, 127, 234, 0.57);
+    color       : #fff;
+    font-weight : 700;
+  }
+
+  .selected > &,
+  &.selected {
+    background : #147fe9;
+    color       : #fff;
+    font-weight : 700;
+  }
+}
+
+.b-create-service-search {
+  height : 100%;
+}
+
+.b-create-service-search__omnibox {
+  overflow : auto;
+  margin : 0;
+}

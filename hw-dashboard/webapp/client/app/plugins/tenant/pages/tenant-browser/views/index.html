@@ -1,0 +1,38 @@
+<div class="b-tenant-browser">
+    <div class="b-tenant-browser__left_widget">
+        <ul class="b-tenant-browser__tenant-container-list"
+            ng-click="backgroundClicked($event)">
+            <li ng-repeat="templateContainer in templates"
+                class="b-tenant-browser__tenant-container-list-item">
+
+                <div ng-class="{'b-template-node_selected': templateContainer === selectedContainer}"
+                     ng-click="onTenantClicked(templateContainer, $event)"
+                     class="b-template-node">
+
+                    <a class="b-template-node__remove-node" ng-click="onRemoveTemplate(templateContainer)"></a>
+
+                    <div class="b-template-node__content">
+                        <div class="b-template-node__title-wrapper clearfix">
+                            <i ng-repeat="icon in templateContainer.icons"
+                               class="b-template-node__icon b-template-icon_{{icon}}"></i>
+                            <span class="b-template-node__title">{{templateContainer.info.name}}</span>
+                        </div>
+                        <ul class="b-template-node__properties-list list-unstyled">
+                            <li class="e-node__properties-list__item">{{templateContainer.info.displayType}}</li>
+                        </ul>
+                    </div>
+                    <div class="b-template-node__buttons">
+                        <button class="btn btn-sm btn-default" ng-click="openContainer(templateContainer)">Open</button>
+                        <button class="btn btn-sm btn-default" ng-click="deployComponent(templateContainer)">Deploy
+                        </button>
+                    </div>
+
+                    <div class="b-template-node__status-bar">
+                        {{templateContainer.info.version}}
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>

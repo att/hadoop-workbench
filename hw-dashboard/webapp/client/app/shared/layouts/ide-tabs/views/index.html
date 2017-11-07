@@ -1,0 +1,40 @@
+<div class="b-dashboard-widget__header__tab-panel" calc-tab-panel-width ctpw-hidden-tabs-list-control="b-dashboard-widget__header__hidden-tabs-list-control"
+     ng-show="visibleTabs.length > 0">
+    <ul class="b-dashboard-widget__header__tab-panel__tabs">
+        <li ng-repeat="tab in visibleTabs" class="b-dashboard-widget__header__tab not-draggable"
+            ng-class="{
+                        'b-dashboard-widget__header__tab_dirty': tab.dirty,
+                        'b-dashboard-widget__header__tab_active': tab.active,
+                        'b-dashboard-widget__header__tab': tab.styleAsTab !== false,
+                        'b-dashboard-widget__header__tab_closable': tab.closable
+                    }">
+            <a class="b-dashboard-widget__header__tab__link"
+               ng-click="tab.enable && tabClicked($event, $index)" ng-disabled="!tab.enable" ng-class="tab.css" title="{{ tab.tooltip }}">
+                <i class="b-dashboard-widget__header__tab__icon" ng-if="tab.icon" ng-class="tab.icon"></i>
+                <span class="b-dashboard-widget__header__tab__indicator" ng-if="tab.indicator" ng-class="tab.indicator"></span>
+                {{tab.label}}
+                <i ng-click="closeRightTab($index)"
+                   class="b-dashboard-widget__header__tab__icon-close-tab"></i>
+            </a>
+        </li>
+    </ul>
+    <div class="b-dashboard-widget__header__hidden-tabs-list-control b-dashboard-widget__header__tab not-draggable"
+         click-outside="clickOutsidePluginActionsDropdown" ng-show="hiddenTabs.length > 0">
+        <div class="b-dashboard-widget__header__hidden-tabs-list">
+            <a class="b-dashboard-widget__header__tab__link" ng-class="{disabled: hiddenTabs.length === 0}"
+               title="More actions"
+               ng-click="toggleHiddenTabsListDropdownClicked()">
+                <i class="b-dashboard-widget__header__tab__icon b-dashboard-widget__header__hidden-tabs-list-icon"></i>
+            </a>
+
+            <ul class="b-dashboard-widget__header__hidden-tabs-list__tabs list-unstyled"
+                ng-show="showHiddenTabs">
+                <li class="b-dashboard-widget__header__actions-menu__option" ng-repeat="t in hiddenTabs">
+                    <a class="b-dashboard-widget__header__actions-menu__option-link"
+                       ng-attr-title="{{t.tab.label}}"
+                       ng-click="t.handler(t.tab)">{{t.tab.label}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@import "../pages/platforms-browser/less/index";
+@import "../pages/platform-info/less/index";
+@import "../pages/clusters-browser/less/index";
+@import "../pages/cluster-info/less/index";
+@import "../pages/access-keys/less/index";
+@import "../pages/service-users/less/index";
+
+.b_platforms-clusters-widget__backdrop {
+  position   : absolute;
+  display    : block;
+  top        : 0;
+  left       : 0;
+  right      : 0;
+  bottom     : 0;
+  background : rgba(255, 255, 255, 0.7);
+  z-index    : 1;
+
+  &__spinner {
+    position  : absolute;
+    height    : 84px;
+    width     : 84px;
+    top       : 50%;
+    left      : 50%;
+    transform : translate(-50%, -50%);
+
+    &__top {
+      display    : block;
+      height     : 100%;
+      width      : 100%;
+      background : url("../../../../resources/img/logo_dap.png") no-repeat center center;
+      animation  : dap 1s infinite;
+    }
+
+    &__bottom {
+      display          : block;
+      position         : relative;
+      top              : -30px;
+      left             : 18px;
+      height           : 12px;
+      width            : 50%;
+      background-color : #000;
+      border-radius    : 50%;
+      animation        : shadow 1s infinite;
+    }
+  }
+}
+
+// mixin:
+.right_panel_no_info_label(@textWidth: 200px) {
+  display: block;
+  margin: 0 auto;
+  width: @textWidth;
+  font-size: 18px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #A0A0A0;
+}

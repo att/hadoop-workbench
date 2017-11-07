@@ -1,0 +1,234 @@
+<workflow-app name="DMS-UDM-Core-Workflow-for-${dms_version}" xmlns="uri:oozie:workflow:0.4">
+    <!--
+        Input properties:
+          source.oozie.wf.application.path
+          dms.udm.transform.version  # dms-v5 or dms-v6
+          dms_version # v5 or v6
+          dms.udm.transform.input.path.headers
+          dms.udm.transform.input.path.data
+          dms.udm.transform.output.path
+          dms.udm.transform.avro.source.business.unit
+          dms.udm.transform.avro.data.producer
+          dms.udm.transform.avro.delivery.schema
+
+        Other properties are propagated from job.properties, config-default.xml and conf/* files
+    -->
+    <start to="job-start-auditlog-record"/>
+
+    <action name="job-start-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_UDM_WF_07</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+            <arg>-msg</arg><arg>DMS-UDM-WF Job for ${wf:conf('dms.udm.transform.version')} version started</arg>
+            <file>${wf:conf('source.oozie.wf.application.path')}/lib/vd-auditlog.properties#vd-auditlog.properties</file>
+        </java>
+        <ok to="prepare-attributes"/>
+        <error to="prepare-attributes"/>
+    </action>
+
+    <action name="prepare-attributes">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>prepare.sh</exec>
+            <argument>${wf:conf('dms.udm.transform.zookeeper.quorum')}</argument>
+            <argument>com.directv.app.${wf:conf('dms.udm.transform.environment')}.dms.udm.status-${dms_version}</argument>
+            <argument>1970-01-01 00:00:00</argument>
+            <file>scripts/attribute.py#attribute.py</file>
+            <file>scripts/zookeeper_status#zookeeper_status</file>
+            <file>scripts/prepare.sh#prepare.sh</file>
+            <capture-output/>
+        </shell>
+        <ok to="merge-and-save-in-avro"/>
+        <error to="job-failed-auditlog-record"/>
+    </action>
+
+    <!-- Merge headers and data and transform to avro format -->
+    <action name="merge-and-save-in-avro">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>${wf:conf('source.oozie.wf.application.path')}/conf/${wf:conf('dms.udm.transform.version')}.xml</job-xml>
+            <job-xml>conf/static-properties.xml</job-xml>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapred.input.dir</name>
+                    <value>${wf:conf('dms.udm.transform.input.path.headers')},${wf:conf('dms.udm.transform.input.path.data')}</value>
+                </property>
+                <property>
+                    <name>mapred.output.dir</name>
+                    <value>${wf:conf('dms.udm.transform.output.path')}</value>
+                </property>
+                <property>
+                    <name>date.range.plugin.date_from</name>
+                    <value>${wf:actionData('prepare-attributes')['dateFrom']}</value>
+                </property>
+                <property>
+                    <name>date.range.plugin.date_to</name>
+                    <value>${wf:actionData('prepare-attributes')['dateTo']}</value>
+                </property>
+                <property>
+                    <name>date.range.plugin.uri.pattern</name>
+                    <value>/year={YEAR}/month={MONTH}/day={DAY}/hour={HOUR}</value>
+                </property>
+                <property>
+                    <name>uri.timestamp.fetcher.initial.input.path</name>
+                    <value>${wf:conf('dms.udm.transform.input.path.headers')},${wf:conf('dms.udm.transform.input.path.data')}</value>
+                </property>
+                <property>
+                    <name>uri.timestamp.fetcher.uri.pattern</name>
+                    <value>/year={YEAR}/month={MONTH}/day={DAY}/hour={HOUR}</value>
+                </property>
+                <property>
+                    <name>output.path.uri.pattern</name>
+                    <value>/year={YEAR}/month={MONTH}/day={DAY}/hour={HOUR}</value>
+                </property>
+                <property>
+                    <name>hdfs-path.mapper-class.optional-mapper-alias.mapping</name>
+                    <value>
+                        ${wf:conf('dms.udm.transform.input.path.headers')}:com.directv.mr.transform.SelectorTransformer:header,
+                        ${wf:conf('dms.udm.transform.input.path.data')}:${ wf:conf('dms.udm.transform.version') eq 'dms-v6' ? 'com.directv.dms.udm.transform.V6DataTransformer' : 'com.directv.dms.udm.transform.V5DataTransformer' }:data
+                    </value>
+                </property>
+                <property>
+                    <name>hdfs-path.fetcher-class.optional-fetcher-alias.mapping</name>
+                    <value>
+                        ${wf:conf('dms.udm.transform.input.path.headers')}:com.directv.mr.formats.fetcher.UriTimestampFetcher,
+                        ${wf:conf('dms.udm.transform.input.path.data')}:com.directv.mr.formats.fetcher.UriTimestampFetcher
+                    </value>
+                </property>
+                <property>
+                    <name>hdfs-path.plugin-class.optional-plugin-alias.mapping</name>
+                    <value>
+                        ${wf:conf('dms.udm.transform.input.path.headers')}:com.directv.mr.formats.plugin.DateRangePlugin,
+                        ${wf:conf('dms.udm.transform.input.path.data')}:com.directv.mr.formats.plugin.DateRangePlugin
+                    </value>
+                </property>
+                <property>
+                    <name>incremental.avro.output.format.prefix</name>
+                    <value>${wf:conf('dms.udm.transform.version')}-#{ts}</value>
+                </property>
+                <property>
+                    <name>toavro.reducer.start.time</name>
+                    <value>${timestamp()}</value>
+                </property>
+                <property>
+                    <name>toavro.reducer.source.business.unit</name>
+                    <value>${wf:conf('dms.udm.transform.avro.source.business.unit')}</value>
+                </property>
+                <property>
+                    <name>toavro.reducer.data.producer</name>
+                    <value>${wf:conf('dms.udm.transform.avro.data.producer')}</value>
+                </property>
+                <property>
+                    <name>toavro.reducer.schema</name>
+                    <value>${wf:conf('dms.udm.transform.avro.delivery.schema')}</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.acl-view-job</name>
+                    <value>*</value>
+                </property>
+                <property>
+                    <name>oozie.launcher.mapreduce.job.acl-view-job</name>
+                    <value>*</value>
+                </property>
+            </configuration>
+        </map-reduce>
+        <ok to="set-processed-status" />
+        <error to="job-failed-auditlog-record" />
+    </action>
+
+    <action name="set-processed-status">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>zookeeper_status</exec>
+            <argument>-Q</argument>
+            <argument>${wf:conf('dms.udm.transform.zookeeper.quorum')}</argument>
+            <argument>-S</argument>
+            <argument>com.directv.app.${wf:conf('dms.udm.transform.environment')}.dms.udm.status-${dms_version}=${wf:actionData('prepare-attributes')['dateTo']}</argument>
+            <file>scripts/zookeeper_status#zookeeper_status</file>
+        </shell>
+        <ok to="job-completed-auditlog-record"/>
+        <error to="job-failed-auditlog-record"/>
+    </action>
+
+    <action name="job-completed-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_UDM_WF_08</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+            <arg>-msg</arg><arg>DMS-UDM-WF Job for ${wf:conf('dms.udm.transform.version')} format completed</arg>
+            <file>${wf:conf('source.oozie.wf.application.path')}/lib/vd-auditlog.properties#vd-auditlog.properties</file>
+        </java>
+        <ok to="end"/>
+        <error to="end"/>
+    </action>
+
+    <action name="job-failed-auditlog-record">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>DMS_UDM_WF_05</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+            <arg>-msg</arg><arg>DMS-UDM-WF Job for ${wf:conf('dms.udm.transform.version')} format failed. Error message: ${wf:errorMessage(wf:lastErrorNode())}</arg>
+            <file>${wf:conf('source.oozie.wf.application.path')}/lib/vd-auditlog.properties#vd-auditlog.properties</file>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <kill name="fail">
+        <message>DMS-UDM-WF job for ${wf:conf('dms.udm.transform.version')} format failed, error message: ${wf:errorMessage(wf:lastErrorNode())}</message>
+    </kill>
+    <end name="end" />
+</workflow-app>

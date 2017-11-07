@@ -1,0 +1,91 @@
+@import "../../../../../../less/components/icons";
+
+// WARNING!!! external implicit dependency
+// should be synchronized with file: "\hw\plugins\hw-provision-web\src\main\resources\metadata\HDP-services.json"
+@service-list:
+  ambari_server,
+  app_timeline_server,
+  datanode,
+  flume_handler,
+  hcat,
+  hdfs_client,
+  historyserver,
+  hive_client,
+  hive_metastore,
+  hive_server,
+  kafka_broker,
+  mapreduce2_client,
+  metrics_collector,
+  metrics_monitor,
+  mysql_server,
+  namenode,
+  nodemanager,
+  oozie_client,
+  oozie_server,
+  resourcemanager,
+  secondary_namenode,
+  spark_client,
+  spark_jobhistoryserver,
+  spark_thriftserver,
+  spark2_client,
+  spark2_jobhistoryserver,
+  spark2_thriftserver,
+  tez_client,
+  webhcat_server,
+  yarn_client,
+  zookeeper_client,
+  zookeeper_server;
+// Current content of external JSON file:
+/*
+AMBARI_SERVER
+ZOOKEEPER_CLIENT
+HCAT
+METRICS_MONITOR
+TEZ_CLIENT
+HDFS_CLIENT
+HIVE_CLIENT
+YARN_CLIENT
+METRICS_COLLECTOR
+MAPREDUCE2_CLIENT
+OOZIE_CLIENT
+SPARK_CLIENT
+SPARK2_CLIENT
+ZOOKEEPER_SERVER
+HISTORYSERVER
+NAMENODE
+HIVE_SERVER
+SECONDARY_NAMENODE
+HIVE_METASTORE
+APP_TIMELINE_SERVER
+MYSQL_SERVER
+RESOURCEMANAGER
+WEBHCAT_SERVER
+OOZIE_SERVER
+SPARK_JOBHISTORYSERVER
+SPARK_THRIFTSERVER
+SPARK2_JOBHISTORYSERVER
+SPARK2_THRIFTSERVER
+NODEMANAGER
+FLUME_HANDLER
+DATANODE
+KAFKA_BROKER
+*/
+// all supported "name" values should be converted to lowercase
+// and stored in the folder: "/hw/hw-dashboard/webapp/client/resources/img/"
+// as: "icon-js-<SERVICE_NAME_IN_LOWERCASE>.png"
+// example: "icon-js-oozie_client.png"
+
+.json-schema-item-icon-styles(@index) when (@index > 0) {
+  @name: extract(@service-list, @index);
+
+  .json-schema-item.icon-js-@{name} {
+    .icon-base(20px, 20px, "../../resources/img/icon-js-@{name}.png");
+    //
+    background-size: 83%;
+  }
+
+  .json-schema-item-icon-styles(@index - 1);
+}
+
+.json-schema-item-icon-styles(length(@service-list));
+

@@ -1,0 +1,241 @@
+@margin-bottom-default: 4px;
+// widget styles
+.mixin-item-fancy {
+  font-size: 12px;
+  display: block;
+  padding: 4px;
+  //border-radius: 5px;
+  //border: 1px solid rgba(128, 128, 128, 0.13);
+  margin-bottom: @margin-bottom-default;
+  //color: #5c5c5c;
+  //background-color: rgba(224, 224, 224, 0.42);
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.mixin-button {
+  display: inline-block;
+  float: left;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: rgba(224, 224, 224, 0.22);
+  padding: 2px 10px 2px 10px;
+}
+
+.mixin-button-active {
+  font-weight: bolder;
+  background-color: rgba(224, 224, 224, 0.62);
+}
+
+.b-oozie-jobs {
+
+  &__job-log {
+    overflow: hidden;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    &-content-scroll-container {
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    &__no-data {
+      color: #a4abb3;
+      font-size: 16px;
+      text-align: center;
+      padding: 5px 4px 4px 5px;
+    }
+    &__error {
+      min-height: 32px;
+      border-bottom: 1px solid #E3E7EC;
+      background: #FFE5E4;
+      color: #4D4D4D;
+      font-size: 13px;
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &-expanded {
+        white-space: normal;
+      }
+
+    }
+    &__list {
+      padding: 5px 4px 4px 5px;
+      margin: 0px;
+
+      &-header {
+        padding-bottom: 0px;
+        margin-bottom: @margin-bottom-default;
+      }
+
+      &-content {
+        padding-top: 0px;
+      }
+
+      &__item {
+        .mixin-item-fancy();
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        position: relative;
+
+
+        &-loading {
+          .mixin-item-fancy();
+
+          text-align: center;
+          margin-top: 7px;
+
+          &__requesting-icon {
+            .icon-base(12px, 12px, "../../resources/img/ic-dashboard-widget__progress-bar.gif");
+            background-size : 12px;
+            top             : 7px;
+            left            : 25px;
+          }
+
+        }
+
+        &-row-external-subtype {
+          .mixin-item-fancy();
+
+          display: flex;
+          flex-direction: row;
+          background-color: white;
+          justify-content: space-around;
+          align-items: stretch;
+
+          padding: 0px;
+          background-color: rgba(224, 224, 224, 0.001);
+          border-color: rgba(224, 224, 224, 0.001);
+          margin-top: 6px;
+
+          &__tab {
+            .mixin-button();
+            padding-top: 4px;
+            padding-bottom: 4px;
+            flex: 33%;
+            text-align: center;
+
+            &-active {
+              .mixin-button-active();
+            }
+          }
+        }
+
+        &-row-copy {
+          .mixin-item-fancy();
+
+          font-size: 16px;
+          text-align: right;
+          background-color: rgba(224, 224, 224, 0.001);
+          border-color: rgba(224, 224, 224, 0.001);
+          padding: 0px 0px 0px 0px;
+
+          &__text {
+
+            &-copy {
+              float: right;
+              color: #a4abb3;
+              padding-top: 2px;
+              padding-bottom: 2px;
+              display: inline-block;
+
+              &:hover {
+                color: #0A94EE;
+                cursor: pointer;
+              }
+
+              &__icon {
+                .icon-copy();
+              }
+
+              &:hover > &__icon {
+                .icon-copy_hover();
+              }
+            }
+
+            &-job {
+              .mixin-button();
+              cursor: default;
+            }
+
+            &-internal {
+              .mixin-button();
+
+              padding-right: 7px;
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+
+            }
+            &-external {
+              .mixin-button();
+
+              padding-left: 7px;
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+
+            &-active {
+              .mixin-button-active();
+            }
+
+            &:active {
+              color: rgba(10, 162, 255, 0.62);
+              cursor: pointer;
+            }
+          }
+
+        }
+
+        &&-new {
+          background-color: rgba(119, 238, 119, 0.18);
+          border-color: #BCF5BC;
+        }
+
+        &__copy-icon {
+          visibility: hidden;;
+          position: absolute;
+          left: 4px;
+          .icon-el-copy();
+        }
+
+        &:hover > &__copy-icon {
+          visibility: visible;
+        }
+        &__text {
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          margin: 0px;
+          text-indent: 20px;
+        }
+      }
+
+      &__header-no-alerts {
+        color: #a4abb3;
+        font-size: 16px;
+        padding-top: 30px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.error-marker {
+  color: white;
+  background: #aa0000;
+}
+.critical-marker {
+  color: white;
+  background: #930000;
+}
+.warning-marker {
+  color: white;
+  background: #d45529;
+}
+.info-marker {
+  background: #95cb97;
+}

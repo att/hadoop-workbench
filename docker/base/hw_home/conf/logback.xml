@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds" debug="true">
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${hw.home}/logs/hw.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${hw.home}/logs/hw-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>200MB</maxFileSize>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd hh:mm:ss.SSS} %-5level[%thread] %logger{1} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${hw.home}/logs/audit.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${hw.home}/logs/audit-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>200MB</maxFileSize>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd hh:mm:ss.SSS} %level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd hh:mm:ss.SSS} %level %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.directv" level="WARN" />
+    <logger name="scala.slick" level="WARN" />
+    <logger name="ro.fortsoft.pf4j" level="WARN" />
+    <logger name="com.mchange" level="WARN" />
+    <logger name="org.apache.cxf.interceptor.LoggingOutInterceptor" level="WARN" />
+
+    <logger name="com.directv.hw.logging.AuditLogger" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT"/>
+    </logger>
+
+    <root level="WARN">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

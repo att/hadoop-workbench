@@ -1,0 +1,25 @@
+// Error in-content block
+
+.error-in-content() {
+  padding: 16px;
+  overflow: auto;
+}
+
+.error-in-content__text(@cellSize: 16px) {
+  margin-left: -@cellSize;
+  margin-top: -@cellSize;
+  background: #FFEACB;
+  border-bottom: 1px solid #CED3D8;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 2 * @cellSize;
+
+  /**
+  * This does not works:      >>>        width: calc(100% + 32px);
+  * ,cause it is compiled to:  >>>        width: calc(132%);
+  * so, using more bulletproof syntax:
+  */
+  width: ~"calc(100% + @{cellSize} + @{cellSize})";
+
+}

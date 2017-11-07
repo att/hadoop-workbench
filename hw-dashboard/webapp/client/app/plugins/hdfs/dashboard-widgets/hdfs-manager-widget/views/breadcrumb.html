@@ -1,0 +1,73 @@
+<div class="b-hdfs__breadcrumb">
+    <div ng-if="!config.currentFolderOnly" class="b-hdfs__breadcrumb__full-path">
+        <a class="b-hdfs__breadcrumb__path-home" ng-click="goToHome()" title="Go to home directory"></a>
+
+        <div class="b-hdfs__breadcrumb__current-path" ng-if="!isBreadcrumbPathEditModeEnabled">
+            <div class="b-hdfs__breadcrumb__current-path__path-item">
+                <a class="b-hdfs__breadcrumb__path-link" ng-click="goTo(-1)">/</a>
+                <i class="b-hdfs__breadcrumb__path-separator" ng-show="currentPath.length > 0"></i>
+            </div>
+
+            <div ng-repeat="(key, dir) in currentPath track by key" class="b-hdfs__breadcrumb__current-path__path-item">
+                <a ng-click="goTo(key)" class="b-hdfs__breadcrumb__path-link" title="{{dir}}">{{dir}}</a>
+                <i class="b-hdfs__breadcrumb__path-separator" ng-show="!$last"></i>
+            </div>
+        </div>
+
+        <div class="b-hdfs__breadcrumb__path-editor">
+            <a class="b-hdfs__breadcrumb__path-editor__edit-path-link" ng-if="!isBreadcrumbPathEditModeEnabled"
+               title="Edit path"
+               ng-click="editPath()"></a>
+            <span class="b-hdfs__breadcrumb__path-editor__input" ng-if="isBreadcrumbPathEditModeEnabled" focus-it="true"
+                  focus-it-set-caret-to-end="true"
+                  ng-model="breadcrumbEditPath.value"
+                  contenteditable
+                  contenteditable-discard-changes-on-esc="true"
+                  contenteditable-callback="exitBreadcrumbPathEditMode()"
+                  contenteditable-callback-on-esc="exitBreadcrumbPathEditMode()">
+            </span>
+        </div>
+    </div>
+
+    <div ng-if="config.currentFolderOnly" class="b-hdfs__breadcrumb__current-folder-only">
+        <span>{{currentPathFolder}}</span>
+    </div>
+
+    <div class="b-hdfs__breadcrumb__actions" ng-show="!isFileEditorModeEnabled">
+        <div class="b-hdfs__breadcrumb__quick-create-widget">
+            <div ng-show="config.quickCreateWidget.search && !displayQuickCreateItemWidget" class="b-hdfs__breadcrumb__action">
+                <input class="b-hdfs__breadcrumb__action-search-input" type="text" title="Search items"
+                       placeholder="Search file"
+                       ng-model="itemsFilter.searchString"/>
+            </div>
+            <a ng-show="config.quickCreateWidget.openFileBrowser" ng-click="openHdfsBrowserWidget()"
+               class="b-hdfs__breadcrumb__action__btn-open-hdfs-browser"></a>
+            <a ng-show="config.quickCreateWidget.folder && !displayQuickCreateItemWidget"
+               ng-click="showQuickCreateItemWidget('DIR')"
+               class="b-hdfs__breadcrumb__action__btn-show-quick-create-folder"></a>
+            <a ng-show="config.quickCreateWidget.file && !displayQuickCreateItemWidget"
+               ng-click="showQuickCreateItemWidget('FILE')"
+               class="b-hdfs__breadcrumb__action__btn-show-quick-create-file"></a>
+
+            <div ng-show="config.quickCreateWidget.upload && !displayQuickCreateItemWidget"
+                 class="b-hdfs__breadcrumb__action__btn-quick-upload-file">
+                <input type="file" nv-file-select uploader="fileUploader"
+                       class="b-hdfs__breadcrumb__action__upload-input">
+            </div>
+
+            <div ng-show="displayQuickCreateItemWidget" class="b-hdfs__breadcrumb__action__quick-create-item">
+                <input type="text" ng-model="tempItem.path" placeholder="Item name..."
+                       class="input b-hdfs__breadcrumb__action__quick-create-item__input"
+                       focus-it="displayQuickCreateItemWidget"
+                       focus-it-delay="true"
+                       on-key-enter-callback="createItem()"
+                       on-key-escape-callback="hideQuickCreateItemWidget()"
+                />
+                <a ng-click="createItem()" class="b-hdfs__breadcrumb__action__quick-create-item__btn-create-action"></a>
+                <a ng-click="hideQuickCreateItemWidget()"
+                   class="b-hdfs__breadcrumb__action__quick-create-item__btn-cancel-action"></a>
+            </div>
+        </div>
+        <div class="b-hdfs__breadcrumb__actions__backdrop" ng-show="error"></div>
+    </div>
+</div>

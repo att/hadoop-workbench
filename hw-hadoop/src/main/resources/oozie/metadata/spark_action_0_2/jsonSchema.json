@@ -1,0 +1,164 @@
+{
+  "name": "spark",
+  "version": "0.2",
+  "canHaveTemplates": true,
+  "restrictions": [],
+  "warnings": [],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "spark_0_2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "job-tracker": {
+            "type": "string",
+            "default": "${jobTracker}"
+          },
+          "name-node": {
+            "type": "string",
+            "default": "${nameNode}"
+          },
+          "prepare": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "delete": {
+                "type": "array",
+                "title": "delete list",
+                "minItems": 0,
+                "uniqueItems": false,
+                "additionalItems": false,
+                "items": {
+                  "title": "delete",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ]
+                }
+              },
+              "mkdir": {
+                "type": "array",
+                "title": "mkdir list",
+                "minItems": 0,
+                "uniqueItems": false,
+                "additionalItems": false,
+                "items": {
+                  "title": "mkdir",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ]
+                }
+              }
+            }
+          },
+          "job-xml": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "type": "string",
+              "isFileRef": true
+            }
+          },
+          "property": {
+            "type": "array",
+            "title": "properties",
+            "minItems": 1,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "title": "property",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "master": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "class": {
+            "type": "string"
+          },
+          "jar": {
+            "type": "string",
+            "isFileRef": true
+          },
+          "spark-opts": {
+            "type": "string"
+          },
+          "arg": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          "file": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "type": "string",
+              "isFileRef": true
+            }
+          },
+          "archive": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "type": "string",
+              "isFileRef": true
+            }
+          }
+        },
+        "required": [
+          "job-tracker",
+          "name-node",
+          "prepare",
+          "job-xml",
+          "master",
+          "name",
+          "jar"
+        ]
+      }
+    }
+  }
+}

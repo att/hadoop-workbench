@@ -1,0 +1,87 @@
+// Core variables and mixins
+@import "components/variables";
+@import "components/mixins";
+// Components
+@import "components/animations";
+@import "components/buttons";
+@import "components/icon";
+@import "components/icons";
+@import "components/normalize";
+@import "components/type";
+@import "components/close";
+@import "components/scaffolding";
+@import "components/alerts";
+@import "components/dropdowns";
+@import "components/preloader";
+@import "components/inner-preloader";
+@import "components/input";
+@import "components/form";
+@import "components/dropdown-menu";
+@import "components/tooltip";
+@import "components/errors";
+
+@import "components/node-counter";
+// Utilities
+@import "components/utilities";
+//Components
+@import "components/navbar";
+// ==== Plugins ====
+@import "plugins";
+@import "../app/shared/widgets/index";
+@import "../app/main/widgets/search-cluster/less/index";
+@import "../app/main/widgets/search-provider/less/index";
+@import "../app/main/widgets/index";
+// ==== Widgets ====
+@import "widgets";
+@import "../app/shared/layouts/index";
+@import "../app/shared/components/index";
+@import "../app/shared/jsPlumb/index";
+
+// Grid with no gutters
+.row.no-gutter {
+  [class*='col-']:not(:first-child),
+  [class*='col-']:not(:last-child) {
+    padding-right : 0;
+    padding-left  : 0;
+  }
+}
+
+html {
+  height : 100%;
+}
+
+body {
+  font-family : @font-family-base;
+  font-size   : @font-size-base;
+  min-height  : 100%;
+  position    : relative;
+  background  : @page-background-color;
+}
+
+header {
+  padding     : 8px 0 8px 10px;
+  font-weight : 600;
+
+  &:extend(.clearfix all);
+}
+
+footer {
+  width      : 100%;
+  background : @page-background-color;
+  color      : #888;
+  padding    : @grid-margin 0;
+  font-size  : 12px;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight : @headings-font-weight;
+}
+
+.content-wrapper {
+  padding-bottom : 0; //52px;
+}
+
+.hide-before-init {
+  display : none;
+}

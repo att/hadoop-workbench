@@ -1,0 +1,94 @@
+{
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "sections": true,
+    "properties": {
+      "info": {
+        "type": "object",
+        "title": "Info",
+        "order": 1,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "hidden": true
+          },
+          "title": {
+            "title": "Name",
+            "type": "string",
+            "isTitleField": true,
+            "readonly": true
+          },
+          "kerberized": {
+            "title": "Kerberized",
+            "type": "boolean"
+          },
+          "realm": {
+            "title": "Realm",
+            "type": "string"
+          }
+        }
+      },
+      "hdfsAccess": {
+        "type": "object",
+        "title": "HDFS access",
+        "order": 2,
+        "properties": {
+          "userId": {
+            "title": "User",
+            "type": "number",
+            "isNullAble": true
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "oozieAccess": {
+        "type": "object",
+        "title": "Oozie access",
+        "order": 3,
+        "properties": {
+          "userId": {
+            "title": "User",
+            "type": "number",
+            "isNullAble": true
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "customData": {
+        "type": "array",
+        "title": "Custom Properties",
+        "order": 7,
+        "minItems": 0,
+        "uniqueItems": false,
+        "additionalItems": true,
+        "items": {
+          "title": "property",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "key",
+            "value"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+<div class="b-clusters-browser"
+     ng-click="selectKafkaTopic(null)">
+    <div ng-if="pageErrorMessage" class="b-clusters-browser__error">
+        <div class="b-clusters-browser__error__text">
+            {{pageErrorMessage}}
+        </div>
+    </div>
+    <ul class="b-clusters-browser__list">
+        <li class="b-clusters-browser__list__item"
+            ng-repeat="kt in kafkaTopics">
+            <div class="b-clusters-browser__list__item__link"
+                 ng-click="selectKafkaTopic($event, kt)"
+                 ng-class="{'selected': selectedItem.id === kt.id}">
+                <span class="b-clusters-browser__list__item__link__title">{{kt.id}}</span>
+
+                <ul class="b-clusters-browser__list__item__link__property-list">
+                    <li class="b-clusters-browser__list__item__link__property-list__item">
+                        <span class="b-clusters-browser__list__item__link__property-list__item__key">Replication</span>
+                        <span class="b-clusters-browser__list__item__link__property-list__item__value">{{kt.replication}}</span>
+                    </li>
+                    <li class="b-clusters-browser__list__item__link__property-list__item">
+                        <span class="b-clusters-browser__list__item__link__property-list__item__key">Partition</span>
+                        <span class="b-clusters-browser__list__item__link__property-list__item__value">{{kt.partitionNumber}}</span>
+                    </li>
+                    <li class="b-clusters-browser__list__item__link__property-list__item">
+                        <span class="b-clusters-browser__list__item__link__property-list__item__key">Brokers</span>
+                        <span class="b-clusters-browser__list__item__link__property-list__item__value">{{kt.brokerNumber}}</span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>

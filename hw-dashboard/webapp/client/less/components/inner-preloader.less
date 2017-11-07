@@ -1,0 +1,47 @@
+.spinner-backdrop-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(200, 200, 200, 0.3);
+}
+.spinner-backdrop-inner-transparent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  opacity: 0.5;
+}
+
+.spinner-backdrop-inner__spinner {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10%;
+  height: 10%;
+  min-width: 33px;
+  min-height: 33px;
+  max-width: 66px;
+  max-height: 66px;
+  background: url('../../resources/img/ajax-loader.gif') no-repeat center;
+  background-size: contain;
+}
+
+.spinner-backdrop-inner__spinner-hypnofrog {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 19%;
+  height: 50%;
+  background: url('../../resources/img/hypnofrog.gif');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

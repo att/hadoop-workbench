@@ -1,0 +1,51 @@
+<div navigable-list
+     nl-on-choose="openComponent">
+    <form class="dap-navigation-form">
+        <label for="nav-search" class="nav-search-label">Add to Workbench</label>
+
+        <div class="nav-search-container">
+            <input type="text" id="nav-search" name="search_word"
+                   placeholder="Search Tenant or Create New..."
+                   autocomplete="off"
+                   ng-class="{'requesting': requesting}"
+                   ng-model="searchStr"
+                   navigable-list-input
+                   ng-keydown="onKeyDown($event)"
+                   focus-it="true"
+                   style="background-color: #fff;">
+                                    <span class="placeholder-tip">
+                                        Enter to Open
+                                        <i class="placeholder-tip-icon" ng-click="searchStr = ''"></i>
+                                    </span>
+            <i class="b-menu-search-items__nav-search-container__requesting-icon" ng-show="requesting"></i>
+
+            <div class="b-menu-search-items__list-container" ng-show="!requesting">
+                <div class="b-menu-search-items__list-container__no-matches"
+                     ng-show="tenantsFiltered.length === 0">
+                    No matches found
+                    <button class="btn btn-success btn-lg b-menu-search-items__list-container__no-matches-label"
+                            ng-click="createNewTenant()">
+                        Create New Tenant
+                    </button>
+                </div>
+                <ul class="b-menu-search-items__list-container__list"
+                    ng-show="tenantsFiltered.length > 0"
+                    navigable-list-items="tenantsFiltered"
+                    nl-selector="li"
+                    nl-selected-class="selected"
+                    nl-highlighted-class="highlighted">
+                    <li class="b-add-service-search__omnibox__item" ng-repeat="component in tenantsFiltered">
+                        <a class="b-add-service-search__omnibox__item__link"
+                           ng-click="openComponent(component)"
+                           style="padding:8px;">
+                            <i ng-class="component.info.type === 'oozie' ? 'icon-oozie' : ( component.info.type === 'flume' ? 'icon-flume' : 'icon-tenant-browser' )"></i>
+                            <span class="b-add-service-search__omnibox__item__link__service-name">{{component.info.name || component.name}}</span>
+                            <span>:{{component.version}} </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn btn-secondary btn-lg" ng-click="close()">Cancel</button>
+    </form>
+</div>

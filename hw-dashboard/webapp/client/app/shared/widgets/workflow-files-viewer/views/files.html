@@ -1,0 +1,52 @@
+<div class="b-files-viewer">
+    <div class="b-files-viewer__section b-files-viewer__section_left">
+        <h2 class="b-files-viewer__section__title">{{saved.title}} <span class="b-files-viewer__section__subtitle"
+                                                                         ng-if="saved.subtitle">{{saved.subtitle}}</span>
+        </h2>
+
+        <div class="b-files-viewer__section__content">
+            <div class="b-files-viewer__expandable-list"
+                 ng-repeat="section in saved.sections"
+                 ng-class="{'b-files-viewer__expandable-list_expanded': section.isExpanded}">
+                <h3 class="b-files-viewer__expandable-list__header"
+                    ng-click="section.expand(section.items.length > 0 ? !section.isExpanded : false)"
+                    ng-class="{'b-files-viewer__expandable-list__header_disabled': section.items.length === 0}">
+                    <i class="b-files-viewer__expandable-list__header__icon" ng-class="section.icon"></i>
+                    <span class="b-files-viewer__expandable-list__header__text">{{section.title}}</span>
+                </h3>
+
+                <div class="b-files-viewer__expandable-list__content">
+                    <div class="b-files-viewer__expandable-list__item"
+                         ng-repeat="item in section.items">{{item}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="b-files-viewer__section">
+        <h2 class="b-files-viewer__section__title">{{staged.title}} <span ng-if="staged.subtitle"
+                                                                          class="b-files-viewer__section__subtitle">{{staged.subtitle}}</span>
+        </h2>
+
+        <div class="b-files-viewer__section__content">
+            <div class="b-files-viewer__expandable-list"
+                 ng-repeat="section in staged.sections"
+                 ng-class="{'b-files-viewer__expandable-list_expanded': section.isExpanded}">
+                <h3 class="b-files-viewer__expandable-list__header b-files-viewer__expandable-list__header_libraries"
+                    ng-click="section.expand(section.items.length > 0 ? !section.isExpanded : false)"
+                    ng-class="{'b-files-viewer__expandable-list__header_disabled': section.items.length === 0}">
+                    <i class="b-files-viewer__expandable-list__header__icon" ng-class="section.icon"></i>
+                    <span class="b-files-viewer__expandable-list__header__text">{{section.title}}</span>
+                </h3>
+
+                <div class="b-files-viewer__expandable-list__content">
+                    <div class="b-files-viewer__expandable-list__item"
+                         ng-repeat="item in section.items">{{item}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

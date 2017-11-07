@@ -1,0 +1,16 @@
+{
+  "properties": [
+    {
+      "from": "decision",
+      "connector": "case",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "case": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

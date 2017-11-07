@@ -1,0 +1,128 @@
+{
+  "data": {
+    "connectionWarnings": [
+      {
+        "name": "minOccurs",
+        "value": 1,
+        "from": "source",
+        "type": "out",
+        "connector": "out"
+      },
+      {
+        "name": "minOccurs",
+        "value": 1,
+        "from": "channel",
+        "type": "out",
+        "connector": "out"
+      },
+      {
+        "name": "minOccurs",
+        "value": 1,
+        "type": "in",
+        "to": "channel",
+        "connector": "in"
+      },
+      {
+        "name": "minOccurs",
+        "value": 1,
+        "to": "sink",
+        "type": "in",
+        "connector": "in"
+      }
+    ],
+    "typeWarnings": [],
+    "typeRestrictions": [
+      {
+        "name": "pattern",
+        "field": "id",
+        "value": "^[a-zA-Z_][a-zA-Z0-9_-]*$"
+      }
+    ],
+    "connectionRestrictions": [
+      {
+        "name": "maxOccurs",
+        "value": 0,
+        "type": "in",
+        "to": "source",
+        "connector": "in"
+      },
+      {
+        "name": "maxOccurs",
+        "value": 0,
+        "type": "out",
+        "from": "source",
+        "to": "sink",
+        "connector": "out"
+      },
+      {
+        "name": "maxOccurs",
+        "value": 1,
+        "type": "in",
+        "to": "channel",
+        "connector": "in"
+      },
+      {
+        "name": "maxOccurs",
+        "value": 1,
+        "type": "in",
+        "to": "sink",
+        "connector": "in"
+      },
+      {
+        "name": "maxOccurs",
+        "value": 0,
+        "type": "out",
+        "from": "sink",
+        "connector": "out"
+      },
+      {
+        "name": "maxOccurs",
+        "value": 0,
+        "type": "out",
+        "from": "channel",
+        "to": "channel",
+        "connector": "out"
+      },
+      {
+        "name": "maxOccurs",
+        "value": 0,
+        "type": "in",
+        "from": "source",
+        "to": "sink",
+        "connector": "in"
+      }
+    ],
+    "types": [
+      {
+        "name": "source",
+        "restrictions": [],
+        "warnings": [
+          {
+            "name": "minOccurs",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "name": "channel",
+        "restrictions": [],
+        "warnings": [
+          {
+            "name": "minOccurs",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "name": "sink",
+        "restrictions": [],
+        "warnings": [
+          {
+            "name": "minOccurs",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  }
+}

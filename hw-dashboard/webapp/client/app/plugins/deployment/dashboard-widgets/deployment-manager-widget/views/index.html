@@ -1,0 +1,49 @@
+<dap-widget name="'ide-tab-pages'" params="{widget: $dashboardWidget}"
+            ng-hide="errorMessage"> </dap-widget>
+<div ng-if="errorMessage" class="b-dashboard-widget__error">
+    <div class="b-dashboard-widget__error__message">{{errorMessage}}</div>
+    <div class="b-dashboard-widget__error__buttons">
+        <button ng-if="history.length > 0" class="btn btn-lg btn-secondary"
+                ng-click="historyBack()">
+            Back
+        </button>
+        <button class="btn btn-lg btn-error" ng-click="close()">Close widget</button>
+    </div>
+</div>
+
+<!--
+
+<div class="b-deployment">
+    &lt;!&ndash;Deployment&ndash;&gt;
+&lt;!&ndash;
+    dapWidget
+    :
+    "search-component"
+    icon
+    :
+    "dap-navigation-list-item-component"
+    id
+    :
+    "COMPONENT"
+    title
+    :
+    "Component"&ndash;&gt;
+    <dap-widget name="'search-component-oozie'"></dap-widget>
+
+</div>
+-->
+<!--<dap-widget name="'ide-tab-pages'" params="{widget: $dashboardWidget}">
+    <div class="b-widget-backdrop">
+        <div class="b-widget-backdrop__spinner">
+            <div class="b-widget-backdrop__spinner__top"></div>
+            <div class="b-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</dap-widget>-->
+<div class="b_deployment-widget__backdrop ng-hide" ng-show="showPreloader">
+    <div class="b_deployment-widget__backdrop__spinner">
+        <div class="b_deployment-widget__backdrop__spinner__top"></div>
+        <div class="b_deployment-widget__backdrop__spinner__bottom"></div>
+    </div>
+</div>
+

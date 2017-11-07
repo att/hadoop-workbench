@@ -1,0 +1,71 @@
+<div class="b-user-settings__service-users">
+    <h1 class="b-user-settings__service-users__title">
+        Hadoop service users
+        <a ng-click="showAddUserForm()" class="b-user-settings__service-users__create-user-btn" ng-show="!user">
+            Add user
+        </a>
+    </h1>
+
+    <div>
+        <div ng-show="user" class="b-user-settings__service-users__new-item">
+            <div class="b-user-settings__service-users__new-item-form">
+                <form novalidate name="newItemForm">
+                    <div class="b-user-settings__service-users__new-item__fields">
+                        <div class="b-user-settings__service-users__new-item__name">
+                            <input type="text" name="name" ng-model="user.name" placeholder="Name..."
+                                   class="b-config-properties-editor__new-item__input" focus-it="true" required
+                                   unique="users"
+                                   unique-field="name">
+                        </div>
+                        <div class="b-user-settings__service-users__new-item__home-path">
+                            <input type="text" name="name" ng-model="user.homePath" placeholder="Home directory path..."
+                                   class="b-config-properties-editor__new-item__input">
+                        </div>
+                    </div>
+                    <div class="b-user-settings__service-users__new-item__ssh-key">
+                        <span class="b-user-settings__service-users__new-item__ssh-key-label">Key</span>
+                        <select class="b-user-settings__service-users__new-item__ssh-key-select"
+                                ng-model="user.keyId"
+                                ng-options="key.id as key.name for key in keys">
+                            <option value="">-- select key --</option>
+                        </select>
+                    </div>
+
+                    <div class="b-user-settings__service-users__new-item__buttons">
+                        <button class="btn btn-md btn-default" ng-click="saveUser()" type="submit"
+                                ng-disabled="newItemForm.$invalid">
+                            {{user.id ? 'Update' : 'Add'}}
+                        </button>
+                        <button class="btn btn-md btn-secondary" ng-click="hideAddUserForm()"> Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div ng-show="!user" class="b-user-settings__service-users__content">
+            <ul class="b-user-settings__service-users__users-list list-unstyled">
+                <li class="b-user-settings__service-users__users-list-item" ng-repeat="user in users">
+                    <div class="b-user-settings__service-users__users-list-item__key"
+                         ng-class="{'b-user-settings__service-users__users-list-item__key_kerberized': user.keyId}">
+                        <span class="b-user-settings__service-users__users-list-item__content">{{user.name}}</span>
+                    </div>
+                    <div class="b-user-settings__service-users__users-list-item__action">
+                        <a class="b-user-settings__service-users__users-list-item__edit-link"
+                           ng-click="editUser(user)"></a>
+                    </div>
+                    <div class="b-user-settings__service-users__users-list-item__action">
+                        <a class="b-user-settings__service-users__users-list-item__remove-link"
+                           ng-click="removeUser(user)"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="b-user-settings-widget__backdrop ng-hide" ng-show="requesting">
+        <div class="b-user-settings-widget__backdrop__spinner">
+            <div class="b-user-settings-widget__backdrop__spinner__top"></div>
+            <div class="b-user-settings-widget__backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

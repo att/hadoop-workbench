@@ -1,0 +1,22 @@
+<dap-widget name="'ide-tab-pages'" params="{widget: $dashboardWidget}"
+            ng-hide="errorMessage"> </dap-widget>
+<div class="b-widget-backdrop" ng-show="showPreloader">
+    <div class="b-widget-backdrop__spinner">
+        <div class="b-widget-backdrop__spinner__top"></div>
+        <div class="b-widget-backdrop__spinner__bottom"></div>
+    </div>
+</div>
+
+<div ng-if="errorMessage" class="b-dashboard-widget__error">
+    <div class="b-dashboard-widget__error__message">{{errorMessage}}</div>
+    <div class="b-dashboard-widget__error__buttons">
+        <button ng-if="history.length > 0" class="btn btn-lg btn-secondary"
+                ng-click="historyBack()">&larr;
+            Back
+        </button>
+        <button class="btn btn-lg btn-error" ng-click="close()">Close widget</button>
+    </div>
+</div>
+
+<div download-file="downloadUrl" class="b-oozie-tenant__download-file-container" on-success="onExportSuccess()"
+     on-error="onExportError(error)"></div>

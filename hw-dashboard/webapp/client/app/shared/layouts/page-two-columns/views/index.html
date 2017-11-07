@@ -1,0 +1,51 @@
+<div class="b-page-two-columns"
+     ng-class="{
+        'b-page-two-columns_split-containers': splitContainers
+     }"
+     resizable-width-container
+     ng-repeat="leftTab in page.leftTabs"
+     ng-show="leftTab.active"
+     one-time-if="leftTab.active">
+
+    <dap-widget class="b-page-two-columns__left-container"
+                name="leftTab.page.name"
+                params="{page:leftTab.page, params:leftTab.page.params}"
+                reload="leftTab.page.reloadIndex"
+                on-success="leftTab.page.onLoadSuccess"
+                on-error="leftTab.page.onLoadError"
+                resizable-width-linked-section>
+        <div class="b-widget-backdrop">
+            <div class="b-widget-backdrop__spinner">
+                <div class="b-widget-backdrop__spinner__top"></div>
+                <div class="b-widget-backdrop__spinner__bottom"></div>
+            </div>
+        </div>
+    </dap-widget>
+
+    <div class="b-page-two-columns__right-container"
+         resizable="resizeConfig"
+         resizable-width
+         resizable-width-show-section="splitContainers">
+
+        <pause-watchers when="!tab.active"
+            ng-repeat="tab in leftTab.page.rightTabs">
+            <dap-widget class="b-page-two-columns__right-container__widget"
+                        ng-show="tab.active"
+                        one-time-if="tab.active"
+                        name="tab.page.name"
+                        params="{page:tab.page, params:tab.page.params}"
+                        reload="tab.page.reloadIndex"
+                        on-success="tab.page.onLoadSuccess"
+                        on-error="tab.page.onLoadError">
+
+                <div class="b-widget-backdrop">
+                    <div class="b-widget-backdrop__spinner">
+                        <div class="b-widget-backdrop__spinner__top"></div>
+                        <div class="b-widget-backdrop__spinner__bottom"></div>
+                    </div>
+                </div>
+            </dap-widget>
+        </pause-watchers>
+
+    </div>
+</div>

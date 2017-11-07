@@ -1,0 +1,280 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="UDC-NFL-UDM-Transform">
+
+    <!--  Kerberos credentials  -->
+    <credentials>
+        <credential name='hive_cred' type='hcat'>
+            <property>
+                <name>hcat.metastore.uri</name>
+                <value>thrift://hdpgtwdv-msdc01.ds.dtveng.net:9083</value>
+            </property>
+            <property>
+                <name>hcat.metastore.principal</name>
+                <value>hive/_HOST@DS.DTVENG.NET</value>
+            </property>
+        </credential>
+    </credentials>
+
+    <!--  Start  -->
+    <start to="auditlog-job-started"/>
+
+    <!--  AuditLog message: Job started  -->
+    <action name="auditlog-job-started">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>UDC_NFL_UDM_TR_01</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job started</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+        </java>
+        <ok to="job-lock"/>
+        <error to="job-lock"/>
+    </action>
+
+    <!-- Lock the current WF instance -->
+    <action name="job-lock">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>lock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="get-device-table-path"/>
+        <error to="auditlog-workflow-still-running"/>
+    </action>
+
+    <!-- Get actual partition of Device table -->
+    <action name="get-device-table-path">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>accountdb-lookup.py</exec>
+            <argument>--path</argument>
+            <argument>${wf:conf('nfl.vod.lookup.path')}</argument>
+            <argument>--user</argument>
+            <argument>${wf:conf('user.name')}</argument>
+            <argument>--db</argument>
+            <argument>upda</argument>
+            <argument>--table</argument>
+            <argument>Device</argument>
+            <file>scripts/accountdb-lookup.py#accountdb-lookup.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="ingest-data-into-device-table"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <action name="ingest-data-into-device-table" cred="hive_cred">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>workflows/core/hive-site.xml</job-xml>
+
+            <script>scripts/device-data-ingest.hql</script>
+            <param>DATABASE_NAME=${wf:conf('nfl.database.name')}</param>
+            <param>USERNAME=${wf:conf('user.name')}</param>
+            <param>TABLE_NAME=nflhe_device</param>
+            <param>DEVICE_PATH=${wf:conf('nfl.vod.device.path')}${wf:actionData('get-device-table-path')['Device.path']}</param>
+        </hive>
+        <ok to="job-run-nflhe-auth"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  1) nflhe_auth -->
+    <action name="job-run-nflhe-auth" >
+        <sub-workflow>
+            <app-path>${wf:conf('oozie.wf.application.path')}/workflows/core</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property><name>nfl_database_name</name><value>${wf:conf('nfl.database.name')}</value></property>
+                <property><name>nfl_table_name</name><value>nflhe_auth</value></property>
+            </configuration>
+        </sub-workflow>
+        <ok to="job-run-nflhe-gidurl"/>
+        <error to="job-run-nflhe-gidurl"/>
+    </action>
+
+    <!--  2) nflhe_gidurl -->
+    <action name="job-run-nflhe-gidurl" >
+        <sub-workflow>
+            <app-path>${wf:conf('oozie.wf.application.path')}/workflows/core</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property><name>nfl_database_name</name><value>${wf:conf('nfl.database.name')}</value></property>
+                <property><name>nfl_table_name</name><value>nflhe_gidurl</value></property>
+            </configuration>
+        </sub-workflow>
+        <ok to="job-run-nflhe-remote-booking"/>
+        <error to="job-run-nflhe-remote-booking"/>
+    </action>
+
+    <!--  3) nflhe_remote_booking -->
+    <action name="job-run-nflhe-remote-booking" >
+        <sub-workflow>
+            <app-path>${wf:conf('oozie.wf.application.path')}/workflows/core</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property><name>nfl_database_name</name><value>${wf:conf('nfl.database.name')}</value></property>
+                <property><name>nfl_table_name</name><value>nflhe_remote_booking</value></property>
+            </configuration>
+        </sub-workflow>
+        <ok to="job-run-nflhe-logout"/>
+        <error to="job-run-nflhe-logout"/>
+    </action>
+
+    <!--  4) nflhe_logout -->
+    <action name="job-run-nflhe-logout" >
+        <sub-workflow>
+            <app-path>${wf:conf('oozie.wf.application.path')}/workflows/core</app-path>
+            <propagate-configuration/>
+            <configuration>
+                <property><name>nfl_database_name</name><value>${wf:conf('nfl.database.name')}</value></property>
+                <property><name>nfl_table_name</name><value>nflhe_logout</value></property>
+            </configuration>
+        </sub-workflow>
+        <ok to="auditlog-job-completed"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  AuditLog message: Workflow is still running  -->
+    <action name="auditlog-workflow-still-running">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>UDC_NFL_UDM_TR_05</arg>
+            <arg>-msg</arg><arg>${wf:name()} Workflow is still running</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <!--  AuditLog message: Job comleted  -->
+    <action name="auditlog-job-completed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>UDC_NFL_UDM_TR_02</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job completed</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+        </java>
+        <ok to="job-unlock-completed"/>
+        <error to="job-unlock-completed"/>
+    </action>
+
+    <!-- Completed(ok): unlock the current WF instance -->
+    <action name="job-unlock-completed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>unlock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="end"/>
+        <error to="end"/>
+    </action>
+
+    <!--  AuditLog message: Job failed with error  -->
+    <action name="auditlog-job-failed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg> <arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>UDC_NFL_UDM_TR_03</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="job-unlock-failed"/>
+        <error to="job-unlock-failed"/>
+    </action>
+
+    <!-- Failed(fail): unlock the current WF instance -->
+    <action name="job-unlock-failed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>unlock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <kill name="fail">
+        <message>${wf:name()} job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+
+    <end name="end"/>
+
+</workflow-app>

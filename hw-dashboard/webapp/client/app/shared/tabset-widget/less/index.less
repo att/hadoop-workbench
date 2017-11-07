@@ -1,0 +1,32 @@
+.b_tabset {
+  height : 100%;
+
+  &__tab-headings {
+    padding-left : 0;
+    margin       : 0;
+    list-style   : none;
+
+    > li {
+      float    : left;
+      position : relative;
+      display  : block;
+    }
+  }
+
+  &__tab-content {
+
+    > .tab-pane {
+      height     : 100%;
+      display    : none;
+      visibility : hidden;
+
+      &.active {
+        display    : block;
+        visibility : visible;
+      }
+    }
+
+  }
+}
+
+

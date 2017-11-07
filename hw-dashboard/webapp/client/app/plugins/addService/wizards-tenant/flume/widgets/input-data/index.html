@@ -1,0 +1,56 @@
+<div class="b-create-service-wizard-step">
+
+    <form name="wizardForm" novalidate ng-submit="onSubmit()">
+        <h2 class="b-create-service-wizard-step__title">Component name*</h2>
+
+        <div>
+            <input type="text" class="input" name="component" placeholder="Enter component name..."
+                   ng-model="data['componentName']" maxlength="500"
+                   required focus-it="true"
+                   ng-class="{'b-create-service-wizard-step__input-required': wizardForm.component.$error.required && (wizardForm.component.$touched || showValidationErrors)}"
+                   on-key-enter-callback="$parent.save()"
+            />
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.component.$error.required && (wizardForm.component.$touched || showValidationErrors)">required</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.component.$error.pattern && !wizardForm.component.$error.required && (wizardForm.component.$touched || showValidationErrors)">The value doesn't match the pattern [-+=_.a-zA-Z0-9/]</span>
+        </div>
+
+        <h2 class="b-create-service-wizard-step__title">Component version*</h2>
+        <div>
+            <input type="text" class="input" name="version" placeholder="Enter component version..."
+                   ng-model="data['componentVersion']" required
+                   ng-class="{'b-create-service-wizard-step__input-required': wizardForm.version.$error.required && (wizardForm.version.$touched || showValidationErrors)}"
+                    on-key-enter-callback="$parent.save()"
+            />
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.version.$error.required && (wizardForm.version.$touched || showValidationErrors)">required</span>
+        </div>
+
+
+        <h2 class="b-create-service-wizard-step__title">Agent name*</h2>
+        <div>
+            <input type="text" class="input" name="agent" placeholder="Enter agent name..."
+                   ng-model="data['agentName']"
+                   required maxlength="500" ng-maxlength="500"
+                   multiple-pattern="{'nospaces': '^\\S*$', 'nofirstnumber': '^[A-Za-z]', 'latinlettersonly':'^[a-zA-Z0-9_]*$'}"
+                   ng-class="{'b-create-service-wizard-step__input-required': (wizardForm.agent.$error['mpattern-nospaces'] || wizardForm.agent.$error['mpattern-nofirstnumber'] || wizardForm.agent.$error['mpattern-latinlettersonly'] || wizardForm.agent.$error.required) && (wizardForm.agent.$touched || showValidationErrors)}"
+                   on-key-enter-callback="$parent.save()"
+            />
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.agent.$error['mpattern-nospaces'] && !wizardForm.agent.$error['mpattern-nofirstnumber'] && (wizardForm.agent.$touched || showValidationErrors) && !wizardForm.agent.$error.required">Invalid: no spaces are allowed</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.agent.$error['mpattern-nofirstnumber'] && (wizardForm.agent.$touched || showValidationErrors) && !wizardForm.agent.$error.required">First character should be latin letter</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.agent.$error['mpattern-latinlettersonly'] && !wizardForm.agent.$error['mpattern-nofirstnumber'] && !wizardForm.agent.$error['mpattern-nospaces'] && (wizardForm.agent.$touched || showValidationErrors) && !wizardForm.agent.$error.required">Only latin letters, numbers and underscores are allowed</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.agent.$error.required && (wizardForm.agent.$touched || showValidationErrors)">required</span>
+        </div>
+        <h2 class="b-create-service-wizard-step__description">Description</h2>
+        <div>
+            <textarea rows="1" class="input" name="description" placeholder="Enter description (optional)"
+                      ng-model="data['componentDescription']" on-key-enter-callback="$parent.save()"></textarea>
+        </div>
+    </form>
+
+</div>

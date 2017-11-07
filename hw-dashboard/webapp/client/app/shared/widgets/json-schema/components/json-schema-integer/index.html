@@ -1,0 +1,22 @@
+<input class="json-schema-integer__value"
+       type="number"
+       step="1"
+       ng-if="!instance.enum.length"
+       ng-required="instance.schema.required"
+       focus-it="focus"
+       ng-disabled="instance.schema.readonly || readonly"
+       ng-model="instance.value"
+       ng-class="{
+            'json-schema-integer__value_with-remove': removable
+       }"/>
+
+<select class="json-schema-integer__value json-schema-integer__value_enum"
+        ng-if="instance.enum.length"
+        ng-required="instance.schema.required"
+        focus-it="focus"
+        ng-disabled="instance.schema.readonly || readonly"
+        ng-model="instance.value"
+        ng-options="value as instance.enumLabels[value] for value in instance.enum"
+        ng-class="{
+            'json-schema-integer__value_with-remove': removable
+        }"></select>

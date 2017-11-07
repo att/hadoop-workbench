@@ -1,0 +1,1548 @@
+{
+  "subtypes": {
+    "workflow-control": [
+      {
+        "name": "start",
+        "version": "0.4.5",
+        "readonly": true,
+        "canHaveTemplates": false,
+        "restrictions": [],
+        "warnings": [],
+        "connectors": {
+          "incoming": [],
+          "outgoing": [
+            "out"
+          ]
+        },
+        "jsonSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "property": {
+              "type": "array",
+              "title": "parameters",
+              "minItems": 0,
+              "uniqueItems": false,
+              "additionalItems": false,
+              "items": {
+                "title": "property",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value",
+                  "description",
+                  "property",
+                  "type"
+                ]
+              }
+            },
+            "global": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "job-tracker": {
+                  "type": "string",
+                  "default": "${jobTracker}"
+                },
+                "name-node": {
+                  "type": "string",
+                  "default": "${nameNode}"
+                },
+                "job-xml": {
+                  "type": "array",
+                  "title": "job-xml list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "job-xml",
+                    "type": "string",
+                    "isFileRef": true
+                  }
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "credential": {
+              "type": "array",
+              "title": "credentials",
+              "minItems": 0,
+              "uniqueItems": false,
+              "additionalItems": false,
+              "items": {
+                "title": "credential",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "property": {
+                    "type": "array",
+                    "title": "properties",
+                    "minItems": 0,
+                    "uniqueItems": false,
+                    "additionalItems": false,
+                    "items": {
+                      "title": "property",
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+          ]
+        }
+      },
+      {
+        "name": "end",
+        "version": "0.4.5",
+        "canHaveTemplates": false,
+        "restrictions": [],
+        "warnings": [],
+        "connectors": {
+          "incoming": [
+            "in"
+          ],
+          "outgoing": []
+        },
+        "jsonSchema": {}
+      },
+      {
+        "name": "decision",
+        "version": "0.4.5",
+        "canHaveTemplates": false,
+        "restrictions": [],
+        "warnings": [],
+        "connectors": {
+          "incoming": [
+            "in"
+          ],
+          "outgoing": [
+            "case",
+            "default"
+          ]
+        },
+        "jsonSchema": {
+          "type": "object",
+          "properties": {
+            "decision": {
+              "title": "decision",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "fork",
+        "version": "0.4.5",
+        "canHaveTemplates": false,
+        "restrictions": [],
+        "warnings": [],
+        "connectors": {
+          "incoming": [
+            "in"
+          ],
+          "outgoing": [
+            "out"
+          ]
+        },
+        "jsonSchema": {}
+      },
+      {
+        "name": "join",
+        "version": "0.4.5",
+        "restrictions": [],
+        "warnings": [],
+        "connectors": {
+          "incoming": [
+            "in"
+          ],
+          "outgoing": [
+            "out"
+          ]
+        },
+        "jsonSchema": {}
+      },
+      {
+        "name": "kill",
+        "version": "0.4.5",
+        "canHaveTemplates": false,
+        "restrictions": [],
+        "warnings": [],
+        "connectors": {
+          "incoming": [
+            "in"
+          ],
+          "outgoing": []
+        },
+        "jsonSchema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ],
+    "action": [
+      {
+        "name": "map-reduce",
+        "version": "0.4.5",
+        "canHaveTemplates": true,
+        "restrictions": [],
+        "warnings": [],
+        "jsonSchema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "map-reduce": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "job-tracker": {
+                  "type": "string",
+                  "default": "${jobTracker}"
+                },
+                "name-node": {
+                  "type": "string",
+                  "default": "${nameNode}"
+                },
+                "prepare": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "delete": {
+                      "type": "array",
+                      "title": "delete list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "delete",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    },
+                    "mkdir": {
+                      "type": "array",
+                      "title": "mkdir list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "mkdir",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "streamingOrPipes": {
+                  "type": "array",
+                  "minItems": 0,
+                  "maxItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "title": "streaming",
+                        "additionalProperties": false,
+                        "properties": {
+                          "streaming": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "mapper": {
+                                "type": "string"
+                              },
+                              "reducer": {
+                                "type": "string"
+                              },
+                              "record-reader": {
+                                "type": "string"
+                              },
+                              "record-reader-mapping": {
+                                "type": "array",
+                                "title": "record-reader-mapping list",
+                                "minItems": 0,
+                                "uniqueItems": false,
+                                "additionalItems": false,
+                                "items": {
+                                  "title": "record-reader-mapping",
+                                  "type": "string"
+                                }
+                              },
+                              "env": {
+                                "type": "array",
+                                "title": "env list",
+                                "minItems": 0,
+                                "uniqueItems": false,
+                                "additionalItems": false,
+                                "items": {
+                                  "title": "env",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "pipes",
+                        "additionalProperties": false,
+                        "properties": {
+                          "pipes": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "map": {
+                                "type": "string"
+                              },
+                              "reduce": {
+                                "type": "string"
+                              },
+                              "inputformat": {
+                                "type": "string"
+                              },
+                              "partitioner": {
+                                "type": "string"
+                              },
+                              "writer": {
+                                "type": "string"
+                              },
+                              "program": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "job-xml": {
+                  "type": "array",
+                  "title": "job-xml list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "job-xml",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "jobXml"
+                  }
+                },
+                "mapred.job.queue.name": {
+                  "type": "string"
+                },
+                "mapred.mapper.class": {
+                  "type": "string"
+                },
+                "mapred.reducer.class": {
+                  "type": "string"
+                },
+                "mapred.input.dir": {
+                  "type": "string"
+                },
+                "mapred.output.dir": {
+                  "type": "string"
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "file": {
+                  "type": "array",
+                  "title": "file list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "file",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                },
+                "archive": {
+                  "type": "array",
+                  "title": "archive list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "archive",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                }
+              },
+              "required": [
+                "prepare",
+                "streamingOrPipes",
+                "job-xml",
+                "file",
+                "archive"
+              ]
+            },
+            "cred": {
+              "type": "string"
+            },
+            "retry-max": {
+              "type": "string"
+            },
+            "retry-interval": {
+              "type": "string"
+            }
+          },
+          "required": [
+          ]
+        }
+      },
+      {
+        "name": "map-reduce2",
+        "version": "0.4.5",
+        "canHaveTemplates": true,
+        "restrictions": [],
+        "warnings": [],
+        "jsonSchema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "map-reduce2": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "job-tracker": {
+                  "type": "string",
+                  "default": "${jobTracker}"
+                },
+                "name-node": {
+                  "type": "string",
+                  "default": "${nameNode}"
+                },
+                "prepare": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "delete": {
+                      "type": "array",
+                      "title": "delete list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "delete",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    },
+                    "mkdir": {
+                      "type": "array",
+                      "title": "mkdir list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "mkdir",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "streamingOrPipes": {
+                  "type": "array",
+                  "minItems": 0,
+                  "maxItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "title": "streaming",
+                        "additionalProperties": false,
+                        "properties": {
+                          "streaming": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "mapper": {
+                                "type": "string"
+                              },
+                              "reducer": {
+                                "type": "string"
+                              },
+                              "record-reader": {
+                                "type": "string"
+                              },
+                              "record-reader-mapping": {
+                                "type": "array",
+                                "title": "record-reader-mapping list",
+                                "minItems": 0,
+                                "uniqueItems": false,
+                                "additionalItems": false,
+                                "items": {
+                                  "title": "record-reader-mapping",
+                                  "type": "string"
+                                }
+                              },
+                              "env": {
+                                "type": "array",
+                                "title": "env list",
+                                "minItems": 0,
+                                "uniqueItems": false,
+                                "additionalItems": false,
+                                "items": {
+                                  "title": "env",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "pipes",
+                        "additionalProperties": false,
+                        "properties": {
+                          "pipes": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "map": {
+                                "type": "string"
+                              },
+                              "reduce": {
+                                "type": "string"
+                              },
+                              "inputformat": {
+                                "type": "string"
+                              },
+                              "partitioner": {
+                                "type": "string"
+                              },
+                              "writer": {
+                                "type": "string"
+                              },
+                              "program": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "job-xml": {
+                  "type": "array",
+                  "title": "job-xml list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "job-xml",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "jobXml"
+                  }
+                },
+                "mapred.job.queue.name": {
+                  "type": "string"
+                },
+                "mapreduce.map.class": {
+                  "type": "string"
+                },
+                "mapreduce.reduce.class": {
+                  "type": "string"
+                },
+                "mapred.output.key.class": {
+                  "type": "string"
+                },
+                "mapred.output.value.class": {
+                  "type": "string"
+                },
+                "mapred.input.dir": {
+                  "type": "string"
+                },
+                "mapred.output.dir": {
+                  "type": "string"
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "file": {
+                  "type": "array",
+                  "title": "file list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "file",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                },
+                "archive": {
+                  "type": "array",
+                  "title": "archive list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "archive",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                }
+              },
+              "required": [
+                "prepare",
+                "streamingOrPipes",
+                "job-xml",
+                "file",
+                "archive"
+              ]
+            },
+            "cred": {
+              "type": "string"
+            },
+            "retry-max": {
+              "type": "string"
+            },
+            "retry-interval": {
+              "type": "string"
+            }
+          },
+          "required": [
+          ]
+        }
+      },
+      {
+        "name": "pig",
+        "version": "0.4.5",
+        "canHaveTemplates": true,
+        "restrictions": [],
+        "warnings": [],
+        "jsonSchema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "pig": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "job-tracker": {
+                  "type": "string",
+                  "default": "${jobTracker}"
+                },
+                "name-node": {
+                  "type": "string",
+                  "default": "${nameNode}"
+                },
+                "prepare": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "delete": {
+                      "type": "array",
+                      "title": "delete list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "delete",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    },
+                    "mkdir": {
+                      "type": "array",
+                      "title": "mkdir list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "mkdir",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "job-xml": {
+                  "type": "array",
+                  "title": "job-xml list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "job-xml",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "jobXml"
+                  }
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "script": {
+                  "type": "string",
+                  "isFileRef": true,
+                  "fileType": "binary"
+                },
+                "param": {
+                  "type": "array",
+                  "title": "param list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "param",
+                    "type": "string"
+                  }
+                },
+                "argument": {
+                  "type": "array",
+                  "title": "argument list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "argument",
+                    "type": "string"
+                  }
+                },
+                "file": {
+                  "type": "array",
+                  "title": "file list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "file",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                },
+                "archive": {
+                  "type": "array",
+                  "title": "archive list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "archive",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                }
+              },
+              "required": [
+                "prepare",
+                "job-xml",
+                "script",
+                "param",
+                "argument",
+                "file",
+                "archive"
+              ]
+            },
+            "cred": {
+              "type": "string"
+            },
+            "retry-max": {
+              "type": "string"
+            },
+            "retry-interval": {
+              "type": "string"
+            }
+          },
+          "required": [
+          ]
+        }
+      },
+      {
+        "name": "sub-workflow",
+        "version": "0.4.5",
+        "canHaveTemplates": true,
+        "restrictions": [],
+        "warnings": [],
+        "jsonSchema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sub-workflow": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "app-path": {
+                  "type": "string",
+                  "isFileRef": true,
+                  "fileType": "workflow",
+                  "pathPrefix": "${wf:conf('oozie.wf.application.path')}",
+                  "defaultFile": "workflow.xml"
+                },
+                "propagate-configuration": {
+                  "type": "boolean"
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "app-path",
+                "propagate-configuration"
+              ]
+            },
+            "cred": {
+              "type": "string"
+            },
+            "retry-max": {
+              "type": "string"
+            },
+            "retry-interval": {
+              "type": "string"
+            }
+          },
+          "required": [
+          ]
+        }
+      },
+      {
+        "name": "fs",
+        "version": "0.4.5",
+        "canHaveTemplates": true,
+        "restrictions": [],
+        "warnings": [],
+        "jsonSchema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fs": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name-node": {
+                  "type": "string",
+                  "default": "${nameNode}"
+                },
+                "job-xml": {
+                  "type": "array",
+                  "title": "job-xml list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "job-xml",
+                    "type": "string",
+                    "isFileRef": true
+                  }
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "deleteOrMkdirOrMove": {
+                  "type": "array",
+                  "minItems": 0,
+                  "maxItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "title": "delete",
+                        "additionalProperties": false,
+                        "properties": {
+                          "delete": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "path": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "path"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "mkdir",
+                        "additionalProperties": false,
+                        "properties": {
+                          "mkdir": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "path": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "path"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "move",
+                        "additionalProperties": false,
+                        "properties": {
+                          "move": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "source": {
+                                "type": "string"
+                              },
+                              "target": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "source",
+                              "target"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "chmod",
+                        "additionalProperties": false,
+                        "properties": {
+                          "chmod": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "recursive": {
+                                "type": "boolean"
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "permissions": {
+                                "type": "string"
+                              },
+                              "dir-files": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "permissions"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "touchz",
+                        "additionalProperties": false,
+                        "properties": {
+                          "touchz": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "path": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "path"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "chgrp",
+                        "additionalProperties": false,
+                        "properties": {
+                          "chgrp": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "recursive": {
+                                "type": "boolean"
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "group": {
+                                "type": "string"
+                              },
+                              "dir-files": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "group"
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "name-node",
+                "job-xml",
+                "deleteOrMkdirOrMove"
+              ]
+            },
+            "cred": {
+              "type": "string"
+            },
+            "retry-max": {
+              "type": "string"
+            },
+            "retry-interval": {
+              "type": "string"
+            }
+          },
+          "required": [
+          ]
+        }
+      },
+      {
+        "name": "java",
+        "version": "0.4.5",
+        "canHaveTemplates": true,
+        "restrictions": [],
+        "warnings": [],
+        "jsonSchema": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "java": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "job-tracker": {
+                  "type": "string",
+                  "default": "${jobTracker}"
+                },
+                "name-node": {
+                  "type": "string",
+                  "default": "${nameNode}"
+                },
+                "prepare": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "delete": {
+                      "type": "array",
+                      "title": "delete list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "delete",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    },
+                    "mkdir": {
+                      "type": "array",
+                      "title": "mkdir list",
+                      "minItems": 0,
+                      "uniqueItems": false,
+                      "additionalItems": false,
+                      "items": {
+                        "title": "mkdir",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "job-xml": {
+                  "type": "array",
+                  "title": "job-xml list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "job-xml",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "jobXml"
+                  }
+                },
+                "property": {
+                  "type": "array",
+                  "title": "properties",
+                  "minItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "property",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "main-class": {
+                  "type": "string"
+                },
+                "javaOptsOrJavaOpt": {
+                  "type": "array",
+                  "minItems": 0,
+                  "maxItems": 1,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "title": "java-opt",
+                        "additionalProperties": false,
+                        "properties": {
+                          "java-opt": {
+                            "type": "array",
+                            "title": "java-opt list",
+                            "minItems": 0,
+                            "uniqueItems": false,
+                            "additionalItems": false,
+                            "items": {
+                              "title": "java-opt",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "title": "java-opts",
+                        "additionalProperties": false,
+                        "properties": {
+                          "java-opts": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "arg": {
+                  "type": "array",
+                  "title": "arg list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "arg",
+                    "type": "string"
+                  }
+                },
+                "file": {
+                  "type": "array",
+                  "title": "file list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "file",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                },
+                "archive": {
+                  "type": "array",
+                  "title": "archive list",
+                  "minItems": 0,
+                  "uniqueItems": false,
+                  "additionalItems": false,
+                  "items": {
+                    "title": "archive",
+                    "type": "string",
+                    "isFileRef": true,
+                    "fileType": "binary"
+                  }
+                },
+                "capture-output": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "main-class"
+              ]
+            },
+            "cred": {
+              "type": "string"
+            },
+            "retry-max": {
+              "type": "string"
+            },
+            "retry-interval": {
+              "type": "string"
+            }
+          },
+          "required": [
+          ]
+        }
+      }
+    ]
+  },
+  "subtypeRestrictions": [],
+  "subtypeWarnings": [],
+  "transitionRestrictions": [
+    {
+      "from": "fork",
+      "to": "join",
+      "connector": "out",
+      "convergence": true,
+      "via": [
+        "ok",
+        "out"
+      ],
+      "notTo": [
+        "end",
+        "kill"
+      ]
+    }
+  ],
+  "connectionRestrictions": [
+    {
+      "to": "start",
+      "type": "in",
+      "connector": "in",
+      "name": "maxOccurs",
+      "value": "0"
+    },
+    {
+      "from": "end",
+      "type": "out",
+      "connector": "out",
+      "name": "maxOccurs",
+      "value": "0"
+    },
+    {
+      "from": "start",
+      "type": "out",
+      "connector": "out",
+      "name": "maxOccurs",
+      "value": 1
+    },
+    {
+      "from": "fork",
+      "to": "end",
+      "type": "out",
+      "connector": "out",
+      "name": "maxOccurs",
+      "value": 0
+    },
+    {
+      "from": "fork",
+      "to": "kill",
+      "type": "out",
+      "connector": "out",
+      "name": "maxOccurs",
+      "value": 0
+    },
+    {
+      "from": "decision",
+      "type": "out",
+      "connector": "default",
+      "name": "maxOccurs",
+      "value": 1
+    }
+  ],
+  "connectionWarnings": [
+    {
+      "from": "fork",
+      "type": "out",
+      "connector": "out",
+      "name": "minOccurs",
+      "value": 2
+    },
+    {
+      "from": "start",
+      "type": "out",
+      "connector": "out",
+      "name": "minOccurs",
+      "value": 1
+    },
+    {
+      "to": "end",
+      "type": "in",
+      "connector": "in",
+      "name": "minOccurs",
+      "value": 1
+    },
+    {
+      "from": "decision",
+      "type": "out",
+      "connector": "case",
+      "name": "minOccurs",
+      "value": 1
+    },
+    {
+      "from": "decision",
+      "type": "out",
+      "connector": "default",
+      "name": "minOccurs",
+      "value": 1
+    }
+  ]
+}

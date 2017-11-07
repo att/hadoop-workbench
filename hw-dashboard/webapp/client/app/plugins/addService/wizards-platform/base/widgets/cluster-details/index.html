@@ -1,0 +1,52 @@
+<div class="b-create-service-wizard-step">
+
+    <form name="wizardForm" novalidate>
+
+        <h2 class="b-create-service-wizard-step__title">Cluster Name*</h2>
+
+        <input type="text" class="input" name="clusterName" placeholder="Enter Cluster Name..."
+               ng-model="data['clusterName']"
+               ng-class="{'b-create-service-wizard-step__input-required': wizardForm.clusterName.$error.required && (wizardForm.clusterName.$touched || showValidationErrors)}"
+               required maxlength="500" focus-it="true"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardForm.clusterName.$error.required && (wizardForm.clusterName.$touched || showValidationErrors)">required</span>
+
+
+        <h2 class="b-create-service-wizard-step__title">Nodes Count*</h2>
+
+        <input type="number" class="input" name="nodeCount" placeholder="Enter Nodes Count..."
+               ng-model="data['nodeCount']"
+               min="1"
+               ng-class="{'b-create-service-wizard-step__input-required': wizardForm.nodeCount.$error.required && (wizardForm.nodeCount.$touched || showValidationErrors)}"
+               required maxlength="500"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardForm.nodeCount.$error.required && (wizardForm.nodeCount.$touched || showValidationErrors)">required</span>
+
+
+        <h2 class="b-create-service-wizard-step__title">HDFS Size (GB)*</h2>
+
+        <input type="number" class="input" name="hdfsSize" placeholder="Enter HDFS Size (GB)..."
+               ng-model="data['hdfsSize']"
+               min="1"
+               ng-class="{'b-create-service-wizard-step__input-required': wizardForm.hdfsSize.$error.required && (wizardForm.hdfsSize.$touched || showValidationErrors)}"
+               required maxlength="500"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardForm.hdfsSize.$error.required && (wizardForm.hdfsSize.$touched || showValidationErrors)">required</span>
+
+
+        <h2 class="b-create-service-wizard-step__title">AWS Region</h2>
+
+        <select ng-model="data['awsRegion']" ng-options="region.value as region.title for region in regions"
+                class="b-create-service-wizard-step__select"
+        ></select>
+
+
+    </form>
+
+</div>

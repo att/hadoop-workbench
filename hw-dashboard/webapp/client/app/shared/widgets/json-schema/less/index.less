@@ -1,0 +1,87 @@
+//components
+@import "../components/json-schema-item/index";
+@import "../components/json-schema-item-icon/index";
+@import "../components/json-schema-object/index";
+@import "../components/json-schema-array/index";
+@import "../components/json-schema-string/index";
+@import "../components/json-schema-number/index";
+@import "../components/json-schema-integer/index";
+@import "../components/json-schema-boolean/index";
+@import "../components/json-schema-null/index";
+@import "../components/json-schema-undefined/index";
+
+
+.collapsed-property-icon {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_close.png');
+  &[disabled] {
+    .collapsed-property-icon_disabled;
+  }
+  &:hover {
+    .collapsed-property-icon_hover;
+  }
+  &:active {
+    .collapsed-property-icon_active;
+  }
+}
+
+.collapsed-property-icon_hover {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_close_hover.png');
+}
+
+.collapsed-property-icon_disabled {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_close_disabled.png');
+}
+
+.collapsed-property-icon_active {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_close_press.png');
+}
+
+.expanded-property-icon {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_open.png');
+  &[disabled] {
+    .expanded-property-icon_disabled;
+  }
+  &:hover {
+    .expanded-property-icon_hover;
+  }
+  &:active {
+    .expanded-property-icon_active;
+  }
+}
+
+.expanded-property-icon_hover {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_open_hover.png');
+}
+
+.expanded-property-icon_disabled {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_open_disabled.png');
+}
+
+.expanded-property-icon_active {
+  .icon-base(14px, 14px, '../../resources/img/node-property-icon_open_press.png');
+}
+
+.add-array-item-icon {
+  .icon-base(16px, 16px, '../../resources/img/add-array-item-icon.png');
+}
+
+.remove-array-item-icon {
+  .icon-base(16px, 16px, '../../resources/img/remove-array-item-icon.png');
+}
+
+.radio-button-icon {
+  .icon-base(16px, 16px, '../../resources/img/radio-button-icon_unchecked.png');
+}
+
+.radio-button-icon_checked {
+  .icon-base(16px, 16px, '../../resources/img/radio-button-icon_checked.png');
+}
+
+.checkbox-icon {
+  .icon-base(16px, 16px, '../../resources/img/node-property-checkbox-icon.png');
+}
+
+.checkbox-icon_checked {
+  .icon-base(16px, 16px, '../../resources/img/node-property-checkbox-icon_checked.png');
+}
+

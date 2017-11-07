@@ -1,0 +1,40 @@
+<div class="b-hdfs">
+    <div class="b-hdfs__left-side-widgets" ng-class="{'b-hdfs__left-side-widgets_split': splitWidgets}"
+         ng-style="{'padding-bottom':actionsPadding}">
+        <div ng-include="config.tplPath + 'breadcrumb.html'" ng-if="config.breadcrumb" include-replace></div>
+
+        <div ng-if="!error" ng-include="config.tplPath + 'items-list.html'" include-replace></div>
+        <div class="b-hdfs__file-editor" ng-if="!error && isFileEditorModeEnabled && !isRequesting">
+            <dap-widget name="'editor'" params="{container: selectedFile, options: selectedFile.options}"></dap-widget>
+        </div>
+
+        <div class="b-hdfs__backdrop ng-hide" ng-show="isRequesting">
+            <div class="b-hdfs__backdrop__spinner">
+                <div class="b-hdfs__backdrop__spinner__top"></div>
+                <div class="b-hdfs__backdrop__spinner__bottom"></div>
+            </div>
+        </div>
+
+        <div class="b-hdfs__error-container ng-hide" ng-show="error">
+            <p class="b-hdfs__error-container__error-description">
+                {{error}}
+            </p>
+        </div>
+
+        <div ng-include="config.tplPath + 'actions-file-browser.html'"
+             ng-if="config.actions && !isFileEditorModeEnabled" include-replace></div>
+        <div ng-include="config.tplPath + 'actions-file-editor.html'" ng-if="config.actions && isFileEditorModeEnabled"
+             include-replace></div>
+    </div>
+    <div class="b-hdfs__right-side-widgets" ng-class="{'b-hdfs__right-side-widgets_split': splitWidgets}">
+        <div ng-include="config.tplPath + 'new-item.html'" ng-if="widgets.createItem.isShown" include-replace></div>
+        <div ng-include="config.tplPath + 'rename-item.html'" ng-if="widgets.renameItem.isShown" include-replace></div>
+        <div ng-include="config.tplPath + 'chown.html'" ng-if="widgets.chown.isShown" include-replace></div>
+        <div ng-include="config.tplPath + 'chmod.html'" ng-if="widgets.chmod.isShown" include-replace></div>
+        <div ng-include="config.tplPath + 'confirm-delete.html'" ng-if="widgets.confirmDelete.isShown"
+             include-replace></div>
+    </div>
+
+    <div download-file="downloadUrl" class="b-hdfs__download-file-container" on-success="onFileDownloadSuccess()"
+         on-error="onFileDownloadError(error)"></div>
+</div>

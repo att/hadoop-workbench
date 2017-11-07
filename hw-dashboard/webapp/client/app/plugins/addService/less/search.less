@@ -1,0 +1,128 @@
+.b-add-service-search {
+  height : 100%;
+
+  &__search-input {
+    border        : none;
+    border-bottom : 1px solid #c7d0d9;
+    color         : #333333;
+    font-size     : 16px;
+    position      : absolute;
+    top           : -32px;
+    line-height   : 29px;
+    width         : 70%;
+    outline       : none;
+    padding-left  : 33px;
+    background    : #fff url("../../../../resources/img/search.png") 5px center no-repeat;
+
+    &:empty:not(:focus) {
+      color : #757a80;
+    }
+  }
+
+  &__omnibox {
+    height   : 100%;
+    overflow : auto;
+    margin   : 0;
+
+    &__item {
+      position : relative;
+
+      &__link {
+        width   : 97%;
+        display : inline-block;
+        padding : 8px 16px;
+        color   : #757a80;
+        text-decoration  : none;
+
+        &:hover {
+          text-decoration  : none;
+          color   : #757a80;
+        }
+
+        &__service-name {
+          color       : #333333;
+          font-weight : 700;
+        }
+
+        &__delimiter {
+          display : inline-block;
+          width   : 10px;
+        }
+      }
+
+      &&_parent > &__link {
+        width : 100%;
+      }
+
+      &.selected,
+      .selected > &__link,
+      .selected > &__link > &__link__service-name{
+        background-color : #137fea;
+        color            : #fff;
+        text-decoration  : none;
+      }
+
+      &__delete {
+        position : absolute;
+        top      : 7px;
+        right    : 8px;
+      }
+    }
+  }
+
+  &__refresh-icon {
+    .icon-refresh;
+    &:hover {
+      .icon-refresh-hover;
+    }
+    &:active {
+      .icon-refresh-press;
+    }
+  }
+}
+
+.highlighted {
+  .b-add-service-search {
+    &__omnibox {
+      &__item, &__item.selected {
+        &:hover, &:hover * {
+          background-color: darkgray;
+          color: #ffffff;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+.b-create-service-wizard__no-matches {
+  color : #545a60;
+}
+
+.b-add-service-wizard-search__create-new-icon {
+  .icon-base(24px, 24px, '../../resources/img/ic-add-service-create-new.png');
+}
+
+a:hover > .b-add-service-wizard-search__create-new-icon {
+  .icon-base(24px, 24px, '../../resources/img/ic-add-service-create-new_hover.png');
+}
+
+a:active > .b-add-service-wizard-search__create-new-icon {
+  .icon-base(24px, 24px, '../../resources/img/ic-add-service-create-new_pressed.png');
+}
+
+a.b-add-service-search__omnibox__item__link > span:nth-child(n) {
+  vertical-align : middle;
+}
+
+a > .b-add-service-search__delete-icon {
+
+}
+
+a.b-delete-service {
+  display      : inline-block;
+  color        : #757a80;
+  float        : right;
+  margin-top   : 10px;
+  margin-right : 5px;
+}

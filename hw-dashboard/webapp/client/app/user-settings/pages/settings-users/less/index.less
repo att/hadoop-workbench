@@ -1,0 +1,198 @@
+.b-users-settings-properties {
+  &__icon-save {
+    .icon-el-save();
+  }
+  &__title {
+    padding       : 8px;
+    color         : #484a4c;
+    font-size     : 14px;
+    font-weight   : 700;
+    margin-bottom : 8px;
+  }
+  &__add-user {
+    &__link {
+      float        : right;
+      color        : #137fea;
+      font-size    : 14px;
+      font-weight  : 400;
+      display      : inline-block;
+      background   : transparent url('../../../../../resources/img/new_widget_hover.png') no-repeat left center;
+      padding-left : 19px;
+      padding-right : 8px;
+    }
+  }
+  &__cancel-add-role {
+    &__link {
+      float        : right;
+      color        : #137fea;
+      font-size    : 14px;
+      font-weight  : 400;
+      display      : inline-flex;
+      background   : transparent url('../../../../../resources/img/delete-connection-icon-blue.png') no-repeat left center;
+      padding      : 4px 8px 0px 22px;
+    }
+  }
+
+  &__remove-user {
+    .clearfix;
+    float          : right;
+    padding        : 8px;
+    vertical-align : top;
+    word-wrap      : break-word;
+    width          : 32px;
+    &__link {
+      background : url('../../../../../resources/img/flowchart-widget-delete-module-icon_hover.png') no-repeat center center;
+      height     : 16px;
+      width      : 16px;
+      display    : block;
+    }
+  }
+  &__roles_container {
+    display    : flex;
+    flex-wrap  : wrap;
+    flex-grow  : 1;
+    &__role {
+      margin            : 2px 4px 2px 4px;
+      padding           : 3px 3px 3px 5px;
+      border            : 1px solid #aaa;
+      border-radius     : 3px;
+      background-image  : linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+      cursor            : default;
+      display           : flex;
+      &__remove {
+        display     : inline-flex;
+        width       : 11px;
+        height      : 11px;
+        margin-left : 3px;
+        background  : url('../../../../../resources/img/placeholder-tip-icon.png') no-repeat center center;
+      }
+      &__add {
+        line-height   : 25px;
+        position      : relative;
+        color         : #333333;
+        font-size     : 13px;
+        font-weight   : 400;
+        text-align    : left;
+        float         : left;
+        width         : 60%;
+        outline       : 0 solid transparent;
+        background    : transparent;
+        text-overflow : ellipsis;
+        overflow      : hidden;
+        &:focus {
+          box-shadow: 0px -1px 0px #137fea inset;
+        }
+      }
+    }
+    &__add-role {
+      &__link {
+        flex-grow: 1;
+      }
+      &__disabled {
+        cursor: default;
+      }
+    }
+  }
+  &__roles_input {
+    display: flex;
+  }
+
+  &__table {
+    border : 1px solid #ECEFF1;
+    width  : 100%;
+
+    &__tr {
+      .clearfix;
+      background   : #ffffff;
+      display      : flex;
+      flex-wrap    : wrap;
+
+      &:nth-child(odd) {
+        background : #F3F5F8;
+      }
+
+      &__td {
+        padding        : 8px;
+        vertical-align : top;
+        float          : left;
+        word-wrap      : break-word;
+
+        &__content {
+          color       : #494a4d;
+          font-size   : 12px;
+          font-weight : 400;
+          line-height : 16px;
+          text-align  : left;
+          width       : 100%;
+          display     : inline-block;
+          outline     : transparent;
+
+          &__error {
+            color : #F12828;
+
+            &__link {
+              cursor          : pointer;
+              text-decoration : underline;
+            }
+          }
+        }
+
+        &_key {
+          display  : flex;
+          width    : 20%;
+        }
+        &_value {
+          display        : flex;
+          flex-direction : column;
+          width          : 70%;
+        }
+        &_remove_button {
+          display  : flex;
+          width    : 10%;
+        }
+      }
+
+      tr&&_new-item {
+        border-top    : 2px solid #96C8ED;
+        border-bottom : 2px solid #96C8ED;
+
+        & > &__td > &__td__content {
+          color : #459BDA;
+        }
+      }
+    }
+    &__tr + &__tr {
+      border-top : 1px solid #D6DBE0;
+    }
+  }
+
+  &__error {
+    display         : flex;
+    height          : 100%;
+    justify-content : center;
+    align-items     : center;
+
+    &__message {
+      display     : inline-flex;
+      color       : #494a4d;
+      font-size   : 20px;
+      margin      : 20px;
+    }
+  }
+}
+
+.b-users-settings__properties-widget__icon {
+  display    : inline-block;
+  width      : 24px;
+  height     : 24px;
+  background : url("../../../../../resources/img/options-editor-widget-icon.png");
+
+  &:hover {
+    background : url("../../../../../resources/img/options-editor-widget-icon_hover.png");
+  }
+
+  .active > & {
+    background : url("../../../../../resources/img/options-editor-widget-icon_pressed.png") no-repeat center;
+  }
+}
+

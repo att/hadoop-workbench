@@ -1,0 +1,294 @@
+.b-oozie-jobs {
+  height   : 100%;
+  position : relative;
+
+  &__error-message-container {
+    height        : 32px;
+    border-bottom : 1px solid #E3E7EC;
+    background    : #FFE5E4;
+    color         : #4D4D4D;
+    font-size     : 13px;
+    padding       : 8px;
+    text-align    : center;
+    white-space   : nowrap;
+    text-overflow : ellipsis;
+    overflow      : hidden;
+  }
+
+  &__controls {
+    height        : 25px;
+    border-bottom : 1px solid #E3E7EC;
+    padding       : 0 3px;
+  }
+
+  &__content {
+    height   : ~'calc(100% - 51px)';
+    overflow : auto;
+    position : relative;
+
+    &&_with-top-message {
+      height : ~'calc(100% - 83px)';
+    }
+
+    &&_overlay {
+      &:before {
+        content    : '';
+        display    : block;
+        position   : absolute;
+        top        : 0;
+        left       : 0;
+        right      : 0;
+        bottom     : 0;
+        background : rgba(255, 255, 255, 0.5);
+        z-index    : 10;
+      }
+    }
+  }
+
+  &__bottom-controls {
+    height     : 24px;
+    border-top : 1px solid #E3E7EC;
+    padding    : 0 3px;
+  }
+
+  &__list {
+    list-style : none;
+    margin     : 0;
+    padding    : 0;
+
+    &__item {
+
+      &:hover {
+        background-color : rgba(230, 236, 242, 0.5);
+      }
+
+      &.active {
+        background-color : #e6ecf2;
+      }
+
+      &__content {
+        .clearfix;
+        display     : block;
+        padding     : 4px 10px 4px 0;
+        cursor      : pointer;
+        position    : relative;
+        font-size   : 0;
+        white-space : nowrap;
+
+        &__expand {
+          display      : inline-block;
+          width        : auto;
+          text-align   : right;
+          line-height  : 24px;
+          padding-left : 6px;
+
+          &&_inactive {
+            opacity : 0;
+          }
+
+          &__icon {
+            .icon-arrow-down-solid;
+            margin-left       : 4px;
+            -moz-transform    : rotate(-90deg);
+            -webkit-transform : rotate(-90deg);
+
+            &&_expanded {
+              -moz-transform    : rotate(0deg);
+              -webkit-transform : rotate(0deg);
+            }
+          }
+        }
+
+        &__text {
+          color          : #484a4c;
+          font-size      : 13px;
+          font-weight    : 400;
+          line-height    : 13px;
+          overflow       : hidden;
+          display        : inline-block;
+          vertical-align : middle;
+          max-width      : ~'calc(100% - 40px)';
+          padding-left   : 6px;
+          text-overflow  : ellipsis;
+        }
+
+        &__time-created {
+          font-size     : 12px;
+          display       : block;
+          padding       : 6px 0 0 6px;
+          color         : gray;
+          text-overflow : ellipsis;
+        }
+
+        &__icons {
+          .clearfix;
+          width       : 20px;
+          position    : absolute;
+          top         : 0;
+          right       : 0;
+          bottom      : 0;
+          line-height : 28px;
+          text-align  : center;
+
+          &__icon {
+            vertical-align : middle;
+
+            &&_success {
+              .icon-job-state_success;
+            }
+
+            &&_running {
+              .icon-job-state_success;
+              .blink;
+            }
+
+            &&_error {
+              .icon-job-state_error;
+            }
+
+            &&_unknown {
+              width            : 10px;
+              height           : 10px;
+              background-color : #fff;
+              display          : inline-block;
+              border-radius    : 10px;
+              vertical-align   : middle;
+              border           : 1px solid #adadad;
+            }
+
+            &&_suspended {
+              .icon-job-state_suspended;
+            }
+
+          }
+        }
+      }
+
+      &__full-content {
+        display          : block;
+        font-size        : 13px;
+        position         : relative;
+        background-color : #fff;
+        padding-left     : 25px;
+        border-bottom    : 1px solid #E3E7EC;
+
+        &__line {
+          .clearfix;
+          position : relative;
+
+          &__key {
+            display : inline-block;
+            width   : 100px;
+            color   : gray;
+            float   : left;
+            padding : 5px 0;
+          }
+          &__value {
+            display    : inline-block;
+            width      : ~'calc(100% - 100px)';
+            color      : #333;
+            padding    : 5px 0;
+            word-break : break-all;
+          }
+        }
+      }
+    }
+  }
+
+  &__control {
+    height      : 24px;
+    min-width   : 25px;
+    line-height : 24px;
+    margin-left : 3px;
+    color       : #616366;
+
+    &:first-child {
+      margin-left : 0;
+    }
+
+    &:hover,
+    &:focus {
+      color : #3981e6;
+    }
+
+    &.active,
+    &:active {
+      color : #1470cc;
+    }
+
+    &.disabled,
+    &.disabled:hover,
+    &[disabled],
+    &[disabled]:hover {
+      color           : rgba(97, 99, 102, 0.3);
+      cursor          : default;
+      text-decoration : none;
+    }
+
+    &&_auto-refresh > input {
+      margin-right : 4px;
+    }
+
+    &&_refresh {
+      .icon-el-refresh(25px, 25px);
+    }
+
+    &&_execute {
+      .icon-el-plus(25px, 25px);
+    }
+
+    &&_add {
+      .icon-el-plus(25px, 25px);
+    }
+
+    //circle controls
+    &&_start {
+      .icon-el-start-circle(24px, 24px);
+    }
+
+    &&_stop {
+      .icon-el-stop-circle(24px, 24px);
+    }
+
+    &&_suspend {
+      .icon-el-suspend-circle(24px, 24px);
+    }
+
+    &&_rerun {
+      .icon-el-rerun-circle(24px, 24px);
+    }
+
+    &&_resume {
+      .icon-el-resume-circle(24px, 24px);
+    }
+
+    &&_kill {
+      .icon-el-kill-circle(24px, 24px);
+    }
+  }
+
+  &__add-instance {
+    padding    : 6px;
+    text-align : right;
+
+    &__form {
+      &__select {
+        width         : 100%;
+        margin-bottom : 4px;
+      }
+    }
+  }
+
+  &__new-job {
+    padding : 10px;
+    &__message {
+      margin-bottom : 10px;
+    }
+    &__buttons {
+      text-align : right;
+      &__button {
+        margin-top: 5px;
+      }
+    }
+  }
+}

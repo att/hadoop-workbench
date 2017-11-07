@@ -1,0 +1,6 @@
+<div class="alerts-container">
+    <div class="alerts-container__alerts" ng-show="serviceAlerts.length > 0 || reduxAlerts.length > 0">
+        <div alert-message="a" close="closeAlert" class="alerts-container__alert" ng-repeat="a in serviceAlerts"></div>
+        <div alert-message="ra" close="closeReduxAlert" class="alerts-container__alert" ng-repeat="ra in reduxAlerts"></div>
+    </div>
+</div>

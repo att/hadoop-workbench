@@ -1,0 +1,48 @@
+{
+  "name": "email",
+  "version": "0.1",
+  "canHaveTemplates": true,
+  "restrictions": [],
+  "warnings": [],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "email_0_1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "to": {
+            "type": "string"
+          },
+          "cc": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "to",
+          "subject",
+          "body"
+        ]
+      },
+      "cred": {
+        "type": "string"
+      },
+      "retry-max": {
+        "type": "string"
+      },
+      "retry-interval": {
+        "type": "string"
+      }
+    },
+    "required": [
+    ]
+  }
+}

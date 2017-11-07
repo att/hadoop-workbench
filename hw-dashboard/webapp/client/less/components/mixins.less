@@ -1,0 +1,86 @@
+// Alerts
+// -------------------------
+
+//TODO(maximk): alert-variant mixin needs revising
+.alert-variant(@background; @border; @text-color) {
+  background-color : @background;
+  border-color     : @border;
+  color            : @text-color;
+  box-shadow       : 0 2px 5px rgba(0, 0, 0, .08);
+
+  hr {
+    border-top-color : darken(@border, 5%);
+  }
+  .alert-link {
+    color : darken(@text-color, 10%);
+  }
+}
+
+// WebKit-style focus
+
+.tab-focus() {
+  // Default
+  outline        : thin dotted;
+  // WebKit
+  outline        : 5px auto -webkit-focus-ring-color;
+  outline-offset : -2px;
+}
+
+// Button variants
+//
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
+
+.button-variant(@color; @background; @border; @box-shadow;@hover-color;@hover-bg;@active-color;@active-bg) {
+  color      : @color;
+  background : @background;
+  border     : @border;
+  box-shadow : @box-shadow;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    text-decoration : none;
+    color           : @hover-color;
+    background      : @hover-bg;
+  }
+
+  &:active,
+  &.active {
+    text-decoration : none;
+    outline         : 0;
+    color           : @active-color;
+    background      : @active-bg;
+  }
+}
+
+// Button sizes
+.button-size(@padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {
+  padding       : @padding-vertical @padding-horizontal;
+  font-size     : @font-size;
+  line-height   : @line-height;
+  border-radius : @border-radius;
+}
+
+// italic placeholder text
+.placeholder-italic() {
+  &::-webkit-input-placeholder {
+    font-style: italic;
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    font-style: italic;
+  }
+  &::-moz-placeholder {  /* Firefox 19+ */
+    font-style: italic;
+  }
+  &:-ms-input-placeholder {
+    font-style: italic;
+  }
+}
+
+// set border radius
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}

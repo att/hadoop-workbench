@@ -1,0 +1,20 @@
+{
+  "platformTypes": [
+    {
+      "id": "CDH",
+      "title": "Cloudera"
+    },
+    {
+      "id": "HDP",
+      "title": "HortonWorks"
+    },
+    {
+      "id": "CASSANDRA",
+      "title": "Cassandra"
+    },
+    {
+      "id": "KAFKA",
+      "title": "Kafka"
+    }
+  ]
+}

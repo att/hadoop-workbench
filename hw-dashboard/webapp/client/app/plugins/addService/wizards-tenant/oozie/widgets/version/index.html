@@ -1,0 +1,26 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectVersion">
+    <h2 class="b-create-service-wizard-step__title">Select version</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a version..."
+           ng-model="searchString"
+           navigable-list-input
+           focus-it="true"/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options" navigable-list-items="versionsFiltered">
+        <li ng-repeat="v in versionsFiltered"
+            ng-class="{chosen: data.version === v}">
+            <a class="b-create-service-wizard-step__options-item"
+               ng-click="selectVersion(v)">
+                <i ng-class="'icon-oozie'"></i>
+                {{v}}
+            </a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="showValidationErrors">No version is selected</span>
+    <div ng-if="versionsFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

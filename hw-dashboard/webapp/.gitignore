@@ -1,0 +1,14 @@
+node_modules/
+tmp
+.idea
+client/dist/
+client/index.html
+client/css/
+build/
+credentials.json
+nginx/logs/
+nginx/temp/
+client/resources/json/build.json
+bower_components
+npm-debug.log
+grunt-maven.json

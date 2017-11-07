@@ -1,0 +1,105 @@
+.b-menu-search-items {
+
+  &__nav-search-container {
+    &__requesting-icon {
+      .icon-base(12px, 12px, "../../resources/img/ic-dashboard-widget__progress-bar.gif");
+      background-size : 12px;
+      top             : 7px;
+      left            : 25px;
+      position        : absolute;
+    }
+  }
+
+  &__list-container {
+    min-height : 100px;
+    max-height : 300px;
+    position   : absolute;
+    top        : 100%;
+    left       : 0;
+    right      : 0;
+    background : #fff;
+    border     : 1px solid #99acbf;
+    border-top : none;
+
+    &__no-matches {
+      text-align  : center;
+      line-height : 32px;
+      padding-top : 10px;
+
+      &-label {
+        display : block;
+        margin  : 0 auto;
+      }
+    }
+
+    &__list {
+      max-height : 299px;
+      min-height : 100px;
+      list-style : none;
+      margin     : 0;
+      padding    : 0;
+      overflow   : auto;
+    }
+
+    &__filter {
+      position: absolute;
+      list-style: none;
+      margin: 0 0 0 -44px;
+      padding: 0;
+      overflow: auto;
+
+      &.filter-style-inline {
+        position: absolute;
+        list-style: none;
+        padding: 0;
+        overflow: hidden;
+        right: 1px;
+        top: -32px;
+        float: left;
+      }
+
+      &.filter-style-inline>li {
+        display: inline-block;
+        zoom: 0.8;
+      }
+
+      &__item {
+
+        & > a {
+          width: 97%;
+          display: inline-block;
+          padding: 6px 6px 6px 7px;
+          color: #757a80;
+          margin: 2px 1px 2px 0px;
+          border-radius: 3px;
+          background-color: rgba(215, 215, 215, 0.7);
+
+        }
+        &.filter-style-inline > a {
+          padding: 6px 6px 6px 6px;
+          margin: 2px 1px 2px 1px;
+          border-radius: 0px;
+          background-color: #fff;
+        }
+
+        &.filter-style-inline:last-child > a {
+          border-top-right-radius:3px;
+          border-bottom-right-radius:3px;
+        }
+
+        &-active > a,
+        &-active.filter-style-inline > a {
+          background-color: rgba(117, 122, 128, 0.6);
+        }
+
+        &&-active > a:hover{
+          background-color: rgba(117, 122, 128, 0.75);
+        }
+
+        & > a:hover{
+          background-color: rgba(117, 122, 128, 0.4);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "ssh",
+  "version": "0.1",
+  "canHaveTemplates": true,
+  "restrictions": [],
+  "warnings": [],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "ssh_0_1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "args": {
+            "type": "array",
+            "title": "args list",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "title": "args",
+              "type": "string"
+            }
+          },
+          "capture-output": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "host",
+          "command",
+          "args",
+          "capture-output"
+        ]
+      },
+      "cred": {
+        "type": "string"
+      },
+      "retry-max": {
+        "type": "string"
+      },
+      "retry-interval": {
+        "type": "string"
+      }
+    },
+    "required": [
+    ]
+  }
+}

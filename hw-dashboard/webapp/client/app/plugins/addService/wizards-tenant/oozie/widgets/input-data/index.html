@@ -1,0 +1,50 @@
+<div class="b-create-service-wizard-step">
+
+    <form name="wizardForm" novalidate>
+        <h2 class="b-create-service-wizard-step__title">Component name*</h2>
+
+        <input type="text" class="input" name="component" placeholder="Enter component name..."
+               ng-model="data['componentName']"
+               ng-class="{'b-create-service-wizard-step__input-required': wizardForm.component.$error.required && (wizardForm.component.$touched || showValidationErrors)}"
+               required maxlength="500" focus-it="true"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardForm.component.$error.required && (wizardForm.component.$touched || showValidationErrors)">required</span>
+
+        <h2 class="b-create-service-wizard-step__title">Component version*</h2>
+
+        <input type="text" class="input" name="version" placeholder="Enter component version..."
+               ng-model="data['componentVersion']" required
+               ng-class="{'b-create-service-wizard-step__input-required': wizardForm.version.$error.required && (wizardForm.version.$touched || showValidationErrors)}"
+               on-key-enter-callback="$parent.save()"
+        />
+        <span class="b-create-service-wizard-step__input-error"
+              ng-show="wizardForm.version.$error.required && (wizardForm.version.$touched || showValidationErrors)">required</span>
+
+        <h2 class="b-create-service-wizard-step__title">Workflow name*</h2>
+
+        <input type="text" class="input" name="workflow" placeholder="Enter workflow name..."
+               ng-model="data['workflowName']"
+               required maxlength="500" ng-maxlength="500"
+               multiple-pattern="{'nospaces': '^\\S*$', 'nofirstnumber': '^[A-Za-z_]', 'latinlettersonly':'^[-_a-zA-Z0-9]*$'}"
+               ng-class="{'b-create-service-wizard-step__input-required': (wizardForm.workflow.$error['mpattern-nospaces'] || wizardForm.workflow.$error['mpattern-nofirstnumber'] || wizardForm.workflow.$error['mpattern-latinlettersonly'] || wizardForm.workflow.$error.required) && (wizardForm.workflow.$touched || showValidationErrors)}"
+               on-key-enter-callback="$parent.save()"
+        />
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.workflow.$error['mpattern-nospaces'] && !wizardForm.workflow.$error['mpattern-nofirstnumber'] && (wizardForm.workflow.$touched || showValidationErrors) && !wizardForm.workflow.$error.required">Invalid: no spaces are allowed</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.workflow.$error['mpattern-nofirstnumber'] && (wizardForm.workflow.$touched || showValidationErrors) && !wizardForm.workflow.$error.required">First character should be latin letter or "_"</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.workflow.$error['mpattern-latinlettersonly'] && !wizardForm.workflow.$error['mpattern-nofirstnumber'] && !wizardForm.workflow.$error['mpattern-nospaces'] && (wizardForm.workflow.$touched || showValidationErrors) && !wizardForm.workflow.$error.required">Only latin letters, dashes, numbers and underscores are allowed</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.workflow.$error.required && (wizardForm.workflow.$touched || showValidationErrors)">required</span>
+
+        <h2 class="b-create-service-wizard-step__description">Description</h2>
+        <div>
+            <textarea rows="1" class="input" name="description" placeholder="Enter description (optional)"
+                      ng-model="data['componentDescription']" on-key-enter-callback="$parent.save()"></textarea>
+        </div>
+    </form>
+
+</div>

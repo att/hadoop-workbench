@@ -1,0 +1,26 @@
+<div class="b-hdfs__widgets_new-item">
+    <h3 class="b-hdfs__widgets_new-item__title">{{tempItem.title}}</h3>
+    <label class="b-hdfs__widgets_new-item__label">
+        {{tempItem.label}}
+        <input class="input b-hdfs__widgets_new-item__input" ng-disabled="isRequesting" type="text" title="New item path" ng-model="tempItem.path"
+                on-key-enter-callback="!isRequesting && createItem()"
+                on-key-escape-callback="!isRequesting && hideCreateItemWidget()"
+        />
+    </label>
+
+    <div class="b-hdfs__right-side-widgets__buttons">
+        <button class="b-hdfs__right-side-widgets__cancel-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && hideCreateItemWidget()">
+            Cancel
+        </button>
+        <button class="b-hdfs__right-side-widgets__confirm-action-btn btn btn-secondary btn-lg" ng-class="{'disabled': isRequesting}"
+                ng-click="!isRequesting && createItem()">Create
+        </button>
+
+        <span class="b-hdfs__right-side-widgets__requesting-spinner" ng-show="isRequesting">
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce1"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce2"></span>
+            <span class="b-hdfs__right-side-widgets__requesting-spinner__bounce3"></span>
+        </span>
+    </div>
+</div>

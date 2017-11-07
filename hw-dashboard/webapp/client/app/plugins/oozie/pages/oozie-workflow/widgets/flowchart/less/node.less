@@ -1,0 +1,197 @@
+@e-node-font-size: 14px;
+@e-node-padding-for-image: 34px;
+@e-node-image-height: 24px;
+
+.e-node {
+  display          : block;
+  width            : 161px;
+  border-radius    : 5px;
+  border           : 1px solid #c7d0d9;
+  background-color : #e6ecf2;
+  position         : absolute;
+  cursor           : move;
+  font-size        : @e-node-font-size;
+  padding          : 5px 8px;
+
+  &_selected {
+    box-shadow : 0 0 0 2px #137EE8;
+  }
+
+  &_invalid {
+    opacity : 0.7;
+  }
+
+  &_multiple-selection {
+    //background-color: #bfd9f2;
+    box-shadow : 0 0 0 2px #137EE8;
+  }
+
+  &__id-wrapper {
+    padding-left : @e-node-padding-for-image;
+    color        : #464646;
+    font-weight  : bold;
+    height       : @e-node-image-height;
+    margin       : 3px 0 10px;
+  }
+
+  .e-node__ellipsis_wrapper {
+    white-space   : nowrap;
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    height        : 100%;
+  }
+
+  &__id {
+    font-size   : 15px;
+    line-height : @e-node-image-height;
+  }
+
+  &__type-icon {
+    &_start {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-start-node-icon.png") no-repeat 0 center;
+    }
+    &_fork {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-fork-icon.png") no-repeat 0 center;
+    }
+    &_join {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-join-icon.png") no-repeat 0 center;
+    }
+    &_end {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-end-node-icon.png") no-repeat 0 center;
+    }
+    &_map-reduce {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-map-reduce-node-icon.png") no-repeat 0 center;
+    }
+    &_map-reduce2 {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-map-reduce2-node-icon.png") no-repeat 0 center;
+    }
+    &_fs {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-fs-node-icon.png") no-repeat 0 center;
+    }
+    &_java {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-java-node-icon.png") no-repeat 0 center;
+    }
+    &_pig {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-pig-node-icon.png") no-repeat 0 center;
+    }
+    &_hive {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-hive-node-icon.png") no-repeat 0 center;
+    }
+    &_decision {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-decision-node-icon.png") no-repeat 0 center;
+    }
+    &_distcp {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-distcp-node-icon.png") no-repeat 0 center;
+    }
+    &_kill {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-kill-node-icon.png") no-repeat 0 center;
+    }
+    &_email {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-mail-node-icon.png") no-repeat 0 center;
+    }
+    &_shell {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-shell-node-icon.png") no-repeat 0 center;
+    }
+    &_sqoop {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-sqoop-node-icon.png") no-repeat 0 center;
+    }
+    &_ssh {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-ssh-node-icon.png") no-repeat 0 center;
+    }
+    &_sub-workflow {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-subworkflow-node-icon.png") no-repeat 0 center;
+    }
+    &_spark {
+      background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-spark-node-icon.png") no-repeat 0 center;
+    }
+  }
+
+  &__properties-list {
+    list-style : none;
+    margin     : 5px 0 0;
+    padding    : 0;
+
+    &__item {
+      color         : #6c7780;
+      font-size     : 12px;
+      overflow      : hidden;
+      text-overflow : ellipsis;
+    }
+  }
+
+  &__counters-list {
+    list-style : none;
+    margin     : 5px 0 0;
+    padding    : 0;
+
+    &__item {
+      width: 100%;
+      overflow      : hidden;
+      text-overflow : ellipsis;
+      margin        : 2px 0;
+    }
+  }
+
+  &__outgoing-ep {
+    cursor           : pointer;
+    border-radius    : 50%;
+    border           : 4px solid #fff;
+    background-color : #7c92a7;
+    box-shadow       : 0 0 0 1px #c7d0d9;
+  }
+
+  &__outgoing-case-ep,
+  &__outgoing-default-ep,
+  &__outgoing-error-ep,
+  &__outgoing-ok-ep {
+    cursor           : pointer;
+    border-radius    : 3px;
+    border           : 3px solid #fff;
+    background-color : #7c92a7;
+    box-shadow       : 0 0 0 1px #c7d0d9;
+
+    &:not(._jsPlumb_dragging):before {
+      content  : "";
+      display  : block;
+      width    : 4px;
+      height   : 3px;
+      position : absolute;
+      left     : -8px;
+      top      : 2px;
+    }
+  }
+
+  &__outgoing-error-ep:before {
+    background : #d45529;
+  }
+
+  &__outgoing-case-ep:before,
+  &__outgoing-default-ep:before,
+  &__outgoing-ok-ep:before {
+    background : #4bb736;
+  }
+
+  &__incoming-ep {
+    cursor           : pointer;
+    border-radius    : 50%;
+    background-color : #7c92a7;
+    background-clip  : padding-box;
+    border           : 7px solid transparent;
+  }
+
+  &__remove-node {
+    position   : absolute;
+    top        : 5px;
+    right      : 5px;
+    display    : block;
+    width      : 10px;
+    height     : 10px;
+    background : url("../../../../../../../../resources/img/oozie-plugin-flowchart-widget-close-node-icon.png") no-repeat center;
+    cursor     : pointer;
+    opacity    : 0.5;
+
+    &:hover {
+      opacity : 1;
+    }
+  }
+}

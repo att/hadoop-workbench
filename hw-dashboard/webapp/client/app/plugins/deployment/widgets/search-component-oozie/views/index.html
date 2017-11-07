@@ -1,0 +1,276 @@
+<div class="b-deployment">
+    <div class="b-deployment__left-side-widgets" ng-class="{'b-deployment__left-side-widgets_split': splitWidgets}"
+         ng-style="{'padding-bottom':actionsPadding}">
+
+    <!--<div ng-include="options.tplPath + 'breadcrumb.html'" include-replace></div>-->
+        <div class="b-deployment__breadcrumb">
+            <div class="b-deployment__breadcrumb__actions" ng-show="true || !isFileEditorModeEnabled">
+                <div class="b-deployment__breadcrumb__quick-create-widget">
+                    <div ng-show="true || config.quickCreateWidget.search && !displayQuickCreateItemWidget" class="b-deployment__breadcrumb__action">
+                        <input class="b-deployment__breadcrumb__action-search-input" type="text" title="Search items"
+                               placeholder="Search "
+                               ng-model="searchStr"
+
+                        />
+                        <!--ng-model="itemsFilter.searchString"-->
+
+                    </div>
+                    <a ng-show="config.quickCreateWidget.openFileBrowser" ng-click="openHdfsBrowserWidget()"
+                       class="b-deployment__breadcrumb__action__btn-open-hdfs-browser"></a>
+                    <a ng-show="config.quickCreateWidget.folder && !displayQuickCreateItemWidget"
+                       ng-click="showQuickCreateItemWidget('DIR')"
+                       class="b-deployment__breadcrumb__action__btn-show-quick-create-folder"></a>
+                    <a ng-show="config.quickCreateWidget.file && !displayQuickCreateItemWidget"
+                       ng-click="showQuickCreateItemWidget('FILE')"
+                       class="b-deployment__breadcrumb__action__btn-show-quick-create-file"></a>
+
+<!--
+                    <div ng-show="config.quickCreateWidget.upload && !displayQuickCreateItemWidget"
+                         class="b-deployment__breadcrumb__action__btn-quick-upload-file">
+                        <input type="file" nv-file-select uploader="fileUploader"
+                               class="b-deployment__breadcrumb__action__upload-input">
+                    </div>
+-->
+                    <ul ng-if="false && showSearchFilter && availFilters" class="b-menu-search-items__list-container__filter
+b-deployment__breadcrumb__filter-fixes"
+                        ng-class="{'filter-style-inline': true || isSearchFilterStyleInline}"
+                    >
+                        <li ng-repeat="f in availFilters" ng-click="toggleFilter(f)"
+                            class="b-menu-search-items__list-container__filter__item"
+                            ng-class="{
+                               'b-menu-search-items__list-container__filter__item-active': f.isActive,
+                               'filter-style-inline': true || isSearchFilterStyleInline
+                               }"
+                        >
+                            <a ng-if="::f.isTemplate"
+                            >
+                                <i class="icon-{{:: f.type.toLowerCase()}}-tenant"></i>
+                            </a>
+                            <a ng-if="::f.isDeployedComponent"
+                               class="b-menu-search-items__list-container__filter__item"
+                            >
+                                <i class="icon-{{::f.type.toLowerCase()}}-{{::f.platformType.toLowerCase()}}"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div ng-show="displayQuickCreateItemWidget" class="b-deployment__breadcrumb__action__quick-create-item">
+                        <input type="text" ng-model="tempItem.path" placeholder="Item name..."
+                               class="input b-deployment__breadcrumb__action__quick-create-item__input"
+                               focus-it="displayQuickCreateItemWidget"
+                               focus-it-delay="true"
+                               on-key-enter-callback="createItem()"
+                               on-key-escape-callback="hideQuickCreateItemWidget()"
+                        />
+                        <a ng-click="createItem()" class="b-deployment__breadcrumb__action__quick-create-item__btn-create-action"></a>
+                        <a ng-click="hideQuickCreateItemWidget()"
+                           class="b-deployment__breadcrumb__action__quick-create-item__btn-cancel-action"></a>
+                    </div>
+                </div>
+                <div class="b-deployment__breadcrumb__actions__backdrop" ng-show="error"></div>
+            </div>
+        </div>
+<!--<div ng-include="options.tplPath + 'items-list.html'"></div>-->
+
+
+        <div class="b-deployment__files-list"
+
+             infinite-scroll
+             infinite-scroll-callback="loadMoreFilteredComponents()"
+             infinite-scroll-distance="1"
+             ng-hide="showPreloader"
+        >
+
+            <table>
+                <colgroup>
+                    <col span="1"
+                         class="b-deployment__files-list__item-property-col-width-group">
+                    <col span="1"
+                         class="b-deployment__files-list__item-property-col-width-name">
+                    <col span="1"
+                         class="b-deployment__files-list__item-property-col-width-group">
+                </colgroup>
+                <thead>
+                <tr class="b-deployment__files-list__header"
+                    ng-class="{
+                'b-deployment__files-list__item_highlighted': isHeaderRowSelected($index)
+                }"
+                >
+                    <th >
+                        <a ng-click="sortType = 'type'; sortReverse = !sortReverse"
+                           class="b-deployment__files-list__header__column-name">
+
+                        </a>
+                    </th>
+                    <th >
+                        <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                           class="b-deployment__files-list__header__column-name">
+                            Name
+                        </a>
+                    </th>
+                    <th >
+                        <a ng-click="sortType = 'type'; sortReverse = !sortReverse"
+                           class="b-deployment__files-list__header__column-name">
+                            Version
+                        </a>
+                    </th>
+                    <th >
+                        <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                           class="b-deployment__files-list__header__column-name">
+                            App Path
+                        </a>
+                    </th>
+                    <th title="Currently running coordinators count">
+                        <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                           class="b-deployment__files-list__header__column-name">
+                           Coordinators
+                        </a>
+                    </th>
+                    <th>&nbsp;</th>
+                    <th title="Currently running workflows count">
+                        <a ng-click="sortType = 'label'; sortReverse = !sortReverse"
+                           class="b-deployment__files-list__header__column-name">
+                           Workflows
+                        </a>
+                    </th>
+                    <th>&nbsp;</th>
+                    <th title="Currently running workflows count">
+                        <a class="b-deployment__files-list__header__column-name">&nbsp; </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr
+                        class="b-deployment__files-list__item"
+                        ng-class="{
+                'selected':false && selectedItems.indexOf(item) !== -1,
+                'b-deployment__files-list__item_highlighted': isFileRowSelected($index)
+                }"
+                        ng-click="itemClicked(item)"
+                        ng-repeat="component in componentsFiltered | limitTo:limitComponentList"
+                        in-view="inView($index, $inview, $inviewpart, component, $isLastCheckedItem)">
+                    <td>
+                        <span class="b-deployment__files-list__item-container">
+                <span class="b-deployment__files-list__item-property b-deployment__files-list__item-property__type"
+                      ng-class="'b-deployment__files-list__item-property__type-oozie'"
+                      ng-click="openTenantComponent(component)"
+                      title="Open original component">
+                    <i class="b-template-icon_oozie"></i>
+                </span>
+
+                <span class="b-deployment__files-list__item-property b-deployment__files-list__item-property__type"
+                      ng-class="'b-deployment__files-list__item-property__type-oozie'"
+                      ng-click="openComponent(component)"
+                      title="Open component">
+                    <i class="icon-oozie-{{::component.type.toLowerCase()}}"></i>
+                </span>
+                        </span>
+
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      >{{::component.name}}
+                </span>
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      >{{::component.version}}
+                    </span>
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      title="{{::component.path}}">
+
+                    <span>{{::component.path}}</span>
+                </span>
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      >
+                    {{ componentsStatus[component.compositeId] ? componentsStatus[component.compositeId].runningCoordinator : '-' }}
+                </span>
+                    </td>
+
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                >
+                    <a class="b-oozie-jobs__control b-oozie-jobs__control_start"
+                       ng-click="startCoordinator(component)"
+                       title="Start"
+                       ng-disabled="component.isCoordinatorStarting"
+                    ></a>
+                    <a class="b-oozie-jobs__control b-oozie-jobs__control_stop"
+                       ng-click="stopCoordinator(component)"
+                       ng-disabled="component.isCoordinatorStopping"
+
+                       title="Stop"
+                    ></a>
+                </span>
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      >
+                    {{ componentsStatus[component.compositeId] ? componentsStatus[component.compositeId].runningWorkflow : '-' }}
+                </span>
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                >
+                    <a class="b-oozie-jobs__control b-oozie-jobs__control_start"
+                       ng-click="startWorkflow(component)"
+                       title="Start"
+                       ng-disabled="component.isWorkflowStarting"
+
+                    ></a>
+                    <a class="b-oozie-jobs__control b-oozie-jobs__control_stop"
+                       ng-click="stopWorkflow(component)"
+                       title="Stop"
+                       ng-disabled="component.isWorkflowStopping"
+
+                    ></a>
+
+                </span>
+                    </td>
+
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      ng-show="showPromotionButtons"
+                      >
+                    <button class="btn btn-default btn-lg" ng-click="deploy(component)">
+                        Promote
+                    </button>
+                </span>
+                    </td>
+                    <td>
+                <span ng-class="{'b-file-selector__files-list__item-property': isItemSelector}"
+                      class="b-deployment__files-list__item-property b-deployment__files-list__item-property__name"
+                      ng-show="showPromotionButtons"
+                >
+                    <button class="btn btn-default btn-lg" ng-click="deployToProduction(component)">
+                        Production
+                    </button>
+                </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="b_deployment-widget__backdrop ng-hide" ng-show="showPreloader">
+            <div class="b_deployment-widget__backdrop__spinner">
+                <div class="b_deployment-widget__backdrop__spinner__top"></div>
+                <div class="b_deployment-widget__backdrop__spinner__bottom"></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

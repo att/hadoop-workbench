@@ -1,0 +1,26 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectSpace">
+    <h2 class="b-create-service-wizard-step__title">Select environment</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a space name..."
+           ng-model="searchString"
+           navigable-list-input
+           focus-it="true"/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options" navigable-list-items="spacesFiltered">
+        <li ng-repeat="s in spacesFiltered track by $index"
+            ng-class="{chosen: data.env === s}">
+            <a class="b-create-service-wizard-step__options-item"
+               ng-click="selectSpace(s)">
+                {{s}}
+            </a>
+        </li>
+    </ul>
+    <!-- @TODO: fix showValidationErrors on Deploy button-press -->
+    <!-- @TODO: fix temprorary disabled -->
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="false && showValidationErrors">No environment is selected</span>
+    <div ng-if="spacesFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

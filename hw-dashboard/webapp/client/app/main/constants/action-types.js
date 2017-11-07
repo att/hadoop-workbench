@@ -1,0 +1,7 @@
+export const ADD_WIDGET = 'ADD_WIDGET';
+export const REMOVE_WIDGET = 'REMOVE_WIDGET';
+export const UPDATE_WIDGET = 'UPDATE_WIDGET';
+
+export const CLOSE_MENU = 'CLOSE_MENU';
+export const SELECT_MENU_ITEM = 'SELECT_MENU_ITEM';
+export const SET_MENU_SEARCH_QUERY = 'SET_MENU_SEARCH_QUERY';

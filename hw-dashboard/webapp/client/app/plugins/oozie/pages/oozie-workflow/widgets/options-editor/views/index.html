@@ -1,0 +1,59 @@
+<div class="b-options-editor-widget yes-select">
+    <div class="b-options-editor-widget__no-selected-node-header" ng-if="!connection && !node">
+        Please select an element <br> to edit its options
+    </div>
+    <div ng-show="(connection || currentlySelectedConnection) && !node">
+        <div class="b-options-editor-widget__header">
+            <span>Connection Properties</span>
+
+            <div class="b-options-editor-widget__header__controls">
+                <a class="b-options-editor-widget__header__control" ng-click="removeConnection(connection)">Delete</a>
+            </div>
+        </div>
+        <div class="b-options-editor-widget__fields-list" ng-if="connection.properties.getPropertyInfo('case')">
+            <object-properties data="connection.properties" class="secondary-properties"></object-properties>
+        </div>
+        <div class="b-options-editor-widget__no-selected-node-header"
+             ng-show="!connection.properties.getPropertyInfo('case')">
+            Selected connection doesn't have any properties
+        </div>
+    </div>
+    <div ng-if="node" style="height: 100%;">
+        <div ng-if="showFileBrowser" class="b-options-editor-widget__file-browser">
+            <div class="b-options-editor-widget__file-browser__items">
+                <dap-widget name="'hdfs-manager-widget'"
+                            params="{
+                                src: fileBrowserSource,
+                                columns: ['type', 'name', 'quickDelete'],
+                                events: fileManagerEvents,
+                                loader: fileBrowserSource.isTenantComponent ? 'oozie-tenant' : 'oozie',
+                                breadcrumb: true,
+                                currentFolderOnly: true,
+                                enterFolderOnCreate: true,
+                                quickCreateWidget: {folder:true, file: true, openFileBrowser: false, upload: true, search: false},
+                                actions: false,
+                                isFileSelector: true,
+                                isDirSelector: true
+                        }">
+                </dap-widget>
+            </div>
+            <div class="b-options-editor-widget__file-browser__buttons">
+                <button ng-click="selectFile()" ng-disabled="fileBrowserButtonsDisabled || selectedFile === null"
+                        class="b-options-editor-widget__file-browser__btn-select-action btn btn-secondary btn-md">
+                    Select
+                </button>
+                <button ng-click="exitFileSelectionMode()"
+                        class="b-options-editor-widget__file-browser__btn-cancel-action btn btn-secondary btn-md">
+                    Cancel
+                </button>
+            </div>
+        </div>
+        <div ng-show="!showFileBrowser" style="overflow-y: auto; height:100%">
+            <div class="b-options-editor-widget__fields-list">
+                <object-properties data="node.properties.General" readonly="readonly"></object-properties>
+                <object-properties data="node.properties.Advanced" readonly="readonly"></object-properties>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

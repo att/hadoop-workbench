@@ -1,0 +1,38 @@
+<workflow-app name="recommendation-on-regression" xmlns="uri:oozie:workflow:0.1">
+    <start to="regression"/>
+    <action name="regression">
+        <shell xmlns="uri:oozie:shell-action:0.3">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.mapreduce.job.user.classpath.first</name>
+                    <value>true</value>
+                </property>
+            </configuration>
+            <exec>spark-submit</exec>
+            <argument>--class</argument>
+            <argument>com.regression.Regression</argument>
+            <argument>--master</argument>
+            <argument>${sparkMaster}</argument>
+            <argument>spark-regression-1.0.jar</argument>
+            <argument>${regressionInput}</argument>
+            <argument>${regressionOutput}</argument>
+            <argument>${regressionTmp}</argument>
+            <argument>${accountBaseUrl}</argument>
+            <argument>${accountUserName}</argument>
+            <argument>${accountUserPassword}</argument>
+            <argument>${cassandraConnection}</argument>
+            <argument>${cassandraKeyspace}</argument>
+            <argument>${sparkMaster}</argument>
+            <argument>${nameNode}</argument>
+            <file>lib/spark-regression-1.0-jar-with-dependencies.jar#spark-regression-1.0.jar</file>
+        </shell>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    <kill name="fail">
+        <message>Fail regression</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

@@ -1,0 +1,9 @@
+<json-schema-item class="json-schema-object__property"
+                  ng-repeat="propertyName in propertiesOrder"
+                  ng-if="instance.properties[propertyName]"
+                  schema-item="instance.properties[propertyName]"
+                  level="level + 1"
+                  readonly="readonly"
+                  first="$first"
+                  focus="focus"
+                  json-schema-hover="'json-schema-item__value_hover'"></json-schema-item>

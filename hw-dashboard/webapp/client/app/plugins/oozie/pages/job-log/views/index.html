@@ -1,0 +1,146 @@
+<div class="yes-select b-oozie-jobs__job-log">
+    <ul class="b-oozie-jobs__job-log__list b-oozie-jobs__job-log__list-header">
+        <li class="b-oozie-jobs__job-log__list__item-row-copy"
+            ng-hide="isNodeSelected"
+            ngclipboard data-clipboard-text="{{ messagesRaw }}"
+                >
+            <span> &nbsp;</span>
+             <span class="b-oozie-jobs__job-log__list__item-row-copy__text-job">
+                  Job log
+             </span>
+            <span class="b-oozie-jobs__job-log__list__item-row-copy__text-copy"
+                  ng-hide="isSwitchTransitionActive || isSelectedLogEmpty()"
+                    >
+                <i class="b-oozie-jobs__job-log__list__item-row-copy__text-copy__icon"></i>
+                Copy to clipboard
+            </span>
+        </li>
+        <li class="b-oozie-jobs__job-log__list__item-row-copy"
+            ng-hide="!isNodeSelected"
+                >
+            <span> &nbsp;</span>
+            <span class="b-oozie-jobs__job-log__list__item-row-copy__text-internal "
+                  ng-class="{'b-oozie-jobs__job-log__list__item-row-copy__text-active': isInternalActive}"
+                  ng-click="switchToInternalLog()"
+                    >
+                Internal
+            </span>
+            <span class="b-oozie-jobs__job-log__list__item-row-copy__text-external "
+                  ng-class="{'b-oozie-jobs__job-log__list__item-row-copy__text-active': isExternalActive}"
+                  ng-click="switchToExternalLog()"
+                  ng-hide="!isExternalAvailable"
+                  title="{{ isExternalAvailable ? 'Load External logs' : 'External logs are not available'}}"
+                    >
+                External
+            </span>
+            <span class="b-oozie-jobs__job-log__list__item-row-copy__text-copy"
+                  ngclipboard data-clipboard-text="{{ internalMessageRaw }}"
+                  ng-hide="!isInternalActive || isLoadingVisible() || isSelectedLogEmpty()"
+                    >
+                <i class="b-oozie-jobs__job-log__list__item-row-copy__text-copy__icon"></i>
+                Copy to clipboard
+            </span>
+            <span class="b-oozie-jobs__job-log__list__item-row-copy__text-copy"
+                  ng-repeat="subtype in externalLogTypesArray"
+                  ngclipboard data-clipboard-text="{{ externalMessageRaw[externalDynamicActiveId][subtype] }}"
+                  ng-hide="!isExternalActive || !isExternalSectionActive[subtype] || isLoadingVisible() || isSelectedLogEmpty()"
+                    >
+                <i class="b-oozie-jobs__job-log__list__item-row-copy__text-copy__icon"></i>
+                Copy to clipboard
+            </span>
+        </li>
+            <li class="b-oozie-jobs__job-log__list__item-row-external-subtype"
+                ng-hide="!isNodeSelected || !isExternalActive"
+                    >
+                <span class="b-oozie-jobs__job-log__list__item-row-external-subtype__tab"
+                      ng-repeat="dynamic in externalLogDynamicArray"
+                      ng-class="{
+                        'b-oozie-jobs__job-log__list__item-row-external-subtype__tab-active': externalDynamicActiveId == $index
+                        }"
+                      ng-click="switchExternalLogDynamic($index)"
+                        >
+                    {{ dynamic | uppercase }}
+                </span>
+            </li>
+
+        <li class="b-oozie-jobs__job-log__list__item-row-external-subtype"
+            ng-hide="!isNodeSelected || !isExternalActive"
+                >
+            <!--<span> &nbsp;</span>-->
+            <span class="b-oozie-jobs__job-log__list__item-row-external-subtype__tab"
+                  ng-repeat="subtype in externalLogTypesArray"
+                  ng-class="{
+                    'b-oozie-jobs__job-log__list__item-row-external-subtype__tab-active': isExternalSectionActive[subtype]
+                    }"
+                  ng-click="switchToExternalLogSubtype(subtype)"
+                    >
+                {{ subtype | uppercase }}
+            </span>
+        </li>
+
+        <li class="b-oozie-jobs__job-log__list__item-loading"
+            ng-hide="!isLoadingVisible()"
+                >
+            Loading ...
+            <i class="b-oozie-jobs__job-log__list__item-loading__requesting-icon"></i>
+        </li>
+
+    </ul>
+
+    <div class="yes-select b-oozie-jobs__job-log-content-scroll-container">
+
+        <div class="b-oozie-jobs__job-log__list b-oozie-jobs__job-log__list-content"
+             ng-hide="isNodeSelected || isSwitchTransitionActive">
+            <div class="b-oozie-jobs__job-log__list__item">
+                <pre class="b-oozie-jobs__job-log__list__item__text" ng-bind-html="messagesRaw"></pre>
+            </div>
+        </div>
+
+        <div class="b-oozie-jobs__job-log__list b-oozie-jobs__job-log__list-content"
+             ng-hide="!isNodeSelected || !isInternalActive || isSwitchTransitionInternalActive">
+            <div class="b-oozie-jobs__job-log__list__item">
+                <pre class="b-oozie-jobs__job-log__list__item__text" ng-bind-html="internalMessageRaw"></pre>
+            </div>
+        </div>
+
+        <div class="b-oozie-jobs__job-log__list b-oozie-jobs__job-log__list-content"
+             ng-repeat="dynamic in externalLogDynamicArray"
+             ng-hide="($index != externalDynamicActiveId) || !isNodeSelected || !isExternalActive || !isExternalSectionActive['stdErr'] || isSwitchTransitionExternalActive">
+            <div class="b-oozie-jobs__job-log__list__item">
+                <pre class="b-oozie-jobs__job-log__list__item__text" ng-bind-html="externalMessageRaw[$index]['stdErr']"></pre>
+            </div>
+        </div>
+
+        <div class="b-oozie-jobs__job-log__list b-oozie-jobs__job-log__list-content"
+             ng-repeat="dynamic in externalLogDynamicArray"
+             ng-hide="($index != externalDynamicActiveId) || !isNodeSelected || !isExternalActive || !isExternalSectionActive['stdOut'] || isSwitchTransitionExternalActive">
+            <div class="b-oozie-jobs__job-log__list__item">
+                <pre class="b-oozie-jobs__job-log__list__item__text" ng-bind-html="externalMessageRaw[$index]['stdOut']"></pre>
+            </div>
+        </div>
+
+        <div class="b-oozie-jobs__job-log__list b-oozie-jobs__job-log__list-content"
+             ng-repeat="dynamic in externalLogDynamicArray"
+             ng-hide="($index != externalDynamicActiveId) || !isNodeSelected || !isExternalActive || !isExternalSectionActive['syslog'] || isSwitchTransitionExternalActive">
+            <div class="b-oozie-jobs__job-log__list__item">
+                <pre class="b-oozie-jobs__job-log__list__item__text" ng-bind-html="externalMessageRaw[$index]['syslog']"></pre>
+            </div>
+        </div>
+
+        <div class="b-oozie-jobs__job-log__no-data"
+             ng-if="!isLoadingVisible() && isSelectedLogEmpty() && !isSelectedLogError()">
+            <span>There are no log records</span>
+        </div>
+
+        <div class="b-oozie-jobs__job-log__error"
+             ng-class="{'b-oozie-jobs__job-log__error-expanded': isErrorTextExpanded}"
+             ng-hide="!(!isLoadingVisible() && isSelectedLogError())"
+             ng-click="isErrorTextExpanded = !isErrorTextExpanded"
+                >
+            <span ng-hide="isNodeSelected || !isMessagesError">{{ messagesErrorRaw }}</span>
+            <span ng-hide="!isInternalActive || !isInternalMessageError">{{ internalMessageErrorRaw }}</span>
+            <span ng-hide="!isExternalAvailable || !isExternalMessageError">{{ externalMessageErrorRaw }}</span>
+        </div>
+
+    </div>
+</div>

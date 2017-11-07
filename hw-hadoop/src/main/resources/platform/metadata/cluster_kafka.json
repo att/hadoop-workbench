@@ -1,0 +1,86 @@
+{
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "sections": true,
+    "properties": {
+      "info": {
+        "type": "object",
+        "title": "Info",
+        "order": 1,
+        "properties": {
+          "title": {
+            "title": "Name",
+            "type": "string",
+            "isTitleField": true,
+            "readonly": true
+          },
+          "kerberized": {
+            "title": "Kerberized",
+            "type": "boolean"
+          },
+          "realm": {
+            "title": "Realm",
+            "type": "string"
+          }
+        }
+      },
+      "zooKeeperAccess": {
+        "type": "object",
+        "title": "ZooKeeper access",
+        "order": 2,
+        "list": {
+          "title":"ZooKeeper",
+          "fields": [
+            "host",
+            "port"
+          ]
+        },
+        "properties": {
+          "host": {
+            "title": "ZooKeeper host",
+            "type": "string"
+          },
+          "port": {
+            "title": "ZooKeeper port",
+            "type": "number",
+            "min": 0
+          }
+        },
+        "required": [
+          "host",
+          "port"
+        ]
+      },
+      "customData": {
+        "type": "array",
+        "title": "Custom Properties",
+        "order": 3,
+        "minItems": 0,
+        "uniqueItems": false,
+        "additionalItems": true,
+        "items": {
+          "title": "property",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "key",
+            "value"
+          ]
+        }
+      }
+    }
+  }
+}

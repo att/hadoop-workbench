@@ -1,0 +1,83 @@
+<span class="json-schema-string__value"
+      ng-if="!instance.enum.length && !instance.schema.isFileRef && !instance.schema.isPassword"
+      contenteditable="{{!instance.schema.readonly && !readonly}}"
+      ng-disabled="instance.schema.readonly || readonly"
+      placeholder-text="Empty string"
+      ng-required="instance.schema.required"
+      focus-it="focus && first"
+      ng-model="instance.value"
+      ng-class="{'json-schema-string__value_with-remove': removable, 'error' : error}"
+      contenteditable-discard-changes-on-esc="true">
+</span>
+<span ng-if="error" class="json-schema-string__value error-message">{{error}}</span>
+
+<span class="json-schema-string__value"
+      ng-if="!instance.enum.length && !instance.schema.isFileRef && instance.schema.isPassword"
+      contenteditable="{{!instance.schema.readonly && !readonly}}"
+      contenteditable-trim-spaces="false"
+      ng-disabled="instance.schema.readonly || readonly"
+      placeholder-text="Empty string"
+      cover-password
+      cover-password-show-password="showPassword"
+      ng-required="instance.schema.required"
+      focus-it="focus && first"
+      input-data="instance.value"
+      ng-model="instance.value"
+      ng-class="{
+        'json-schema-string__value_with-remove': removable,
+        'json-schema-string__value-password': instance.schema.isPassword
+      }"></span>
+
+<span class="json-schema-string__value-password__button">
+    <i class="json-schema-string__reveal-icon"
+       ng-if="instance.schema.isPassword"
+       ng-click="toggleShowPassword()"
+       ng-attr-title="{{ showPassword ? 'Hide Password' : 'Reveal Password' }}"
+       ng-class="{
+           'json-schema-string__reveal-icon_active': showPassword
+       }">
+    </i>
+</span>
+
+<span class="json-schema-string__value json-schema-string__value_file-ref"
+      ng-if="!instance.enum.length && instance.schema.isFileRef"
+      focus-it="focus && first"
+      ng-class="{
+        'json-schema-string__value_with-remove': removable
+      }">
+
+    <a class="json-schema-string__value__link"
+       ng-show="!isPathEditModeEnabled && instance.value" ng-click="openFile()" ng-attr-title="{{instance.value}}">{{instance.value}}</a>
+
+    <a class="json-schema-string__value__clean-up"
+       title="Clean Up"
+       ng-show="!isPathEditModeEnabled && instance.value && !instance.schema.readonly && !readonly"
+       ng-click="removeFile()"></a>
+
+    <a class="json-schema-string__value__select-file"
+       ng-show="!isPathEditModeEnabled && !instance.value && !instance.schema.readonly && !readonly"
+       ng-click="selectFile()">Select...
+    </a>
+
+    <a class="json-schema-string__value__edit-path-link" ng-if="!isPathEditModeEnabled"
+       title="Edit path" ng-click="editPath()"></a>
+    <span class="json-schema-string__value__input"
+          ng-if="isPathEditModeEnabled"
+          focus-it="true"
+          focus-it-set-caret-to-end="true"
+          ng-model="instance.value"
+          contenteditable
+          contenteditable-discard-changes-on-esc="true"
+          contenteditable-callback="exitPathEditMode()"
+          contenteditable-callback-on-esc="exitPathEditMode()">
+    </span>
+
+</span>
+
+<select class="json-schema-string__value json-schema-string__value_enum"
+        ng-if="instance.enum.length"
+        ng-disabled="instance.schema.readonly || readonly"
+        ng-required="instance.schema.required"
+        focus-it="focus && first"
+        ng-model="instance.value"
+        ng-options="value as instance.enumLabels[value] for value in instance.enum"></select>

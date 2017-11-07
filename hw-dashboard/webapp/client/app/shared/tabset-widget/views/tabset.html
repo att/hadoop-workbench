@@ -1,0 +1,6 @@
+<div class="b_tabset">
+    <ul class="b_tabset__tab-headings clearfix" ng-transclude></ul>
+    <div class="b_tabset__tab-content">
+        <div class="tab-pane" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab"></div>
+    </div>
+</div>

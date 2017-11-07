@@ -1,0 +1,36 @@
+.json-schema-boolean {
+  border-bottom : 1px solid #dde6f0;
+  line-height   : 25px;
+
+  &__value {
+    float      : left;
+    margin-top : 4px;
+    position   : relative;
+
+    &::after {
+      content          : '';
+      position         : absolute;
+      top              : 0;
+      left             : 0;
+      .checkbox-icon;
+      background-color : #fff;
+    }
+
+    &._checked::after {
+      content          : '';
+      position         : absolute;
+      top              : 0;
+      left             : 0;
+      .checkbox-icon_checked;
+      background-color : #fff;
+    }
+
+    &.disabled::after {
+      box-shadow: 0px 0px 1px 1px rgba(13,127,234, 0.5),inset 0px 0px 3px 1px #137fea;
+    }
+  }
+
+  &:hover {
+    background : #eef0f2;
+  }
+}

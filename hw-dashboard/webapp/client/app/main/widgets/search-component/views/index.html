@@ -1,0 +1,102 @@
+<div navigable-list
+     nl-on-choose="openComponent">
+    <form class="dap-navigation-form">
+        <label for="nav-search" class="nav-search-label">Add to Workbench</label>
+
+        <div class="nav-search-container">
+            <input type="text" id="nav-search" name="search_word"
+                   autocomplete="off"
+                   placeholder="Search Component or Create New..."
+                   ng-class="{'requesting': requesting}"
+                   ng-model="searchStr"
+                   ng-model-options="{debounce: 500}"
+                   navigable-list-input
+                   ng-keydown="onKeyDown($event)"
+                   focus-it="true"
+                   style="background-color: #fff;">
+            <span class="placeholder-tip"
+                  ng-class="{'filter-style-inline': isSearchFilterStyleInline && showSearchFilter}"
+            >
+                Enter to Open
+                <i class="placeholder-tip-icon" ng-click="searchStr = ''"></i>
+            </span>
+            <i class="b-menu-search-items__nav-search-container__requesting-icon" ng-show="requesting"></i>
+
+            <div class="b-menu-search-items__list-container" ng-show="!requesting"
+                infinite-scroll
+                infinite-scroll-callback="loadMoreFilteredComponents()"
+                infinite-scroll-container-selector="ul.b-menu-search-items__list-container__list"
+                infinite-scroll-distance="1"
+            >
+                <ul ng-if="showSearchFilter && availFilters" class="b-menu-search-items__list-container__filter"
+                    ng-class="{'filter-style-inline': isSearchFilterStyleInline}"
+                >
+                    <li ng-repeat="f in availFilters" ng-click="toggleFilter(f)"
+                        class="b-menu-search-items__list-container__filter__item"
+                        ng-class="{
+                               'b-menu-search-items__list-container__filter__item-active': f.isActive,
+                               'filter-style-inline': isSearchFilterStyleInline
+                               }"
+                    >
+                        <a ng-if="::f.isTemplate"
+                        >
+                            <i class="icon-{{:: f.type.toLowerCase()}}-tenant"></i>
+                        </a>
+                        <a ng-if="::f.isDeployedComponent"
+                           class="b-menu-search-items__list-container__filter__item"
+                        >
+                            <i class="icon-{{::f.type.toLowerCase()}}-{{::f.platformType.toLowerCase()}}"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="b-menu-search-items__list-container__no-matches"
+                     ng-show="componentsFiltered.length === 0">
+                    No matches found
+                    <button class="btn btn-success btn-lg b-menu-search-items__list-container__no-matches-label"
+                            ng-click="createNewComponent()">
+                        Create New Component
+                    </button>
+                </div>
+                <ul class="b-menu-search-items__list-container__list"
+                    ng-show="componentsFiltered.length > 0"
+                    navigable-list-items="componentsFiltered"
+                    nl-selector="li"
+                    nl-selected-class="selected"
+                    nl-highlighted-class="highlighted">
+                    <li class="b-add-service-search__omnibox__item"
+                        ng-repeat="component in componentsFiltered | limitTo:limitComponentList">
+                        <a ng-if="::component.isTemplate" class="b-add-service-search__omnibox__item__link"
+                           ng-click="openComponent(component)"
+                           style="padding:8px;">
+                            <i class="icon-{{::component.info.type}}-tenant"></i>
+                            <span class="b-add-service-search__omnibox__item__link__service-name">
+                                {{::component.info.name}}
+                            </span>
+                            <span>: {{::component.info.version}}</span>
+                            <span class="b-add-service-search__omnibox__item__link__delimiter"></span>
+                            <span>{{::component.tenant.info.name}}:{{::component.tenant.info.version}}</span>
+                        </a>
+
+                        <a ng-if="::component.isDeployedComponent" class="b-add-service-search__omnibox__item__link"
+                           ng-click="openComponent(component)"
+                           style="padding:8px;">
+                            <i class="icon-{{::component.type.toLowerCase()}}-{{::component.platform.type.toLowerCase()}}"></i>
+                            <span class="b-add-service-search__omnibox__item__link__service-name">
+                                {{::
+                                    (component.renderedName || component.title + (component.agentName ? ': ' + component.agentName : ''))
+                                    || component.id
+                                }}
+                            </span>
+                            <span class="b-add-service-search__omnibox__item__link__delimiter"></span>
+                            <span> {{::component.platform.title}}/{{::component.cluster.title}}/{{::component.service.title}}
+                                <span ng-if="component.type === 'OOZIE'">{{::component.path}}</span>
+                             </span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn btn-secondary btn-lg" ng-click="close()">Cancel</button>
+    </form>
+</div>

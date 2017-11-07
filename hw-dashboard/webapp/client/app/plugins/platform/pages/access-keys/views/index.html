@@ -1,0 +1,73 @@
+<div class="b-access-keys"
+     uploader="fileUploader"
+     nv-file-drop
+     drag-file-class="b-access-keys_file-over">
+    <h1 class="b-access-keys__title">
+        {{title}}
+        <a ng-click="showAddKeyForm()" class="b-access-keys__create-key-btn"
+           ng-show="platformWriteAccess && !showAddKeyFormFlag && mode !== 'PEM'">
+            Add key
+        </a>
+    </h1>
+
+    <div>
+        <div ng-show="showAddKeyFormFlag" class="b-access-keys__new-item">
+            <div class="b-access-keys__new-item-form">
+                <form novalidate name="newItemForm">
+                    <div class="b-access-keys__new-item__fields">
+                        <div class=b-access-keys__new-item__principal">
+                            <input type="text" name="principal" ng-model="key.principal" placeholder="Principal..."
+                                   class="b-config-properties-editor__new-item__input"
+                                   required rpattern="/^(\w+\.){0,}(\w+\/)?(\w+\.){0,}\w+@\w+(\.\w+){0,}$/" maxlength="255">
+                        </div>
+                        <span class="b-access-keys__new-item-form__input-error"
+                              ng-show="newItemForm.principal.$error.required && (newItemForm.principal.$touched || showValidationErrors)">required</span>
+                        <span class="b-access-keys__new-item-form__input-error"
+                              ng-show="newItemForm.principal.$error.pattern && !newItemForm.principal.$error.required (newItemForm.principal.$touched || showValidationErrors)">
+                              Kerberos principal is invalid
+                        </span>
+                        <div class="b-access-keys__new-item__principal">
+                            <input type="password" name="password" ng-model="key.password" placeholder="Password..."
+                                   class="b-config-properties-editor__new-item__input" required>
+                            <span class="b-access-keys__new-item-form__input-error"
+                                  ng-show="newItemForm.password.$error.required && (newItemForm.password.$touched || showValidationErrors)">required</span>
+                        </div>
+                    </div>
+                    <div class="b-access-keys__new-item__buttons">
+                        <button class="btn btn-md btn-default" ng-click="saveKey()" type="submit">Add</button>
+                        <button class="btn btn-md btn-secondary" ng-click="hideAddKeyForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div ng-show="!showAddKeyFormFlag" class="b-access-keys__content">
+            <ul class="b-access-keys__keys-list list-unstyled">
+                <li class="b-access-keys__keys-list-item" ng-repeat="f in files">
+                    <div class="b-access-keys__keys-list-item__key">
+                        <span class="b-access-keys__keys-list-item__content">{{f.name}}</span>
+                    </div>
+                    <div class="b-access-keys__keys-list-item__action">
+                        <a class="b-clusters-browser__service-users__users-list-item__remove-link"
+                           ng-click="deleteFile(f)"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-if="platformWriteAccess" class="b-access-keys__upload-files">
+            <i class="b-access-keys__upload-files__icon"></i>
+
+            <div class="b-access-keys__upload-files__text">
+                Upload files
+            </div>
+            <input class="b-access-keys__upload-files__file-input" type="file" uploader="fileUploader" nv-file-select/>
+        </div>
+    </div>
+
+    <div class="b_platforms-clusters-widget__backdrop ng-hide" ng-show="requesting">
+        <div class="b_platforms-clusters-widget__backdrop__spinner">
+            <div class="b_platforms-clusters-widget__backdrop__spinner__top"></div>
+            <div class="b_platforms-clusters-widget__backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+</div>

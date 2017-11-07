@@ -1,0 +1,315 @@
+.b-dashboard-widget__header {
+  font-size  : 16px;
+  box-shadow : inset 0 -1px 0 0 #c7d0d9;
+  background : #e6ecf2;
+
+  &__widget-info {
+    line-height    : 32px;
+    padding-left   : 4px;
+    padding-right  : 5px;
+    white-space    : nowrap;
+    overflow       : hidden;
+    display        : inline-block;
+    vertical-align : top;
+    max-width      : 500px;
+    text-overflow  : ellipsis;
+    cursor         : default;
+  }
+
+  &__tab-panel {
+    padding    : 0;
+    list-style : none;
+  }
+
+  &__widget-controls {
+    position : absolute;
+    top      : 0;
+    right    : 0;
+  }
+
+  &__tab_unstyled,
+  &__tab {
+    border-left    : 1px solid #c7d0d9;
+    padding        : 0;
+    margin         : 0;
+    line-height    : 31px;
+    position       : relative;
+    display        : inline-block;
+    vertical-align : top;
+
+    &:last-child {
+      border-right : 1px solid #c7d0d9;
+    }
+
+    &&_dirty > &__link::after {
+      content : '*';
+    }
+
+    &_active {
+      line-height : 32px;
+    }
+
+    &__icon {
+      vertical-align : middle;
+      position       : relative;
+      top            : -1px;
+    }
+
+    &&_closable &__icon-close-tab {
+      display : block;
+    }
+
+    &&_closable &__link {
+      padding-right : 24px;
+    }
+
+    &__icon-close-tab {
+      display             : none;
+      position            : absolute;
+      top                 : 10px;
+      right               : 7px;
+      width               : 10px;
+      height              : 10px;
+      background          : transparent url('../../../../../resources/img/oozie-plugin-flowchart-widget-close-node-icon.png') no-repeat;
+      background-position : center center;
+    }
+
+    &__link {
+      font-size       : 14px;
+      text-decoration : none;
+      position        : relative;
+      background      : #e6ecf2;
+      padding         : 0 8px;
+      display         : block;
+      cursor          : default;
+      color           : #494a4c;
+
+      &:hover,
+      &:focus {
+        color           : #137fea;
+        text-decoration : none;
+      }
+
+      &:active {
+        color : #1470cc;
+      }
+    }
+
+    & > &__link:active,
+    &&_active &__link {
+      background : #fff;
+      margin-top : 0;
+    }
+
+    &__link[disabled]:active,
+    &__link[disabled] {
+      background : #fff;
+      color      : #dde6f0;
+    }
+
+    &__indicator {
+
+      display       : inline-block;
+      width         : 8px;
+      height        : 8px;
+      border-radius : 4px;
+
+      &.red {
+        background    : #cc0000;
+      }
+
+      &.orange {
+        background    : #fbb763;
+      }
+
+      &.green {
+        background    : #008000;
+      }
+
+      &.green-blink {
+        background    : #008000;
+        /* @TODO: refactor to use "/less/components/animations.less"*/
+        -moz-animation    : blink_keyframes normal 1.5s infinite ease-in-out;
+        /* Firefox */
+        -webkit-animation : blink_keyframes normal 1.5s infinite ease-in-out;
+        /* Webkit */
+        -ms-animation     : blink_keyframes normal 1.5s infinite ease-in-out;
+        /* IE */
+        animation         : blink_keyframes normal 1.5s infinite ease-in-out;
+        /* Opera */
+      }
+
+      &.white {
+        border        : 1px solid #000000;
+        background    : #ffffff;
+      }
+    }
+  }
+
+  &__tab__link.disabled {
+    > .b-dashboard-widget__header__actions-icon {
+      background-image : url("../../../../../resources/img/ic-dashboard-widget-menu-actions_disabled.png")
+    }
+  }
+
+  &__actions-menu > &__tab__link:active:not(.disabled) {
+    background : #fff;
+    margin-top : 0;
+  }
+
+  &__actions-menu {
+    position : relative;
+
+    > li {
+      line-height : normal;
+    }
+
+    &__options {
+      position   : absolute;
+      background : white;
+      z-index    : 15;
+      right      : 0;
+      width      : 150px;
+      border     : 1px solid #c7d0d9;
+      box-shadow : 0 0 1px #ccc;
+    }
+
+    &__option {
+      width         : 100%;
+      border-bottom : 1px solid #c7d0d9;
+
+      &:last-child {
+        border-bottom : none;
+      }
+
+      &-link {
+        display         : inline-block;
+        width           : 100%;
+        color           : #000000;
+        text-decoration : none;
+        padding-left    : 8px;
+        font-size       : 14px;
+        line-height     : 36px;
+        overflow        : hidden;
+        text-overflow   : ellipsis;
+      }
+
+      &-link:hover,
+      &-link:focus,
+      &-link:active {
+        color           : #fff;
+        background      : #137fea;
+        text-decoration : none;
+      }
+    }
+  }
+
+  &__actions-icon {
+    .icon-actions();
+
+    &:hover {
+      background-image : url("../../../../../resources/img/ic-dashboard-widget-menu-actions_hover.png");
+    }
+
+    &:active {
+      background-image : url("../../../../../resources/img/ic-dashboard-widget-menu-actions_pressed.png");
+    }
+  }
+
+  &__hidden-tabs-list-control {
+    position : absolute;
+    right    : 0;
+    top      : 0;
+  }
+
+  &__hidden-tabs-list__tabs {
+    position   : absolute;
+    background : white;
+    z-index    : 10;
+    right      : 0;
+    width      : 150px;
+    margin     : 0;
+    border     : 1px solid #c7d0d9;
+    box-shadow : 0 0 1px #ccc;
+  }
+
+  &__hidden-tabs-list-icon {
+    .icon-hidden-tabs-list();
+
+    &:hover {
+      background-image : url("../../../../../resources/img/ic-dashboard-widget-hidden-tabs-list_hover.png");
+    }
+
+    &:active {
+      background-image : url("../../../../../resources/img/ic-dashboard-widget-hidden-tabs-list_pressed.png");
+    }
+  }
+
+  &__tab_unstyled {
+    border-left : none;
+
+    .b-dashboard-widget__header__tab__link {
+      background : none;
+      padding    : 0 8px 0 0;
+    }
+  }
+
+  &__left-tab-panel {
+    list-style     : none;
+    margin         : 0 4px 0 0;
+    padding        : 0;
+    display        : inline-block;
+    vertical-align : top;
+    max-width      : 190px;
+
+    & > .b-dashboard-widget__header__tab:last-child {
+      border-right : 1px solid #c7d0d9;
+    }
+  }
+
+  &__tab-panel {
+    display        : inline-block;
+    vertical-align : top;
+    white-space    : nowrap;
+    position       : relative;
+    width          : 250px;
+
+    & > .b-dashboard-widget__header__tab:last-child {
+      border-right : 1px solid #c7d0d9;
+    }
+
+    & > .b-dashboard-widget__header__tab {
+      &.b-dashboard-widget__header__tab_active {
+        line-height : 32px;
+      }
+
+      & > .b-dashboard-widget__header__tab__link:active,
+      &.b-dashboard-widget__header__tab_active > .b-dashboard-widget__header__tab__link {
+        background : #D3DCE6;
+        margin-top : 0;
+      }
+
+      & > .b-dashboard-widget__header__tab__link[disabled]:active,
+      & > .b-dashboard-widget__header__tab__link[disabled] {
+        background : inherit;
+        color      : #909499;
+      }
+
+    }
+
+    &__tabs {
+      list-style : none;
+      margin     : 0;
+      padding    : 0;
+      display    : inline-block;
+
+      .b-dashboard-widget__header__tab__link {
+        .truncate(150px);
+      }
+    }
+  }
+
+  &-control-label {
+    color : #b1b7be;
+  }
+}

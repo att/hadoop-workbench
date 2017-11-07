@@ -1,0 +1,15 @@
+<json-schema-item ng-repeat="item in instance.value"
+                  schema-item="item"
+                  level="level + 1"
+                  class="json-schema-array__item"
+                  on-remove="onRemove($index, item)"
+                  removable="true"
+                  readonly="readonly"
+                  focus="focus"
+                  json-schema-hover="'json-schema-item__value_hover'"
+                  item-type="{{item.instance.schema.type}}"></json-schema-item>
+<div class="json-schema-array__buttons">
+    <a class="json-schema-array__buttons__add"
+       ng-show="!instance.schema.readonly && !readonly"
+       ng-click="addAnother()">Add another</a>
+</div>

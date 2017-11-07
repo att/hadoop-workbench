@@ -1,0 +1,65 @@
+.b-tenant-uploader {
+  padding : 8px;
+
+  &__title {
+    font-weight   : 700;
+    font-size     : 16px;
+    margin-bottom : 8px;
+  }
+
+  &__drop-zone {
+    width      : 100%;
+    height     : 100px;
+    border     : 2px dashed #a1a1a1;
+    background : #f4f4f4;
+    font-size  : 18px;
+    margin     : 0 0 16px 0;
+    display    : table;
+  }
+
+  &__drop-zone__title {
+    display        : table-cell;
+    width          : 100%;
+    height         : 100%;
+    vertical-align : middle;
+    text-align     : center;
+  }
+
+  &__file-input {
+    width : 100%;
+  }
+
+  &__requesting-spinner {
+    display     : inline-block;
+    margin-left : 10px;
+    margin-top  : 7px;
+
+    &__bounce1,
+    &__bounce2,
+    &__bounce3 {
+      width               : 8px;
+      height              : 8px;
+      background-color    : #137fea;
+      border-radius       : 100%;
+      display             : inline-block;
+      animation           : bouncedelay 1.4s infinite ease-in-out;
+      animation-fill-mode : both;
+    }
+
+    &__bounce1 {
+      animation-delay : -0.32s;
+    }
+
+    &__bounce2 {
+      animation-delay : -0.16s;
+    }
+  }
+
+  &__list {
+    &__item {
+      &__button-disabled {
+        color: darkgray;
+      }
+    }
+  }
+}

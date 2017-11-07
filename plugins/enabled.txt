@@ -1,0 +1,18 @@
+########################################
+# - load only these plugins
+# - add one plugin id on each line
+# - put this file in plugins folder
+########################################
+hdfs-web
+oozie-web
+flume-web
+platform-web
+tenant-web
+admin-web
+provision-web
+cdh4-service
+ssh-service
+oozie-service
+aws-service
+
+

@@ -1,0 +1,44 @@
+<div class="b-edit-service">
+    <h1 class="b-edit-service-title">Edit Tenant Properties</h1>
+    <div class="b-edit-service__steps">
+        <form name="tenantForm" novalidate>
+            <div class="b-edit-tenant-text">
+                <span class="b-edit-tenant-label">Name*</span>
+            </div>
+            <div class="b-edit-tenant-text">
+                <input type="text" class="input" placeholder="Enter name" ng-model="tenantName" name="name"
+                       ng-class="{'b-edit-service-step__input-required': (tenantForm.name.$error.required || tenantForm.name.$error.pattern) && (tenantForm.name.$touched || showValidationErrors)}"
+                       required rpattern="/^[a-zA-Z0-9_]*$/" focus-it="true"/>
+                <span class="b-edit-service-step__input-error"
+                      ng-show="tenantForm.name.$error.required && (tenantForm.name.$touched || showValidationErrors)">required</span>
+                <span class="b-edit-service-step__input-error"
+                      ng-show="tenantForm.name.$error.pattern && !tenantForm.name.$error.required && (tenantForm.name.$touched || showValidationErrors)">Only latin letters, numbers and underscores are allowed</span>
+            </div>
+
+            <div class="b-edit-tenant-text">
+                <span class="b-edit-tenant-label">Description</span>
+            </div>
+            <div class="b-edit-tenant-text">
+                <input type="text" class="input" placeholder="Enter description" ng-model="description"/>
+            </div>
+
+            <div class="b-edit-tenant-text">
+                <span class="b-edit-tenant-label">Version*</span>
+            </div>
+            <div class="b-edit-tenant-text">
+                <input type="text" class="input" placeholder="Enter version" ng-model="version" required name="version"
+                       rpattern="/^[a-zA-Z0-9_.-]*$/"
+                       ng-class="{'b-edit-service-step__input-required': tenantForm.version.$error.required && (tenantForm.version.$touched || showValidationErrors)}"/>
+                <span class="b-edit-service-step__input-error"
+                      ng-show="tenantForm.version.$error.required && (tenantForm.version.$touched || showValidationErrors)">required</span>
+                <span class="b-edit-service-step__input-error"
+                      ng-show="tenantForm.version.$error.pattern && !tenantForm.version.$error.required && (tenantForm.version.$touched || showValidationErrors)">Only latin letters, numbers, dot, underscore and dash are allowed</span>
+            </div>
+        </form>
+
+        <div class="b-edit-service__steps__buttons">
+            <button class="btn btn-default btn-lg" ng-click="save()">Save</button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,40 @@
+<div navigable-list
+     nl-on-choose="openProvider">
+    <form class="dap-navigation-form">
+        <label for="nav-search" class="nav-search-label">Provision Platform</label>
+
+        <div class="nav-search-container">
+            <input type="text" id="nav-search" name="search_word" placeholder="Search Provider..." ng-model="searchStr"
+                   autocomplete="off"
+                   ng-model-options="{debounce: 200}" navigable-list-input ng-keydown="onKeyDown($event)"
+                   focus-it="true"
+                   ng-class="{'requesting': requesting}"
+                   style="background-color: #fff;">
+            <span class="placeholder-tip">
+                Enter to Open
+                <i class="placeholder-tip-icon" ng-click="searchStr = ''"></i>
+            </span>
+            <i class="b-menu-search-items__nav-search-container__requesting-icon" ng-show="requesting"></i>
+
+            <div class="b-menu-search-items__list-container" ng-show="!requesting">
+                <div class="b-menu-search-items__list-container__no-matches"
+                     ng-show="providersFiltered.length === 0">
+                    No matches found
+                </div>
+                <ul class="b-menu-search-items__list-container__list"
+                    ng-show="providersFiltered.length > 0"
+                    navigable-list-items="providersFiltered" nl-selector="li" nl-selected-class="selected" nl-highlighted-class="highlighted">
+                    <li class="b-add-service-search__omnibox__item b-add-service-search__omnibox__item_parent"
+                        ng-repeat="provider in providersFiltered">
+                        <a class="b-add-service-search__omnibox__item__link" style="padding: 8px 30px 8px 8px;"
+                           ng-click="openProvider(provider)">
+                            <i class="ic-search-provision-provider-{{provider.provider.toLowerCase()}}-platform-{{::provider.distribution.toLowerCase()}}"></i>
+                            <span class="b-add-service-search__omnibox__item__link__text">{{provider.title}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn btn-secondary btn-lg" ng-click="close()">Cancel</button>
+    </form>
+</div>

@@ -1,0 +1,11 @@
+<input class="json-schema-boolean__value checkbox"
+       type="checkbox"
+       ng-required="instance.schema.required"
+       ng-model="instance.value"
+       ng-disabled="instance.schema.readonly || readonly"
+       focus-it="focus"
+       ng-class="{
+              'checked': instance.value,
+              'json-schema-boolean__value_with-remove': removable,
+              'disabled': instance.schema.readonly || readonly
+       }"/>

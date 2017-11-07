@@ -1,0 +1,27 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectTemplate">
+    <h2 class="b-create-service-wizard-step__title">Create from</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a template name..."
+           ng-model="searchString"
+           navigable-list-input
+           focus-it="true">
+
+    <ul class="list-unstyled b-create-service-wizard-step__options b-create-service-search__omnibox"
+        navigable-list-items="templatesFiltered">
+        <li ng-repeat="t in templatesFiltered"
+            ng-class="{chosen: (!data['workflow-template'] && t.isBlank) || data['workflow-template'].info.id === t.info.id }">
+
+            <a class="b-create-service-wizard-step__options-item" ng-click="selectTemplate(t)">
+                <i ng-class="t.isBlank ? 'b-dashboard-template-blank-icon' : 'icon-oozie'"></i>
+                {{::t.info.name || t.info.title}}{{::t.version ? ' - ' + t.version : ''}}
+            </a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error" ng-show="showValidationErrors">No base template is selected</span>
+    <div ng-if="templatesFiltered.length === 0" class="b-create-service-wizard__no-matches">
+        No matches found
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="b-create-service-wizard-step" navigable-list nl-on-choose="selectDirectory">
+    <h2 class="b-create-service-wizard-step__title">{{ title() }}</h2>
+
+    <input type="search"
+           class="input b-create-service-wizard-step__input"
+           placeholder="Start typing a directory name..."
+           ng-model="searchString"
+           focus-it="true"
+           navigable-list-input/>
+
+    <ul class="list-unstyled b-create-service-wizard-step__options" navigable-list-items="dirsFiltered">
+        <li ng-class="{chosen: showCustomDirectoryInput}">
+            <a class="b-create-service-wizard-step__options-item" ng-click="addCustomDirectory()">
+                <i>Custom directory</i>
+            </a>
+        </li>
+        <li ng-repeat="d in dirsFiltered"
+            ng-class="{chosen: data.pluginDir.value === d.value}">
+            <a class="b-create-service-wizard-step__options-item" ng-click="selectDirectory(d)">{{d.value}}</a>
+        </li>
+    </ul>
+
+    <span class="b-create-service-wizard__steps__validation-error"
+          ng-show="!data.pluginDir && showValidationErrors && !showCustomDirectoryInput">No plugin directory is selected</span>
+
+    <div class="b-create-service-wizard-step__plugin-dirs__custom-directory" ng-show="showCustomDirectoryInput">
+        <form name="pluginDirForm" novalidate>
+            <input type="text" ng-model="data.pluginDir.value" name="pluginDir"
+                   class="input b-create-service-wizard-step__plugin-dirs__custom-directory-input"
+                   ng-class="{'b-create-service-wizard-step__input-required': (pluginDirForm.pluginDir.$error.required || pluginDirForm.pluginDir.$error.pattern) && (pluginDirForm.pluginDir.$touched || showValidationErrors)}"
+                   required rpattern="/^(\/(?!\.\.)[-+=_.a-zA-Z0-9]+)+(\/)*$/" focus-it="true"
+                   on-key-enter-callback="$parent.save()"
+            >
+            <span class="b-create-service-wizard-step__input-error b-create-service-wizard-step__plugin-dirs__custom-directory-validation-message"
+                  ng-show="pluginDirForm.pluginDir.$error.required && (pluginDirForm.pluginDir.$touched || showValidationErrors)">required</span>
+            <span class="b-create-service-wizard-step__input-error b-create-service-wizard-step__plugin-dirs__custom-directory-validation-message"
+                  ng-show="pluginDirForm.pluginDir.$error.pattern && !pluginDirForm.pluginDir.$error.required && (pluginDirForm.pluginDir.$touched || showValidationErrors)">The value doesn't match the following pattern (/[-+=_.a-zA-Z0-9]+)+(/)*. Note ".." pattern is not valid too.</span>
+        </form>
+    </div>
+</div>

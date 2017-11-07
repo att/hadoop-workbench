@@ -1,0 +1,16 @@
+<div class="b-flume-instance">
+    <div flume-flowchart
+         class="b-flowchart-widget b-flume-instance__flowchart"
+         connections="moduleConnections"
+         nodes="module.getNodes()"
+         node-validator-cb="nodeValidatorCallback"
+         selected-node-container="selectedNodeContainer"
+         selected-connection="selectedConnection"
+         on-connection-created="addNewConnection"
+         after-node-removed-cb="removeNode"
+         after-connection-removed-cb="removeConnection"
+         selected-module="module"
+         metrics="metrics"
+         dashboard-widget="dashboardWidgetContainer.dashboardWidget"
+    ></div>
+</div>

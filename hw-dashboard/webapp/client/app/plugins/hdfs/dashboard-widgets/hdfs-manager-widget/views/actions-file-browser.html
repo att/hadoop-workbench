@@ -1,0 +1,53 @@
+<div class="b-hdfs__actions">
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-rename" ng-class="{'disabled':isDisabled('rename')}"
+         ng-click="!isDisabled('rename') && showRenameWidget()">
+        <a class="b-hdfs__actions__action-link">Rename</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-move" ng-show="!isMoveModeEnabled" ng-class="{'disabled': isDisabled('move')}"
+         ng-click="!isDisabled('move') && moveItems()">
+        <a class="b-hdfs__actions__action-link">Move</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-paste" ng-show="isMoveModeEnabled || isCopyModeEnabled"
+         ng-click="pasteItems()">
+        <a class="b-hdfs__actions__action-link">Paste</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-exit-paste" ng-show="isMoveModeEnabled"
+         ng-click="exitMoveMode()">
+        <a class="b-hdfs__actions__action-link">Cancel</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-exit-paste" ng-show="isCopyModeEnabled"
+         ng-click="exitCopyMode()">
+        <a class="b-hdfs__actions__action-link">Cancel</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-copy" ng-class="{'disabled': isDisabled('copy')}"
+         ng-click="!isDisabled('copy') && copyItems()">
+        <a class="b-hdfs__actions__action-link">Copy</a>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-chmod-chown"
+         ng-class="{'disabled': isDisabled('chmod-chown')}"
+         ng-click="!isDisabled('chmod-chown') && toggleActionChmodChownDropdownClicked()"
+         click-outside="toggleActionChmodChownDropdownClicked">
+        <a class="b-hdfs__actions__action-link">
+            Chmod/Chown
+            <i class="b-hdfs__actions__action__dropdown-icon"></i>
+        </a>
+        <ul class="b-hdfs__actions__action__menu-options list-inline" ng-show="showChmodChownActionDropdown">
+            <li class="b-hdfs__actions__action__menu-option">
+                <a class="b-hdfs__actions__action__menu-option-link" ng-click="showChownWidget()">Change owner/group</a>
+            </li>
+            <li class="b-hdfs__breadcrumb__action__menu-option">
+                <a class="b-hdfs__actions__action__menu-option-link" ng-click="showChmodWidget()">Change permissions</a>
+            </li>
+        </ul>
+    </div>
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-download" ng-class="{'disabled': isDisabled('download')}"
+         ng-click="!isDisabled('download') && downloadItem()">
+        <a class="b-hdfs__actions__action-link">Download</a>
+    </div>
+
+    <div class="b-hdfs__actions__action b-hdfs__actions__action-move-to-trash"
+         ng-class="{'disabled': isDisabled('delete')}"
+         ng-click="!isDisabled('delete') && showConfirmDeleteWidget()">
+        <a class="b-hdfs__actions__action-link">Delete</a>
+    </div>
+</div>

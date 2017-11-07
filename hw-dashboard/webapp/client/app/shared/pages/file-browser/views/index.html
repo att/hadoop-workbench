@@ -1,0 +1,125 @@
+<div class="b-file-browser">
+    <div ng-show="!showPreloader">
+        <div class="b-file-browser__controls">
+            <div class="b-file-browser__control b-file-browser__control_add"
+                 ng-class="{'open': isRootMenuOpen}"
+                 ng-click="toggleRootMenu()"
+                 click-outside="hideRootMenu"
+                 title="Add File or Folder">
+                <i ng-hide="isReadonly" class="b-file-browser__control_add_icon"></i>
+                <ul ng-hide="isReadonly" class="b-dropdown-menu b-file-browser__control__dropdown-menu" ng-class="{'open': isRootMenuOpen}"
+                    role="menu">
+                    <!--folder menu-->
+                    <li style="position: relative;">
+                        <a tabindex="1">
+                            Upload file...
+                        </a>
+                        <input type="file" nv-file-select uploader="fileUploader"
+                               style="position: absolute;top:0;left:0;bottom: 0;right: 0;opacity: 0;z-index: 1;"/>
+                    </li>
+                    <li class="b-dropdown-menu__delimiter"></li>
+                    <li>
+                        <a tabindex="2" ng-click="contextMenuCommands.createFile()">
+                            Create New File
+                        </a>
+                    </li>
+                    <li>
+                        <a tabindex="3" ng-click="contextMenuCommands.createFolder()">
+                            Create Folder
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="b-file-browser__control b-file-browser__control_add-item" ng-if="item">
+                <input class="b-file-browser__control_add-item_input input" type="text" ng-model="item.path"
+                       focus-it="true"
+                       on-key-enter-callback="saveItem()"
+                       on-key-escape-callback="hideEditItemForm()"
+                />
+                <a class="b-file-browser__control b-file-browser__control_add-item_button-save" ng-click="saveItem()"
+                   title="Save">
+                    <i class="b-file-browser__control_add-item_button-save-icon"></i>
+                </a>
+                <a class="b-file-browser__control b-file-browser__control_add-item_button-cancel"
+                   ng-click="hideEditItemForm()" title="Cancel">
+                    <i class="b-file-browser__control_add-item_button-cancel-icon"></i>
+                </a>
+            </div>
+
+            <a class="b-file-browser__control b-file-browser__control_hide" ng-click="hideFileBrowser()"
+               title="Hide">
+                <i class="b-info-viewer__hide-icon"></i>
+            </a>
+        </div>
+        <div class="b-file-browser__content">
+            <treecontrol class="tree-classic b-file-browser__tree"
+                         tree-model="tree"
+                         options="treeOptions"
+                         on-selection="nodeSelected(node)"
+                         selected-node="selectedNode"
+                         expanded-nodes="expandedNodes">
+            <span context-menu="setNodeToContextMenuItem(node)"
+                  data-target="menu-{{contextMenuId}}">{{node.name}}</span>
+            </treecontrol>
+        </div>
+    </div>
+    <div class="b-widget-backdrop ng-scope ng-hide" ng-show="showPreloader">
+        <div class="b-widget-backdrop__spinner">
+            <div class="b-widget-backdrop__spinner__top"></div>
+            <div class="b-widget-backdrop__spinner__bottom"></div>
+        </div>
+    </div>
+
+
+    <ul class="b-dropdown-menu" role="menu" id="menu-{{contextMenuId}}">
+        <!--folder menu-->
+        <li ng-if="contextMenuItem.isDir" style="position: relative;">
+            <a tabindex="1" style="z-index: -1;">
+                Upload file...
+            </a>
+            <input type="file" nv-file-select uploader="fileUploader"
+                   style="position: absolute;top:0;left:0;bottom: 0;right: 0;opacity: 0;z-index: 100;"/>
+        </li>
+        <li class="b-dropdown-menu__delimiter" ng-if="contextMenuItem.isDir"></li>
+        <li ng-if="contextMenuItem.isDir">
+            <a tabindex="2" ng-click="contextMenuCommands.createFile()">
+                Create New File
+            </a>
+        </li>
+        <li ng-if="contextMenuItem.isDir">
+            <a tabindex="3" ng-click="contextMenuCommands.createFolder()">
+                Create Folder
+            </a>
+        </li>
+        <li class="b-dropdown-menu__delimiter" ng-if="contextMenuItem.isDir"></li>
+        <li ng-if="contextMenuItem.isDir">
+            <a tabindex="4" ng-click="contextMenuCommands.renameFolder()">
+                Rename Folder
+            </a>
+        </li>
+        <li ng-if="contextMenuItem.isDir">
+            <a tabindex="5" ng-click="contextMenuCommands.deleteFolder()">
+                Delete Folder
+            </a>
+        </li>
+
+        <!--file menu-->
+        <li ng-if="!contextMenuItem.isDir">
+            <a tabindex="1" ng-click="contextMenuCommands.openFile()">
+                Open
+            </a>
+        </li>
+        <li class="b-dropdown-menu__delimiter" ng-if="!contextMenuItem.isDir"></li>
+        <li ng-if="!contextMenuItem.isDir">
+            <a tabindex="2" ng-click="contextMenuCommands.renameFile()">
+                Rename File
+            </a>
+        </li>
+        <li ng-if="!contextMenuItem.isDir">
+            <a tabindex="3" ng-click="contextMenuCommands.deleteFile()">
+                Delete File
+            </a>
+        </li>
+    </ul>
+</div>

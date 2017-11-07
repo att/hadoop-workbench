@@ -1,0 +1,19 @@
+<div class="b-create-service-wizard-step">
+
+    <div class="b-create-service-wizard-step">
+        <h2 class="b-create-service-wizard-step__title">Component name</h2>
+
+        <form name="wizardForm" novalidate ng-submit="onSubmit()">
+            <input type="text" class="input" placeholder="Enter component name..." name="component"
+                   ng-model="data['flume-component']" required maxlength="100"
+                   ng-class="{'b-create-service-wizard-step__input-required': (wizardForm.component.$error.required || wizardForm.component.$error.pattern) && (wizardForm.component.$touched || showValidationErrors)}"
+                   rpattern="/^[-+=_.a-zA-Z0-9/]*$/" focus-it="true"
+                   on-key-enter-callback="$parent.nextStep()"
+            />
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="!wizardForm.component.$error['required'] && wizardForm.component.$error['pattern'] && (wizardForm.component.$touched || showValidationErrors)">The value doesn't match the pattern [-+=_.a-zA-Z0-9/]</span>
+            <span class="b-create-service-wizard-step__input-error"
+                  ng-show="wizardForm.component.$error['required'] && (wizardForm.component.$touched || showValidationErrors)">required</span>
+        </form>
+    </div>
+</div>

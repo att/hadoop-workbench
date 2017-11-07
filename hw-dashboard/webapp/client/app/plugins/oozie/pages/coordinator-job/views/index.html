@@ -1,0 +1,9 @@
+<div class="b-oozie-job">
+
+    <div ng-show="job.$metadata.error" class="b-oozie-job__error-message-container"
+         ng-attr-title="{{job.$metadata.error.message}}">{{job.$metadata.error.message}}
+    </div>
+
+    <dap-widget ng-if="fileLoaded" name="'editor'" params="{container: fileLoaded, options: options}"></dap-widget>
+
+</div>

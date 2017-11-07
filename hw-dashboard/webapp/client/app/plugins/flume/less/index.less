@@ -1,0 +1,230 @@
+@import "../pages/flume-workflow/less/index";
+@import "../pages/flume-instances/less/index";
+@import "../pages/instance/less/index";
+
+.b-flume-plugin-snippet {
+  height : 100%;
+}
+
+.b-flume-plugin {
+  height   : 100%;
+  position : relative;
+
+  &__left_widget,
+  &__right_widget {
+    float    : left;
+    overflow : auto;
+    height   : 100%;
+  }
+
+  &__left_widget {
+    width : 100%;
+
+    &_split {
+      width : ~"calc(100% - @{dashboard-widget-right-section-width})"; // escaping LESS `calc` function
+    }
+  }
+
+  &__right_widget {
+    width : 0;
+
+    &_split {
+      width       : @dashboard-widget-right-section-width;
+      border-left : 1px solid #c7d0d9;
+      position    : relative;
+
+      & > .ui-resizable-handle.ui-resizable-w {
+        position : absolute;
+        bottom   : 0;
+        left     : 0;
+        top      : 0;
+        width    : 4px;
+        cursor   : w-resize;
+      }
+    }
+  }
+
+  &__plugins-viewer-widget-wrapper {
+    padding : 8px 8px 32px;
+    height  : 100%;
+  }
+
+  &__plugins-viewer-widget {
+    overflow    : auto;
+    height      : 100%;
+    border      : 1px solid #c9d1da;
+    padding     : 7px 10px;
+    color       : #494a4d;
+    line-height : 22px;
+    font-size   : 14px;
+  }
+
+  //files icons
+  &__files-icon-libraries {
+    background-image : url("../../../../resources/img/library-icon.png");
+  }
+
+  &__files-icon-scripts {
+    background-image : url("../../../../resources/img/script-icon.png");
+  }
+
+  &__files-icon-configs {
+    background-image : url("../../../../resources/img/config-icon.png");
+  }
+
+  &__files-icon-dependencies {
+    background-image : url("../../../../resources/img/library-icon.png");
+  }
+  &__files-icon-other {
+    background-image : url("../../../../resources/img/library-icon.png");
+  }
+
+  &__files-icon-libraries-staged {
+    background-image : url("../../../../resources/img/library2-icon.png");
+  }
+
+  &__files-icon-scripts-staged {
+    background-image : url("../../../../resources/img/script2-icon.png");
+  }
+
+  &__files-icon-configs-staged {
+    background-image : url("../../../../resources/img/config2-icon.png");
+  }
+
+  &__files-icon-dependencies-staged {
+    background-image : url("../../../../resources/img/library2-icon.png");
+  }
+  &__files-icon-other-staged {
+    background-image : url("../../../../resources/img/library2-icon.png");
+  }
+
+  &&_file-over {
+    &::after {
+      content          : 'Drop file here...';
+      position         : absolute;
+      top              : 0;
+      left             : 0;
+      right            : 0;
+      bottom           : 0;
+      background-color : rgba(251, 251, 251, 0.67);
+      z-index          : 10;
+      color            : rgb(72, 72, 72);
+      font-size        : 29px;
+      padding          : 50px;
+      font-weight      : 500;
+    }
+  }
+
+  &__pipeline-properties {
+    padding : 8px;
+
+    &__title {
+      color         : #484a4c;
+      font-size     : 14px;
+      font-weight   : 700;
+      margin-bottom : 8px;
+    }
+
+    &__table {
+      border : 1px solid #ECEFF1;
+      width  : 100%;
+
+      &__tr + &__tr {
+        border-top : 1px solid #D6DBE0;
+      }
+
+      &__tr {
+        .clearfix();
+        background : #ffffff;
+
+        &:nth-child(odd) {
+          background : #F3F5F8;
+        }
+
+        &__td {
+          padding        : 8px;
+          vertical-align : top;
+          float          : left;
+          word-wrap      : break-word;
+
+          &_key {
+            width : 40%;
+          }
+
+          &_value {
+            width : 60%;
+          }
+
+          &__content {
+            color       : #494a4d;
+            font-size   : 12px;
+            font-weight : 400;
+            line-height : 16px;
+            text-align  : left;
+            width       : 100%;
+            display     : inline-block;
+            outline     : transparent;
+
+            &[contentEditable=true]:empty:focus:before {
+              content    : attr(placeholder-text);
+              color      : rgba(186, 186, 186, 0.5);
+              font-style : italic;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+  &__node-selector-widget__icon {
+    .icon-el-node-selector-widget();
+  }
+  .active > &__node-selector-widget__icon {
+    .icon-node-selector-widget_active;
+  }
+
+  &__options-editor-widget__icon {
+    .icon-el-options-editor-widget();
+  }
+  .active > &__options-editor-widget__icon {
+    .icon-options-editor-widget_active;
+  }
+
+  &__alerts-container-widget__icon {
+    .icon-el-alerts-container-widget();
+  }
+  .active > &__alerts-container-widget__icon {
+    .icon-alerts-container-widget_active;
+  }
+
+  &__libraries-widget__icon {
+    .icon-el-libraries();
+  }
+  .active > &__libraries-widget__icon {
+    .icon-libraries_hover;
+  }
+
+  &__instances-icon-cdh {
+    .icon-el-instances-cdh();
+  }
+
+  &__instances-icon-hdp {
+    .icon-el-instances-hdp();
+  }
+
+  .active > &__instances-icon-cdh {
+    .icon-instances-cdh_active;
+  }
+
+  .active > &__instances-icon-hdp {
+    .icon-instances-hdp_active;
+  }
+}
+
+.b-flume-plugin__download-file-container {
+  position   : absolute;
+  width      : 1px;
+  height     : 1px;
+  visibility : hidden;
+}

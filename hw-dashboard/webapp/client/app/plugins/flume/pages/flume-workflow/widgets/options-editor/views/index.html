@@ -1,0 +1,111 @@
+<div class="b-options-editor-widget yes-select">
+    <div class="b-options-editor-widget__no-selected-node-header" ng-if="!connection && !node">
+        Please select an element <br> to edit its options
+    </div>
+    <div ng-show="node">
+        <div class="b-options-editor-widget__header b-options-editor-widget__header__wrap">
+            <span class="b-options-editor-widget__header__no-first-letter-uppercase">{{node.id}} properties</span>
+            <a ng-click="addNewPropertyBtnClicked()" class="b-options-editor-widget__add-property">Add property</a>
+        </div>
+        <ul class="b-options-editor-widget__fields">
+            <li class="main-properties">
+                <div class="b-options-editor-widget__fields__node-property">
+                    <span class="b-options-editor-widget__fields__property-name">id</span>
+                <span class="b-options-editor-widget__fields__property-value" contenteditable="true"
+                      contenteditable-discard-changes-on-esc="true"
+                      required ng-model="node.id" placeholder-text="Empty field"
+                      focus-it="nodeIdFieldSetFocus" focus-it-set-caret-to-end="true">
+                </span>
+                </div>
+                <div class="b-options-editor-widget__fields__node-property">
+                    <span class="b-options-editor-widget__fields__property-name">type</span>
+                    <span class="b-options-editor-widget__fields__property-value" contenteditable="true"
+                          contenteditable-discard-changes-on-esc="true"
+                          ng-model="node.subtype" placeholder-text="Empty field">
+                    </span>
+                </div>
+            </li>
+            <li class="secondary-properties">
+                <div class="b-options-editor-widget__fields__node-property b-options-editor-widget__fields__node-property_removable"
+                     ng-repeat="property in node.properties" ng-if="property.isVisible">
+                    <span class="b-options-editor-widget__fields__property-name">{{property.key}}</span>
+                    <span class="b-options-editor-widget__fields__property-value"
+                          contenteditable="{{property.isEditable}}"
+                          contenteditable-discard-changes-on-esc="true"
+                          ng-model="property.value"
+                          placeholder-text="Empty field"
+
+                          input-autocomplete-smart="property.value"
+                          input-autocomplete-smart-data="$parent.$parent.niAutocompleteData"
+                          input-autocomplete-smart-is-enabled="$parent.$parent.activeIndex == ($id + '_' + $index)"
+                          ng-focus="$parent.$parent.setActiveIndex($id + '_' + $index)"
+                    >
+                    </span>
+                    <a class="b-options-editor-widget__fields__node-property__remove-link"
+                       ng-if="property.isRemovable" ng-click="removeProperty(property)"></a>
+                </div>
+            </li>
+            <li class="b-options-editor-widget__new-property-editor b-options-editor-widget__fields__node-property"
+                ng-if="newPropertyObject">
+
+                <form novalidate name="newPropertyObjectForm">
+                    <div class="b-options-editor-widget__new-property-editor__key">
+                        <input type="text" name="key" ng-model="newPropertyObject.key" placeholder="Key..."
+                               class="b-options-editor-widget__new-property-editor__input" focus-it="true" required
+                               unique="propertyKeys"/>
+
+                        <div class="b-options-editor-widget__new-property-editor__key__description">
+                            <span style="color:red;">*</span> Key is required field. Key should be unique
+                        </div>
+                    </div>
+                    <div class="b-options-editor-widget__new-property-editor__value">
+                        <input type="text" name="value" ng-model="newPropertyObject.value" placeholder="Value..."
+
+                               input-autocomplete-smart="newPropertyObject.value"
+                               input-autocomplete-smart-data="$parent.niAutocompleteData"
+                               input-autocomplete-smart-is-enabled="$parent.activeIndex == ($id + '_' + 'newItem')"
+                               ng-focus="$parent.setActiveIndex($id + '_' + 'newItem')"
+
+                               class="b-options-editor-widget__new-property-editor__input"/>
+                    </div>
+                    <div class="b-options-editor-widget__new-property-editor__buttons">
+                        <button class="btn btn-md btn-default" ng-click="addNewProperty()" type="submit"
+                                ng-disabled="newPropertyObjectForm.$invalid">Add Property
+                        </button>
+                        <button class="btn btn-md btn-secondary" ng-click="cancelBtnClicked()">Cancel</button>
+                    </div>
+                </form>
+            </li>
+        </ul>
+        <div class="b-options-editor-widget__header" ng-show="node.counters.length > 0">Counters
+            <button ng-click="updateNodeCounters()" class="btn btn-sm btn-default">Refresh</button>
+        </div>
+        <ul class="b-options-editor-widget__fields" ng-show="node.counters.length > 0">
+            <li class="node-counters">
+                <div class="b-options-editor-widget__fields__node-property" ng-repeat="counter in node.counters">
+                    <span class="b-options-editor-widget__fields__property-name">{{counter.id}}</span>
+                    <span class="b-options-editor-widget__fields__property-value" contenteditable="false"
+                          contenteditable-discard-changes-on-esc="true"
+                          required ng-model="counter.value" placeholder-text="Empty field">
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div ng-show="connection">
+        <div class="b-options-editor-widget__header">
+            <span>Connection Properties</span>
+
+            <div class="b-options-editor-widget__header__controls">
+                <a class="b-options-editor-widget__header__control" ng-click="removeConnection(connection)">Delete</a>
+            </div>
+        </div>
+        <div class="b-options-editor-widget__fields-list" ng-if="connection.properties.properties.case">
+            <object-properties data="connection.properties" class="secondary-properties"></object-properties>
+        </div>
+        <div class="b-options-editor-widget__no-selected-node-header"
+             ng-show="!connection.properties.properties.case">
+            Selected connection doesn't have any properties
+        </div>
+    </div>
+</div>

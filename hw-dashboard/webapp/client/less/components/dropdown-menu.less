@@ -1,0 +1,54 @@
+.b-dropdown-menu {
+  display          : none;
+  position         : fixed;
+  z-index          : 100;
+  padding          : 5px 0;
+  margin           : 2px 0 0;
+  list-style       : none;
+  font-size        : 13px;
+  text-align       : left;
+  border           : 1px solid rgba(0, 0, 0, 0.15);
+  background-clip  : padding-box;
+  border-radius    : 3px;
+  background-color : #ffffff;
+  box-shadow       : 0 1px 3px 0 rgba(0, 0, 1, 0.1);
+  min-width        : 150px;
+  max-width        : 1000px;
+
+  &.open {
+    display : block;
+  }
+
+  & > li {
+    &:hover > a {
+      text-decoration  : none;
+      color            : #ffffff;
+      background-color : #137fea;
+    }
+  }
+
+  & > li > a {
+    display       : block;
+    padding       : 5px 8px;
+    clear         : both;
+    white-space   : nowrap;
+    color         : #333333;
+    font-size     : 14px;
+    font-weight   : 400;
+    text-overflow : ellipsis;
+
+    &:hover,
+    &:focus {
+      text-decoration  : none;
+      color            : #ffffff;
+      background-color : #137fea;
+    }
+  }
+
+  &__delimiter {
+    display    : block;
+    background : #bcc4cc;
+    margin     : 5px 0;
+    height     : 1px;
+  }
+}

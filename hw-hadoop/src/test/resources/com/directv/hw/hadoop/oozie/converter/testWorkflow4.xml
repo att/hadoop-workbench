@@ -1,0 +1,359 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="IVGS-ExportToFlatFileVDC">
+
+    <credentials>
+        <credential name='hive_cred' type='hcat'>
+            <property>
+                <name>hcat.metastore.uri</name>
+                <value>thrift://hdpgtwdv-msdc01.ds.dtveng.net:9083</value>
+            </property>
+            <property>
+                <name>hcat.metastore.principal</name>
+                <value>hive/_HOST@H1.DTVENG.NET</value>
+            </property>
+        </credential>
+    </credentials>
+
+    <!--  Start  -->
+    <start to="auditlog-job-started"/>
+
+    <!--  AuditLog message: Job started  -->
+    <action name="auditlog-job-started">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>IVG_SER_14</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job started</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+        </java>
+        <ok to="job-lock"/>
+        <error to="job-lock"/>
+    </action>
+
+    <!-- Lock the current WF instance -->
+    <action name="job-lock">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>lock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="fork-get-datetime-criteria"/>
+        <error to="auditlog-workflow-still-running"/>
+    </action>
+
+    <!--  Fork to get load parameters -->
+    <fork name="fork-get-datetime-criteria">
+        <path start="job-get-datetime-from-file"/>
+        <path start="job-get-datetime-calculated"/>
+    </fork>
+
+    <!--  Get param from status.file -->
+    <action name="job-get-datetime-from-file">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>status-file.py</exec>
+            <argument>--file=${wf:conf("oozie.wf.application.path")}/conf/status.file</argument>
+            <argument>--action=GET</argument>
+            <argument>--parameter=last.processed.datetime</argument>
+            <argument>--parameter=last.processed.date</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/status-file.py#status-file.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="join-get-datetime-criteria"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  Calculate param in attribute.py -->
+    <action name="job-get-datetime-calculated">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <exec>attribute.py</exec>
+            <argument>--attr</argument>
+            <argument>curr.datetime.to|trunc(now()-minute(${wf:conf("ivgs.export-to-flat.minutes_back")}),'%Y%m%d%H%M')|%Y-%m-%d-%H-%M-00</argument>
+            <argument>--attr</argument>
+            <argument>part.short.date.to|now()|%Y-%m-%d</argument>
+            <argument>--attr</argument>
+            <argument>part.long.date.to|now()|%Y-%m-%d</argument>
+            <argument>--attr</argument>
+            <argument>part.long.date.from|now()-day(${wf:conf("ivgs.export-to-flat.history_range")})|%Y-%m-%d</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/attribute.py#attribute.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="join-get-datetime-criteria"/>
+        <error to="auditlog-job-failed"/>
+    </action>
+
+    <!--  Join from get parameters -->
+    <join name="join-get-datetime-criteria" to="prepare-data-action" />
+
+    <!-- Run hive -->
+    <action name="prepare-data-action" cred="hive_cred">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+
+            <prepare>
+                <delete path="${nameNode}${wf:conf('ivgs.export-to-flat.detail_activity.temp_table.dir')}"/>
+                <mkdir path="${nameNode}${wf:conf('ivgs.export-to-flat.detail_activity.temp_table.dir')}"/>
+            </prepare>
+
+            <job-xml>hive-site.xml</job-xml>
+            <script>scripts/PrepareData.hql</script>
+            <param>USERNAME=${wf:conf("user.name")}</param>
+            <param>IVGS_DATABASE_NAME=${wf:conf("ivgs.hive.database.name")}</param>
+            <param>IVGS_DETAIL_ACTIVITY=${wf:conf("ivgs.export-to-flat.detail_activity.table")}</param>
+            <param>IVGS_DETAIL_ACTIVITY_FLAT_TEMP=${wf:conf("ivgs.export-to-flat.detail_activity.temp_table")}</param>
+            <param>TMP_EXPORT_FLAT_DIR=${wf:conf('ivgs.export-to-flat.detail_activity.temp_table.dir')}</param>
+
+            <param>PART_SHORT_DATE_FROM=${wf:actionData('job-get-datetime-from-file')['last.processed.date']}</param>
+            <param>PART_SHORT_DATE_TO=${wf:actionData('job-get-datetime-calculated')['part.short.date.to']}</param>
+            <param>LAST_PROCESSED_DATETIME=${wf:actionData('job-get-datetime-from-file')['last.processed.datetime']}</param>
+            <param>CURR_DATIME_TO=${wf:actionData('job-get-datetime-calculated')['curr.datetime.to']}</param>
+            <param>PART_LONG_DATE_FROM=${wf:actionData('job-get-datetime-calculated')['part.long.date.from']}</param>
+            <param>PART_LONG_DATE_TO=${wf:actionData('job-get-datetime-calculated')['part.long.date.to']}</param>
+        </hive>
+        <ok to="export-to-flat-file"/>
+        <error to="job-fail-email-notification"/>
+    </action>
+
+    <!-- Run shell: export to flat file -->
+    <action name="export-to-flat-file">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+
+            <exec>flatExport.sh</exec>
+            <argument>${wf:conf("oozie.wf.application.path")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.detail_activity.temp_table.dir")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.local_dir")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.gpg_recipient")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.drop-off-path.kantar")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.drop-off-path.rentrak")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.maillist")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.delivery_type_flag")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.gateway-node")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.gateway-node.username")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.gateway-node.password")}</argument>
+            <argument>${wf:conf("ivgs.export-to-flat.ssh_identity_file")}</argument>
+            <file>scripts/flatExport.sh</file>
+            <file>scripts/detail-activity-to-flat.py</file>
+            <file>scripts/scp-client</file>
+            <capture-output/>
+        </shell>
+        <ok to="set-last-exported-date"/>
+        <error to="job-fail-email-notification"/>
+    </action>
+
+    <!-- Set param in status.file -->
+    <action name="set-last-exported-date">
+        <shell xmlns="uri:oozie:shell-action:0.1">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+
+            <exec>status-file.py</exec>
+            <argument>--file=${wf:conf("oozie.wf.application.path")}/status/status.file</argument>
+            <argument>--action=PUT</argument>
+            <argument>--parameter</argument>
+            <argument>last.processed.datetime=${wf:actionData('job-get-datetime-calculated')['curr.datetime.to']}</argument>
+            <argument>--parameter</argument>
+            <argument>last.processed.date=${wf:actionData('job-get-datetime-calculated')['part.short.date.to']}</argument>
+            <file>${wf:conf("oozie.wf.application.path")}/scripts/status-file.py</file>
+            <capture-output/>
+        </shell>
+        <ok to="job-ok-email-notification"/>
+        <error to="job-fail-email-notification"/>
+    </action>
+
+
+
+    <!--  AuditLog message: Workflow is still running  -->
+    <action name="auditlog-workflow-still-running">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>IVG_SER_14</arg>
+            <arg>-msg</arg><arg>${wf:name()} Workflow is still running</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+
+
+    <!-- OK: email -->
+    <action name="job-ok-email-notification">
+        <email xmlns="uri:oozie:email-action:0.1">
+            <to>${wf:conf("ivgs.export-to-flat.maillist")}</to>
+            <subject>Daily combined iVG data for ${wf:actionData("export-to-flat-file")["today"]} [COMPLETED]</subject>
+            <body>${wf:actionData("export-to-flat-file")["notif.message"]}. Checksum for tar file: ${wf:actionData("export-to-flat-file")["cksum.tar.filename"]}, checksum for encrypted file: ${wf:actionData("export-to-flat-file")["cksum.tar.encrypted.filename"]}</body>
+        </email>
+        <ok to="auditlog-job-completed"/>
+        <error to="auditlog-job-completed"/>
+    </action>
+
+    <!-- OK: auditlog -->
+    <action name="auditlog-job-completed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>IVG_SER_13</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job completed</arg>
+            <arg>-severity</arg><arg>INFO</arg>
+        </java>
+        <ok to="job-unlock-completed"/>
+        <error to="job-unlock-completed"/>
+    </action>
+
+    <!-- OK: unlock -->
+    <action name="job-unlock-completed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>unlock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="end"/>
+        <error to="end"/>
+    </action>
+
+
+
+    <!-- FAIL: email -->
+    <action name="job-fail-email-notification">
+        <email xmlns="uri:oozie:email-action:0.1">
+            <to>${wf:conf("ivgs.export-to-flat.maillist")}</to>
+            <subject>Daily combined iVG data for ${wf:actionData("export-to-flat-file")["today"]} [FAILED]</subject>
+            <body>Daily combined iVG job for ${wf:actionData("export-to-flat-file")["today"]} failed. ${wf:actionData("export-to-flat-file")["notif.message"]}.</body>
+        </email>
+        <ok to="auditlog-job-completed"/>
+        <error to="auditlog-job-completed"/>
+    </action>
+
+    <!-- FAIL: auditlog -->
+    <action name="auditlog-job-failed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.vd.auditlog.VDAuditLog</main-class>
+            <java-opts>-Xmx128m</java-opts>
+            <arg>-conf</arg><arg>vd-auditlog.properties</arg>
+            <arg>-sid</arg><arg>${wf:id()}</arg>
+            <arg>-code</arg><arg>IVG_SER_10</arg>
+            <arg>-msg</arg><arg>${wf:name()} Job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</arg>
+            <arg>-severity</arg><arg>CRITICAL</arg>
+        </java>
+        <ok to="job-unlock-failed"/>
+        <error to="job-unlock-failed"/>
+    </action>
+
+    <!-- FAIL: unlock -->
+    <action name="job-unlock-failed">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapreduce.job.queuename</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <main-class>com.directv.zookeeper.lock.ZookeeperLock</main-class>
+            <arg>-zookeeperQuorum</arg><arg>${wf:conf("zookeeper.quorum")}</arg>
+            <arg>-lockName</arg><arg>${wf:name()}</arg>
+            <arg>-action</arg><arg>unlock</arg>
+            <arg>-nodeData</arg><arg>${wf:id()}</arg>
+        </java>
+        <ok to="fail"/>
+        <error to="fail"/>
+    </action>
+
+    <kill name="fail">
+        <message>${wf:name()} job failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+
+    <end name="end"/>
+
+</workflow-app>

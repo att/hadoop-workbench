@@ -1,0 +1,1 @@
+export const ERROR_TYPE_TENANT_NOT_EMPTY = 'NON_EMPTY';

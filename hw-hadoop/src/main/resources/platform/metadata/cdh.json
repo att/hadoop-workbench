@@ -1,0 +1,118 @@
+{
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "info": {
+        "type": "object",
+        "title": "Platform info",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "readonly": true
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "distribution": {
+            "title": "Version",
+            "type": "string",
+            "default": "CDH 5.10",
+            "enum": [
+              "CDH 5.10",
+              "CDH 5.9",
+              "CDH 5.8",
+              "CDH 5.7",
+              "CDH 5.6",
+              "CDH 5.5",
+              "CDH 5.4"
+            ]
+          },
+          "location": {
+            "title": "Location",
+            "type": "string"
+          }
+        }
+      },
+      "apiAccess": {
+        "type": "object",
+        "title": "Platform API access",
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "protocol": {
+            "title": "Protocol",
+            "type": "string",
+            "enum": [
+              "http",
+              "https"
+            ]
+          },
+          "userName": {
+            "title": "User name",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "isPassword": true
+          }
+        }
+      },
+      "sshAccess": {
+        "type": "object",
+        "title": "SSH access",
+        "properties": {
+          "port": {
+            "title": "Port",
+            "type": "number",
+            "min": 0,
+            "index": 0
+          },
+          "userName": {
+            "title": "User name",
+            "type": "string",
+            "index": 1
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "isPassword": true,
+            "index": 2
+          },
+          "keyFileId": {
+            "title": "SSH key",
+            "type": "number",
+            "index": 3
+          },
+          "pluginDirs": {
+            "type": "array",
+            "title": "Flume Plugin Directories",
+            "minItems": 0,
+            "uniqueItems": false,
+            "additionalItems": false,
+            "items": {
+              "title": "Directory:",
+              "type": "string"
+            },
+            "index": 4
+          }
+        },
+        "required": [
+          "port",
+          "userName",
+          "password"
+        ]
+      }
+    }
+  }
+}

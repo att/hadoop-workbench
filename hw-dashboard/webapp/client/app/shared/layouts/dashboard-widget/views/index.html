@@ -1,0 +1,134 @@
+<div ng-if="widget" window-resize-notifier focus-catcher="widget.hotkeyBindings" class="b-dashboard-widget no-select"
+     ng-class="{ 'b-dashboard-widget-active': widget.isActive }"
+     in-view="widget.invisible = !$inview">
+    <pause-watchers when="{{ widget.invisible }}">
+        <div class="b-dashboard-widget__header clearfix">
+            <!--@formatter:off-->
+        <div class="b-dashboard-widget__header__widget-info"
+             title="{{ widget.title }} {{ widget.secondaryTitle }}">
+            <i ng-class="widget.icon" class="b-dashboard-widget__icon"></i>
+            <span class="b-dashboard-widget__name" ng-show="true"
+                ng-click="widget.titleDropdownEnable && widget.onTitleClick()">{{ widget.title }}</span>
+            <span class="b-dashboard-widget__service-name"
+                  ng-show="widget.secondaryTitle">{{ widget.secondaryTitle }}</span>
+        </div><!--
+        --><ul class="b-dashboard-widget__header__left-tab-panel" ng-show="widgetLeftTabs.length > 0">
+            <li ng-repeat="tab in widgetLeftTabs" class="b-dashboard-widget__header__tab not-draggable"
+                ng-class="{
+                        'b-dashboard-widget__header__tab_dirty': tab.dirty,
+                        'b-dashboard-widget__header__tab_active': tab.active,
+                        'b-dashboard-widget__header__tab': tab.styleAsTab !== false,
+                        'active': tab.active
+                    }">
+                <a class="b-dashboard-widget__header__tab__link"
+                   ng-click="tab.enable && leftTabClicked($event, $index)" ng-disabled="!tab.enable"
+                   title="{{ tab.tooltip }}"
+                   ng-class="{
+                    'active': tab.active
+                   }">
+                    <i class="b-dashboard-widget__header__tab__icon" ng-if="tab.icon" ng-class="tab.icon"></i>
+                    {{tab.label}}
+                    <span ng-show="tab.closable" ng-click="closeLeftTab($index)" title="Close">[x]</span>
+                </a>
+            </li>
+        </ul><!--
+        --><dap-widget name="'ide-tabs'" params="ideTabsWidgetParams"></dap-widget><!--
+        --><div class="b-dashboard-widget__header__widget-controls not-draggable">
+            <div class="b-dashboard-widget__header__tab" click-outside="clickOutsidePluginActionsDropdown">
+                <div class="b-dashboard-widget__header__actions-menu">
+                    <a class="b-dashboard-widget__header__tab__link"
+                       ng-class="{disabled: widget.pluginActions.length === 0}"
+                       title="More actions"
+                       ng-click="widget.pluginActions.length > 0 && togglePluginActionsDropdownClicked()">
+                        <i class="b-dashboard-widget__header-control-icon b-dashboard-widget__header__actions-icon"></i>
+                    </a>
+                    <ul class="b-dashboard-widget__header__actions-menu__options list-inline"
+                        ng-show="showPluginActions">
+                        <li class="b-dashboard-widget__header__actions-menu__option"
+                            ng-repeat="a in widget.pluginActions">
+                            <a class="b-dashboard-widget__header__actions-menu__option-link"
+                               ng-click="a.handler(togglePluginActionsDropdownClicked)">{{a.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="b-dashboard-widget__header__tab ">
+                <a ng-click="close()" class="b-dashboard-widget__header__tab__link b-dashboard-widget__close"
+                   title="Close">
+                    <i class="b-dashboard-widget__header-control-icon b-dashboard-widget__close-icon"></i>
+                </a>
+            </div>
+        </div>
+        <!--@formatter:on-->
+        </div>
+
+        <div class="b-dashboard-widget__user-dropdown"
+             ng-show="widget.isTitleDropdownOpen">
+            <ul class="b-dashboard-widget__user-dropdown__menu">
+                <li ng-repeat="element in widget.titleDropdownList" class="b-dashboard-widget__user-dropdown__menu__item">
+                    <a class="b-dashboard-widget__user-dropdown__menu__item__link" ng-click="widget.selectTitle(element)">{{element.title}}</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--widget-->
+        <dap-widget name="widget.widgetName + '-widget'" params="widget.params" on-error="onWidgetError"
+                    on-success="onWidgetSuccess"
+                    class="b-dashboard-widget__content">
+            <div class="b-oozie-plugin-widget-backdrop">
+                <div ng-if="!errorMessage" class="b-oozie-plugin-widget-backdrop__spinner">
+                    <div class="b-oozie-plugin-widget-backdrop__spinner__top"></div>
+                    <div class="b-oozie-plugin-widget-backdrop__spinner__bottom"></div>
+                </div>
+                <div ng-if="errorMessage" class="b-dashboard-widget__error">
+                    <div class="b-dashboard-widget__error__message">{{errorMessage}}</div>
+                    <div class="b-dashboard-widget__error__buttons">
+                        <button ng-if="history.length > 0" class="btn btn-lg btn-secondary"
+                                ng-click="historyBack()">&larr;
+                            Back
+                        </button>
+                        <button class="btn btn-lg btn-error" ng-click="close()">Close widget</button>
+                    </div>
+                </div>
+            </div>
+        </dap-widget>
+        <!--end widget-->
+
+        <div class="b-dashboard-widget__status-bar">
+            <div style="float: right">
+                <a class="b-dashboard-widget__status-bar__tab b-dashboard-widget__max-width"
+                   ng-click="setFullWidgetWidth()"
+                   title="Maximize width"
+                   ng-class="{'b-dashboard-widget__max-width_active': widget.fullWidth}">
+                </a>
+                <a class="b-dashboard-widget__status-bar__tab b-dashboard-widget__increase-width"
+                   ng-click="!widget.fullWidth && increaseWidgetWidth()"
+                   title="Increase width"
+                   ng-class="{'b-dashboard-widget__increase-width_disabled': widget.fullWidth}">
+                </a>
+                <a class="b-dashboard-widget__status-bar__tab b-dashboard-widget__decrease-width"
+                   ng-click="!widget.fullWidth && widget.wSize > widgetMinSize && decreaseWidgetWidth()"
+                   title="Decrease width"
+                   ng-class="{'b-dashboard-widget__decrease-width_disabled': (widget.fullWidth || widget.wSize <= widgetMinSize)}">
+                </a>
+                <a class="b-dashboard-widget__status-bar__tab b-dashboard-widget__increase-height"
+                   title="Increase height"
+                   ng-click="increaseWidgetHeight()">
+                </a>
+                <a class="b-dashboard-widget__status-bar__tab b-dashboard-widget__decrease-height"
+                   ng-click="!widget.minHeight && decreaseWidgetHeight()"
+                   title="Decrease height"
+                   ng-class="{'b-dashboard-widget__decrease-height_disabled': widget.minHeight}">
+                </a>
+            </div>
+            <dap-widget name="statusBarTabsWidgetName"></dap-widget>
+            <span ng-if="statusBarText" class="b-dashboard-widget__status-bar__text">{{statusBarText}}</span>
+
+            <div class="b-dashboard-widget__progress-bar" ng-if="progressBarText">
+                <i class="b-dashboard-widget__progress-bar__operation-icon"></i>
+                <span class="b-dashboard-widget__progress-bar__operation-text">{{progressBarText}}</span>
+            </div>
+        </div>
+        <input id="cleanContent" style="display: none;"/>
+    </pause-watchers>
+</div>

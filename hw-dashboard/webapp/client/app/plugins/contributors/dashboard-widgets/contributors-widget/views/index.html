@@ -1,0 +1,17 @@
+<div class="b-contributors">
+    <ul class="b-contributors__list">
+        <li class="b-contributors__list__item"
+            ng-repeat="n in nodes">
+            <div class="b-contributors__list__item__link"
+                 ng-click="selectNode(n)"
+                 ng-class="{'selected': n.selected}">
+
+                <i class="b-contributors__list__item__link__icon" ng-class="n.icon"></i>
+
+                <div class="b-contributors__list__item__link__name">{{n.name}}</div>
+                <div class="b-contributors__list__item__link__title">{{n.title}}</div>
+                <div class="b-contributors__list__item__link__email"><a href="mailto:{{n.email}}">{{n.email}}</a></div>
+            </div>
+        </li>
+    </ul>
+</div>
