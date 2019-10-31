@@ -17,7 +17,7 @@
     "angular-ui-router": "0.2.13",
     "angular-ui-sortable": "0.13.3",
     "jquery": "1.11.0",
-    "jquery-ui": "1.11.1",
+    "jquery-ui": "1.12.0",
     "jsPlumb": "~1.6.4",
     "ng-context-menu": "~1.0.1",
     "xdate": "~0.8.1",
