@@ -19,9 +19,6 @@ trait LdapClient {
 class LdapClientImpl(appConfig: AppConf) extends LdapClient with LazyLogging {
 
   override def verifyCredentials(user: String, password: String): Boolean = {
-    if (user == "admin" && password == "admin123") // TODO: vvozdroganov - temp admin user
-      true
-    else {
       val errorHandler: PartialFunction[Throwable, Try[Boolean]] = {
         case e: LDAPException if e.getResultCode == ResultCode.INVALID_CREDENTIALS =>
           logger.debug(s"Auth: Incorrect password for user [$user]")
@@ -44,7 +41,6 @@ class LdapClientImpl(appConfig: AppConf) extends LdapClient with LazyLogging {
         }
 
       }, errorHandler)
-    }
   }
 
   override def getUser(userId: String): Option[LdapUser] = {
